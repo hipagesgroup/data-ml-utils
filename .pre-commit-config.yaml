@@ -10,22 +10,22 @@ repos:
     hooks:
       - id: detect-secrets
   - repo: https://github.com/psf/black
-    rev: 20.8b1
+    rev: 22.3.0
     hooks:
       - id: black
   - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.8.4
+    rev: 4.0.1
     hooks:
       - id: flake8
   - repo: https://github.com/asottile/reorder_python_imports
     rev: v2.3.6
     hooks:
       - id: reorder-python-imports
-  - repo: local
-    hooks:
-      - id: wily
-        name: wily
-        entry: wily diff
-        verbose: true
-        language: python
-        additional_dependencies: [wily]
+  # - repo: local
+  #   hooks:
+  #     - id: wily
+  #       name: wily
+  #       entry: wily diff
+  #       verbose: true
+  #       language: python
+  #       additional_dependencies: [wily]
