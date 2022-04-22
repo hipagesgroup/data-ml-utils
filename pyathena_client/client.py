@@ -2,6 +2,7 @@ import datetime
 import os
 
 import pandas as pd
+import pyathena
 from pyathena import connect
 from pyathena.pandas.cursor import PandasCursor
 
@@ -9,24 +10,34 @@ from core.config import settings
 
 
 class PyAthenaClient:
+    """
+    Class that handles queries from pyathena client
+    Main purpose is to create a connection that we can query from
+    """
+
     def __init__(self):
         self.engine_pd = self._connect()
         self.engine = self._connect_faster()
 
-    def _connect(self):
+    def _connect(self) -> pyathena.connection.Connection:
+        """
+        create a pyathena connection
+        Returns
+        -------
+        pyathena.connection.Connection
+            pyathena connection engine
+        """
         today_date = pd.to_datetime(datetime.datetime.now()).strftime("%Y-%m-%d")
 
         connection = connect(
-            s3_staging_dir=(
-                f"{settings.S3_ATHENA_QUERY_DIRECTORY}" f"""query_{today_date}"""
-            ),
+            s3_staging_dir=f"{settings.S3_ATHENA_QUERY_DIRECTORY}query_{today_date}",
             region_name="ap-southeast-2",
             aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
             aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
         )
         return connection
 
-    def _connect_faster(self):
+    def _connect_faster(self) -> pyathena.connection.Connection:
         today_date = pd.to_datetime(datetime.datetime.now()).strftime("%Y-%m-%d")
 
         connection = connect(
