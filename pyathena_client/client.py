@@ -8,9 +8,9 @@ from pyathena import connect
 from pyathena.pandas.cursor import PandasCursor
 
 from core.config import settings
-from core.utils import format_sql_create_schema
-from core.utils import format_sql_repair_table
-from core.utils import read_sql
+from core.pyathena_utils import format_sql_create_schema
+from core.pyathena_utils import format_sql_repair_table
+from core.pyathena_utils import read_sql
 
 
 class PyAthenaClient:
