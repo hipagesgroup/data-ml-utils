@@ -1,0 +1,9 @@
+[run]
+omit =
+    client_boto3/__init__.py
+    core/__init__.py
+    core/config.py
+    pyathena_client/__init__.py
+    tests/__init__.py
+    tests/conftest.py
+    tests/pyathena_client/test_client.py
