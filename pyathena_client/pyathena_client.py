@@ -5,6 +5,8 @@ import pandas as pd
 from pyathena import connect
 from pyathena.pandas.cursor import PandasCursor
 
+from core.config import settings
+
 
 class PyAthenaClient:
     def __init__(self):
@@ -16,8 +18,7 @@ class PyAthenaClient:
 
         connection = connect(
             s3_staging_dir=(
-                """s3://au-com-hipages-offline-feature-store/athena_queries/"""
-                f"""query_{today_date}"""
+                f"{settings.S3_ATHENA_QUERY_DIRECTORY}" f"""query_{today_date}"""
             ),
             region_name="ap-southeast-2",
             aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
