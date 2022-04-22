@@ -7,3 +7,4 @@ omit =
     tests/__init__.py
     tests/conftest.py
     tests/pyathena_client/test_client.py
+    tests/core/test_pyathena_utils.py
