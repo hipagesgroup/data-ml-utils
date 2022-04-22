@@ -40,6 +40,7 @@ pytest-cov = "^3.0.0"
 mock = "^4.0.3"
 moto = "^3.1.5"
 pydantic = "^1.9.0"
+pyathena = "^2.5.2"
 
 [tool.poetry.dev-dependencies]
 
