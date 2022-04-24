@@ -133,11 +133,70 @@ class TestPyAthenaClient:
 
         assert test == 0
 
+    def test_drop_table_error(
+        self,
+        aws_credentials,
+    ):
+        """
+        test function for erraneous creating and repairing athena table
+        Parameters
+        ----------
+        aws_credentials
+            inherits the aws creds when invoking aws functions
+
+        Returns
+        -------
+        assert
+            return value is 1
+        """
+
+        # let it assume the default aws_creds which is invalid
+        test = PyAthenaClient().drop_table(
+            table_name="test_table",
+            database="whatever",
+        )
+
+        assert test == 1
+
+    @patch("data_ml_utils.pyathena_client.client.PyAthenaClient")
+    def test_drop_table(
+        self,
+        mocked_pyathena,
+        aws_credentials,
+    ):
+        """
+        test function for creating and repairing athena table
+        Parameters
+        ----------
+        mocked_pyathena
+            mocked pyathena client
+        aws_credentials
+            inherits the aws creds when invoking aws functions
+
+        Returns
+        -------
+        assert
+            return value is 0
+        """
+
+        mocked_pyathena.cursor.return_value.execute.return_value = True
+
+        test_client = PyAthenaClient()
+        # patch engine with mocked pyathena
+        test_client.engine = mocked_pyathena
+
+        test = test_client.drop_table(
+            table_name="test_table",
+            database="whatever",
+        )
+
+        assert test == 0
+
     @patch("data_ml_utils.pyathena_client.client.PyAthenaClient")
     def test_query_as_pandas(
         self,
         mocked_pyathena,
-        # aws_credentials,
+        aws_credentials,
     ):
         """
         test function for creating and repairing athena table

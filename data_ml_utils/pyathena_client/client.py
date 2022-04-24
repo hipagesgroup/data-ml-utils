@@ -83,6 +83,31 @@ class PyAthenaClient:
         except Exception:
             return 1
 
+    def drop_table(self, table_name: str, database: str) -> int:
+        """
+        drop table in athena with pyathena connection
+
+        Parameters
+        ----------
+        table_name : str
+            raw query string to create table in athena
+        database : str
+            raw query string to repair table in athena
+
+        Returns
+        -------
+        int
+            non exit function value if successful
+        """
+
+        query = f"DROP TABLE IF EXISTS {database}.{table_name}"
+
+        try:
+            self.engine.cursor().execute(query)
+            return 0
+        except Exception:
+            return 1
+
     def query_as_pandas(self, final_query: str) -> pd.DataFrame:
         """
         query athena sqls with pyathena connection and store them into pandas
