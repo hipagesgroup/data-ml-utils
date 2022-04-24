@@ -1,10 +1,10 @@
 from mock import mock_open
 from mock import patch
 
-from core.pyathena_utils import format_sql_create_schema
-from core.pyathena_utils import format_sql_repair_table
-from core.pyathena_utils import get_config_yaml
-from core.pyathena_utils import read_sql
+from data_ml_utils.core.pyathena_utils import format_sql_create_schema
+from data_ml_utils.core.pyathena_utils import format_sql_repair_table
+from data_ml_utils.core.pyathena_utils import get_config_yaml
+from data_ml_utils.core.pyathena_utils import read_sql
 
 
 class TestReadSQL:
@@ -53,13 +53,13 @@ class TestFormatSQL:
             partition_column,
             partition_column_comment,
             s3_bucket,
-        ) = get_config_yaml("tests/core/test_yaml.yaml")
+        ) = get_config_yaml("tests/data_ml_utils/core/test_yaml.yaml")
 
         assert table_name == "dev.test_table"
         assert s3_bucket == "testing-bucket/testing/"
         assert partition_column == "inference_date_created"
 
-    @patch("core.pyathena_utils.get_config_yaml")
+    @patch("data_ml_utils.core.pyathena_utils.get_config_yaml")
     def test_format_sql_create_schema(self, mocked_config_function):
         """
         test function to get sql create table schema
@@ -92,7 +92,7 @@ class TestFormatSQL:
             tblproperties ("parquet.compression"="SNAPPY");"""
 
         return_sql, return_table_name = format_sql_create_schema(
-            dummy_sql, "tests/core/test_yaml.yaml"
+            dummy_sql, "tests/data_ml_utils/core/test_yaml.yaml"
         )
 
         assert return_table_name == "dev.test_table"

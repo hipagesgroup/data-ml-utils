@@ -1,13 +1,13 @@
 import pyathena
 from mock import patch
 
-from pyathena_client.client import PyAthenaClient
+from data_ml_utils.pyathena_client.client import PyAthenaClient
 
 
 class TestPyAthenaClient:
     """test class for pyathena client"""
 
-    @patch("pyathena_client.client.connect")
+    @patch("data_ml_utils.pyathena_client.client.connect")
     def test_connect(self, mocked_pyathena, aws_credentials):
         """
         test function to connect to pyathena
@@ -40,9 +40,9 @@ class TestPyAthenaClient:
 
         assert isinstance(return_connection, pyathena.connection.Connection)
 
-    @patch("pyathena_client.client.read_sql")
-    @patch("pyathena_client.client.format_sql_create_schema")
-    @patch("pyathena_client.client.format_sql_repair_table")
+    @patch("data_ml_utils.pyathena_client.client.read_sql")
+    @patch("data_ml_utils.pyathena_client.client.format_sql_create_schema")
+    @patch("data_ml_utils.pyathena_client.client.format_sql_repair_table")
     def test_create_msck_repair_table_error(
         self,
         mocked_repair_table,
@@ -83,10 +83,10 @@ class TestPyAthenaClient:
 
         assert test == 1
 
-    @patch("pyathena_client.client.read_sql")
-    @patch("pyathena_client.client.format_sql_create_schema")
-    @patch("pyathena_client.client.format_sql_repair_table")
-    @patch("pyathena_client.client.PyAthenaClient")
+    @patch("data_ml_utils.pyathena_client.client.read_sql")
+    @patch("data_ml_utils.pyathena_client.client.format_sql_create_schema")
+    @patch("data_ml_utils.pyathena_client.client.format_sql_repair_table")
+    @patch("data_ml_utils.pyathena_client.client.PyAthenaClient")
     def test_create_msck_repair_table(
         self,
         mocked_pyathena,

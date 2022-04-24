@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "python-boilerplate"
+name = "data_ml_utils"
 version = "0.1.0"
 description = ""
 authors = ["Shu Ming Peh"]
