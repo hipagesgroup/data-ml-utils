@@ -127,7 +127,7 @@ def format_sql_repair_table(sql: str, table_name: str) -> str:
     format sql repair table to input parameters
 
     Parameters
-    ----------
+    -----------
     sql : str
         loaded sql with input parameters
     table_name : str
