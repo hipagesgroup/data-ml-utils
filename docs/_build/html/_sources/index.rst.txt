@@ -20,6 +20,7 @@ data-ml-utils has a few utilities that we try to generalise across projects.
    commands/pyathena
    commands/client_boto3
    commands/pyathena_api_specs
+   commands/pyathena_utils_api_specs
    commands/client_boto3_api_specs
 
 Why are packaging this into a python library?
