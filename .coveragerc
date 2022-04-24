@@ -1,10 +1,10 @@
 [run]
 omit =
-    client_boto3/__init__.py
-    core/__init__.py
-    core/config.py
-    pyathena_client/__init__.py
-    tests/__init__.py
-    tests/conftest.py
-    tests/pyathena_client/test_client.py
-    tests/core/test_pyathena_utils.py
+    data_ml_utils/client_boto3/__init__.py
+    data_ml_utils/core/__init__.py
+    data_ml_utils/core/config.py
+    data_ml_utils/pyathena_client/__init__.py
+    data_ml_utils/tests/__init__.py
+    data_ml_utils/tests/conftest.py
+    data_ml_utils/tests/pyathena_client/test_client.py
+    data_ml_utils/tests/core/test_pyathena_utils.py
