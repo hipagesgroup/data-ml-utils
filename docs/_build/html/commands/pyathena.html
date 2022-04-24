@@ -46,20 +46,20 @@
 </pre></div>
 </div>
 <p><cite>.ipynb</cite></p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>import os
-os.environ[&quot;AWS_ACCESS_KEY_ID&quot;] = &quot;xxx&quot;
-os.environ[&quot;AWS_SECRET_ACCESS_KEY&quot;] = &quot;xxx&quot;
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;AWS_ACCESS_KEY_ID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xxx&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;AWS_SECRET_ACCESS_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xxx&quot;</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="initialising-pyathena-connection">
 <h2>Initialising pyathena connection<a class="headerlink" href="#initialising-pyathena-connection" title="Permalink to this headline">¶</a></h2>
 <p>We will need to import the python package</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>from data_ml_utils.pyathena_client.client import PyAthenaClient
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_ml_utils.pyathena_client.client</span> <span class="kn">import</span> <span class="n">PyAthenaClient</span>
 </pre></div>
 </div>
 <p>And then initialise the class</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pyathena_client = PyAthenaClient()
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyathena_client</span> <span class="o">=</span> <span class="n">PyAthenaClient</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>You can now access the pyathena connection with <cite>pyathena_client.engine</cite></p>
@@ -68,15 +68,15 @@ os.environ[&quot;AWS_SECRET_ACCESS_KEY&quot;] = &quot;xxx&quot;
 <div class="section" id="querying-with-pyathena-connection">
 <h2>Querying with pyathena connection<a class="headerlink" href="#querying-with-pyathena-connection" title="Permalink to this headline">¶</a></h2>
 <p>There is a function that will help to query your sql into a pandas dataframe</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>query = &quot;&quot;&quot;
- SELECT
-     *
- FROM
-     reporting_metrics_dev.int_active_tradies_count__tradie
- LIMIT 10
-&quot;&quot;&quot;
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2"> SELECT</span>
+<span class="s2">     *</span>
+<span class="s2"> FROM</span>
+<span class="s2">     reporting_metrics_dev.int_active_tradies_count__tradie</span>
+<span class="s2"> LIMIT 10</span>
+<span class="s2">&quot;&quot;&quot;</span>
 
-df_raw = pyathena_client.query_as_pandas(final_query=query)
+<span class="n">df_raw</span> <span class="o">=</span> <span class="n">pyathena_client</span><span class="o">.</span><span class="n">query_as_pandas</span><span class="p">(</span><span class="n">final_query</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/query_pyathena_client.png" class="align-center" src="../_images/query_pyathena_client.png" />
@@ -85,10 +85,10 @@ df_raw = pyathena_client.query_as_pandas(final_query=query)
 <h2>Drop athena table with pyathena connection<a class="headerlink" href="#drop-athena-table-with-pyathena-connection" title="Permalink to this headline">¶</a></h2>
 <p>This function drops athena table with the pyathena connection.
 A successful response return <cite>0</cite>, and <cite>1</cite> otherwise</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pyathena_client.drop_table(
-   table_name=&quot;int_active_tradies_count__tradie&quot;,
-   database=&quot;reporting_metrics_dev&quot;
-)
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyathena_client</span><span class="o">.</span><span class="n">drop_table</span><span class="p">(</span>
+   <span class="n">table_name</span><span class="o">=</span><span class="s2">&quot;int_active_tradies_count__tradie&quot;</span><span class="p">,</span>
+   <span class="n">database</span><span class="o">=</span><span class="s2">&quot;reporting_metrics_dev&quot;</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/drop_pyathena_client.png" class="align-center" src="../_images/drop_pyathena_client.png" />
@@ -97,15 +97,15 @@ A successful response return <cite>0</cite>, and <cite>1</cite> otherwise</p>
 <h2>Create and repair athena table with pyathena connection<a class="headerlink" href="#create-and-repair-athena-table-with-pyathena-connection" title="Permalink to this headline">¶</a></h2>
 <p>This function creates an athena table through a defined schema, and also repair the table by adding all missing partitions
 A successful response return <cite>0</cite>, and <cite>1</cite> otherwise</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pyathena_client.create_msck_repair_table(
-   create_raw_query=&quot;tutorial_sql_schema/create_table_schema.sql&quot;,
-   repair_raw_query=&quot;tutorial_sql_schema/msck_repair_table.sql&quot;,
-   yaml_schema_file_path=&quot;tutorial_sql_schema/int_active_tradies_count__tradie.yaml&quot;
-)
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyathena_client</span><span class="o">.</span><span class="n">create_msck_repair_table</span><span class="p">(</span>
+   <span class="n">create_raw_query</span><span class="o">=</span><span class="s2">&quot;tutorial_sql_schema/create_table_schema.sql&quot;</span><span class="p">,</span>
+   <span class="n">repair_raw_query</span><span class="o">=</span><span class="s2">&quot;tutorial_sql_schema/msck_repair_table.sql&quot;</span><span class="p">,</span>
+   <span class="n">yaml_schema_file_path</span><span class="o">=</span><span class="s2">&quot;tutorial_sql_schema/int_active_tradies_count__tradie.yaml&quot;</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/create_repair_table_pyathena_client.png" class="align-center" src="../_images/create_repair_table_pyathena_client.png" />
-<p>See <a class="reference internal" href="pyathena_api.html"><span class="doc">Pyathena API Specs</span></a> for the api specifications of the above functions.</p>
+<p>See <a class="reference internal" href="pyathena_api_specs.html"><span class="doc">Pyathena API Specs</span></a> for the api specifications of the above functions.</p>
 </div>
 </div>
 
@@ -130,6 +130,8 @@ A successful response return <cite>0</cite>, and <cite>1</cite> otherwise</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Pyathena client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="client_boto3.html">Client boto3 and botocore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyathena_api_specs.html">Pyathena API Specs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_boto3_api_specs.html">Pyathena API Specs</a></li>
 </ul>
 
 <div class="relations">

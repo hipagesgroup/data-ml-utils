@@ -21,7 +21,7 @@ Defining the environment variables can be done through `cli` or in your `.ipynb`
 
 `.ipynb`
 
-.. code-block:: none
+.. code-block:: python
 
    import os
    os.environ["AWS_ACCESS_KEY_ID"] = "xxx"
@@ -32,13 +32,13 @@ Initialising pyathena connection
 --------------------------------
 We will need to import the python package
 
-.. code-block:: none
+.. code-block:: python
 
    from data_ml_utils.pyathena_client.client import PyAthenaClient
 
 And then initialise the class
 
-.. code-block:: none
+.. code-block:: python
 
    pyathena_client = PyAthenaClient()
 
@@ -52,7 +52,7 @@ Querying with pyathena connection
 ---------------------------------
 There is a function that will help to query your sql into a pandas dataframe
 
-.. code-block:: none
+.. code-block:: python
 
    query = """
     SELECT
@@ -73,7 +73,7 @@ Drop athena table with pyathena connection
 This function drops athena table with the pyathena connection.
 A successful response return `0`, and `1` otherwise
 
-.. code-block:: none
+.. code-block:: python
 
    pyathena_client.drop_table(
       table_name="int_active_tradies_count__tradie",
@@ -89,7 +89,7 @@ Create and repair athena table with pyathena connection
 This function creates an athena table through a defined schema, and also repair the table by adding all missing partitions
 A successful response return `0`, and `1` otherwise
 
-.. code-block:: none
+.. code-block:: python
 
    pyathena_client.create_msck_repair_table(
       create_raw_query="tutorial_sql_schema/create_table_schema.sql",
@@ -101,4 +101,4 @@ A successful response return `0`, and `1` otherwise
    :align: center
 
 
-See :doc:`pyathena_api` for the api specifications of the above functions.
+See :doc:`pyathena_api_specs` for the api specifications of the above functions.
