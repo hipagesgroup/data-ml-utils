@@ -1,3 +1,4 @@
+import pandas as pd
 import pyathena
 from mock import patch
 
@@ -69,7 +70,6 @@ class TestPyAthenaClient:
             return value is 1
         """
 
-        # mocked_pyathena.engine.cursor.return_value.execute.return_value = True
         mocked_repair_table.return_value = "query_repair"
         mocked_create_schema.return_value = ("query", "table_test_name")
         mocked_read_sql.return_value = "query"
@@ -116,7 +116,7 @@ class TestPyAthenaClient:
             return value is 0
         """
 
-        mocked_pyathena.engine.cursor.return_value.execute.return_value = True
+        mocked_pyathena.cursor.return_value.execute.return_value = True
         mocked_repair_table.return_value = "query_repair"
         mocked_create_schema.return_value = ("query", "table_test_name")
         mocked_read_sql.return_value = "query"
@@ -132,3 +132,48 @@ class TestPyAthenaClient:
         )
 
         assert test == 0
+
+    @patch("data_ml_utils.pyathena_client.client.PyAthenaClient")
+    def test_query_as_pandas(
+        self,
+        mocked_pyathena,
+        # aws_credentials,
+    ):
+        """
+        test function for creating and repairing athena table
+        Parameters
+        ----------
+        mocked_pyathena
+            mocked pyathena client
+        aws_credentials
+            inherits the aws creds when invoking aws functions
+
+        Returns
+        -------
+        assert
+            return value is a dataframe
+        assert
+            datatypes of dataframe columns are correct
+        """
+
+        dummy_df = pd.concat(
+            [
+                pd.Series([1, 2], dtype=pd.Int64Dtype()),
+                pd.Series([1.0, 2.0], dtype=pd.Float64Dtype()),
+            ],
+            axis=1,
+        )
+
+        mocked_pyathena.cursor.return_value.execute.return_value.as_pandas.return_value = (  # noqa E501
+            dummy_df
+        )
+
+        test_client = PyAthenaClient()
+        # patch engine with mocked pyathena
+        test_client.engine = mocked_pyathena
+
+        test = test_client.query_as_pandas(final_query="testquery")
+
+        assert isinstance(test, pd.DataFrame)
+        assert test[0].dtype == int
+        assert test[1].dtype == float

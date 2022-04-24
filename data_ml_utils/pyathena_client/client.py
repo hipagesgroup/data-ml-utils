@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import datetime
 import os
+import re
 
+import pandas as pd
 import pyathena
 from pyathena import connect
 from pyathena.pandas.cursor import PandasCursor
@@ -80,3 +82,33 @@ class PyAthenaClient:
             return 0
         except Exception:
             return 1
+
+    def query_as_pandas(self, final_query: str) -> pd.DataFrame:
+        """
+        query athena sqls with pyathena connection and store them into pandas
+        changes all pandas int and float types to numpy types
+
+        Parameters
+        ----------
+        final_query : str
+            query to run
+
+        Returns
+        -------
+        pd.DataFrame
+            return of pandas dataframe
+        """
+
+        return_df = self.engine.cursor().execute(final_query).as_pandas()
+
+        # change all pandas Int64 and Float64 to numpy int and float
+        for col in return_df.columns:
+            if ("Int" in str(return_df[col].dtype)) | (
+                "Float" in str(return_df[col].dtype)
+            ):
+                type_replace = re.sub(
+                    "\d+", "", str(return_df[col].dtype)  # noqa W605
+                ).lower()
+                return_df[col] = return_df[col].astype(type_replace)
+
+        return return_df
