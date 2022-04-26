@@ -220,15 +220,9 @@ class TestAWSServices:
         assert test_file == "model_muriel_2022_01_01.tar.gz"
 
     @mock_sagemaker
-    def test_create_model_package_version_error(self, aws_credentials):
+    def test_create_model_package_version_error(self):
         """
         test function to create model package version in AWS model registry
-
-        Parameters
-        ----------
-        aws_credientials
-            inherits the aws creds when invoking aws functions
-
         Returns
         -------
         assert
@@ -267,15 +261,9 @@ class TestAWSServices:
         assert message == "error message"
 
     @mock_sagemaker
-    def test_create_model_package_version(self, aws_credentials):
+    def test_create_model_package_version(self):
         """
         test function to create model package version in AWS model registry
-
-        Parameters
-        ----------
-        aws_credientials
-            inherits the aws creds when invoking aws functions
-
         Returns
         -------
         assert
