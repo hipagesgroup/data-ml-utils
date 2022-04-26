@@ -54,7 +54,7 @@ class TestAWSServices:
         stubber.activate()
 
         test_uri, test_file = aws_client.get_model_uri_from_aws_model_registry(
-            "churn-test"
+            model_name="churn-test"
         )
 
         assert test_file == "model_testing.tar.gz"
@@ -100,7 +100,9 @@ class TestAWSServices:
         stubber.activate()
 
         try:
-            _, _ = aws_client.get_model_uri_from_aws_model_registry("churn-test")
+            _, _ = aws_client.get_model_uri_from_aws_model_registry(
+                model_name="churn-test"
+            )
         except ParamValidationError:
             message = "ModelGroupName does not have approved status"
 
@@ -147,7 +149,9 @@ class TestAWSServices:
         stubber.activate()
 
         try:
-            _, _ = aws_client.get_model_uri_from_aws_model_registry("churn-prod")
+            _, _ = aws_client.get_model_uri_from_aws_model_registry(
+                model_name="churn-prod"
+            )
         except StubAssertionError:
             message = "incorrect model group name"
 
@@ -182,10 +186,10 @@ class TestAWSServices:
         )
 
         response_result = aws_client.unzip_targz_file(
-            "dummy.tar.gz",
-            "au-com-hipages-radagast",
-            "scratchpad/muriel/models/2022_01_01/dummy.tar.gz",
-            "scratchpad/muriel/models/2022_01_01",
+            file_targz="dummy.tar.gz",
+            bucket_name_trunc="au-com-hipages-radagast",
+            targz_file_uri="scratchpad/muriel/models/2022_01_01/dummy.tar.gz",
+            s3_file_path="scratchpad/muriel/models/2022_01_01",
         )
 
         assert response_result == 0
@@ -214,7 +218,10 @@ class TestAWSServices:
         )
 
         test_file = aws_client.upload_retrained_model_s3(
-            "2022_01_01", "test-bucket", "", "model_muriel"
+            date_format="2022_01_01",
+            bucket_name_trunc="test-bucket",
+            s3_file_path="",
+            model_suffix="model_muriel",
         )
 
         assert test_file == "model_muriel_2022_01_01.tar.gz"
@@ -236,12 +243,9 @@ class TestAWSServices:
         """
         aws_client = AwsSagemakerServices()
 
-        retrained_model_metrics_dict = {
-            "accuracy_top_10": 1.0,
-        }
-
-        current_model_metrics_dict = {
-            "accuracy_top_10": 0.9,
+        current_retrained_metrics_dict = {
+            "retrained_top_10_accuracy": "1.0",
+            "current_top_10_accuracy": "1.0",
         }
 
         stubber = Stubber(aws_client.client_sagemaker)
@@ -254,12 +258,12 @@ class TestAWSServices:
 
         try:
             aws_client.create_model_package_version(
-                "churn-test",
-                "model_123.tar.gz",
-                retrained_model_metrics_dict,
-                current_model_metrics_dict,
-                "test-bucket",
-                "testing",
+                model_name="churn-test",
+                model_file_name="model_123.tar.gz",
+                current_retrained_model_metrics_dict=current_retrained_metrics_dict,
+                s3_directory="test-bucket/",
+                image_uri="test-bucket",
+                model_package_description="description",
             )
         except Exception:
             message = "error message"
@@ -304,12 +308,12 @@ class TestAWSServices:
         stubber.activate()
 
         response = aws_client.create_model_package_version(
-            "churn-test",
-            "model_123.tar.gz",
-            current_retrained_model_metrics_dict,
-            "test-bucket/",
-            "testing",
-            "description",
+            model_name="churn-test",
+            model_file_name="model_123.tar.gz",
+            current_retrained_model_metrics_dict=current_retrained_model_metrics_dict,
+            s3_directory="test-bucket/",
+            image_uri="testing",
+            model_package_description="description",
         )
 
         assert response == 0
