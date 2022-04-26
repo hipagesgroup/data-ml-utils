@@ -139,7 +139,7 @@ class AwsSagemakerServices:
             model tar gz file path in s3
         current_retrained_model_metrics_dict : Dict
             current and retrained model metrics in dictionary
-        muriel_s3 : str
+        s3_directory : str
             s3 bucket for model
         image_uri : str
             docker image url
