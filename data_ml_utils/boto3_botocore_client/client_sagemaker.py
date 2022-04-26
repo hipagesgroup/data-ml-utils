@@ -1,9 +1,8 @@
 import tarfile
+from typing import Dict
 from typing import Tuple
 
 from data_ml_utils.boto3_botocore_client.client_initialisation import AwsClients
-
-# from typing import Dict
 
 
 class AwsSagemakerServices:
@@ -83,120 +82,111 @@ class AwsSagemakerServices:
 
         return 0
 
-    # def upload_retrained_model_s3(
-    #     self,
-    #     start_date: str,
-    #     bucket_name_trunc: str,
-    # ) -> str:
-    #     """
-    #     gets model tar gz uri and filename from AWS model registry
-    #     Parameters
-    #     ----------
-    #     start_date : str
-    #         arg parser start date
-    #     bucket_name_trunc : str
-    #         truncated name of churn prediction bucket
+    def upload_retrained_model_s3(
+        self,
+        date_format: str,
+        bucket_name_trunc: str,
+        s3_file_path: str,
+        model_suffix: str,
+    ) -> str:
+        """
+        gets model tar gz uri and filename from AWS model registry
+        Parameters
+        ----------
+        date_format : str
+            date format for file name
+        bucket_name_trunc : str
+            truncated name of s3 bucket
+        s3_file_path: str
+            file path to file in s3 bucket
+        model_suffix: str
+            model file name suffix
 
-    #     Returns
-    #     -------
-    #     str
-    #         name of model tar gz file
-    #     """
-    #     format_start_date = start_date.replace("-", "_")
-    #     model_file_name = f"model_muriel_{format_start_date}.tar.gz"
+        Returns
+        -------
+        str
+            name of model tar gz file
+        """
+        model_file_name = f"{model_suffix}_{date_format}.tar.gz"
 
-    #     with tarfile.open(f"{model_file_name}", mode="w:gz") as archive:
-    #         archive.add("model_files", recursive=True)
+        with tarfile.open(f"{model_file_name}", mode="w:gz") as archive:
+            archive.add("model_files", recursive=True)
 
-    #     self.client_s3.upload_file(
-    #         Filename=f"{model_file_name}",
-    #         Bucket=f"{bucket_name_trunc}",
-    #         Key=f"scratchpad/muriel/models/{format_start_date}/{model_file_name}",
-    #     )
+        self.client_s3.upload_file(
+            Filename=f"{model_file_name}",
+            Bucket=f"{bucket_name_trunc}",
+            Key=f"{s3_file_path}/{model_file_name}",
+        )
 
-    #     return model_file_name
+        return model_file_name
 
-    # def create_model_package_version(
-    #     self,
-    #     start_date: str,
-    #     model_name: str,
-    #     model_file_name: str,
-    #     retrained_model_metrics_dict: Dict,
-    #     current_model_metrics_dict: Dict,
-    #     muriel_s3: str,
-    #     image_uri: str,
-    # ) -> int:
-    #     """
-    #     gets model tar gz uri and filename from AWS model registry
-    #     Parameters
-    #     ----------
-    #     start_date : str
-    #         arg parser start date
-    #     model_name : str
-    #         name of churn model in AWS model registry
-    #     model_file_name : str
-    #         model tar gz file path in s3
-    #     model_metrics_dict : Dict
-    #         churn model metrics in dictory
-    #     muriel_s3 : str
-    #         s3 bucket for churn prediction
-    #     image_uri : str
-    #         docker image url
+    def create_model_package_version(
+        self,
+        model_name: str,
+        model_file_name: str,
+        current_retrained_model_metrics_dict: Dict,
+        s3_directory: str,
+        image_uri: str,
+        model_package_description: str,
+    ) -> int:
+        """
+        gets model tar gz uri and filename from AWS model registry
+        Parameters
+        ----------
+        model_name : str
+            name of churn model in AWS model registry
+        model_file_name : str
+            model tar gz file path in s3
+        current_retrained_model_metrics_dict : Dict
+            current and retrained model metrics in dictionary
+        muriel_s3 : str
+            s3 bucket for model
+        image_uri : str
+            docker image url
+        model_package_description: str
+            model package description
 
-    #     Returns
-    #     -------
-    #     int
-    #         non exit function
-    #     """
-    #     format_start_date = start_date.replace("-", "_")
-    #     try:
-    #         modelpackage_inference_specification = {
-    #             "InferenceSpecification": {
-    #                 "Containers": [
-    #                     {
-    #                         "Image": f"{image_uri}",
-    #                     }
-    #                 ],
-    #                 "SupportedContentTypes": ["text/csv"],
-    #                 "SupportedResponseMIMETypes": ["text/csv"],
-    #             }
-    #         }
-    #         model_url = (
-    #             f"""{muriel_s3}scratchpad/muriel/models/"""
-    #             f"""{format_start_date}/{model_file_name}"""
-    #         )
+        Returns
+        -------
+        int
+            non exit function
+        """
+        try:
+            modelpackage_inference_specification = {
+                "InferenceSpecification": {
+                    "Containers": [
+                        {
+                            "Image": f"{image_uri}",
+                        }
+                    ],
+                    "SupportedContentTypes": ["text/csv"],
+                    "SupportedResponseMIMETypes": ["text/csv"],
+                }
+            }
+            model_url = f"{s3_directory}{model_file_name}"
 
-    #         modelpackage_inference_specification["InferenceSpecification"][
-    #             "Containers"
-    #         ][0]["ModelDataUrl"] = model_url
+            modelpackage_inference_specification["InferenceSpecification"][
+                "Containers"
+            ][0]["ModelDataUrl"] = model_url
 
-    #         modelpackage_custom_metadata = {
-    #             "CustomerMetadataProperties": {
-    #                 "retrained_top_10_accuracy": str(
-    #                     retrained_model_metrics_dict["accuracy_top_10"]
-    #                 ),
-    #                 "current_top_10_accuracy": str(
-    #                     current_model_metrics_dict["accuracy_top_10"]
-    #                 ),
-    #             }
-    #         }
+            modelpackage_custom_metadata = {
+                "CustomerMetadataProperties": current_retrained_model_metrics_dict
+            }
 
-    #         create_model_package_input_dict = {
-    #             "ModelPackageGroupName": f"{model_name}",
-    #             "ModelPackageDescription": "Naive bayes model for category prediction
-    # from get_quotes keywords",  # noqa E501
-    #             "ModelApprovalStatus": "PendingManualApproval",
-    #         }
+            create_model_package_input_dict = {
+                "ModelPackageGroupName": f"{model_name}",
+                "ModelPackageDescription": f"{model_package_description}",
+                "ModelApprovalStatus": "PendingManualApproval",
+            }
 
-    #         create_model_package_input_dict.update(modelpackage_inference_specification)
-    #         create_model_package_input_dict.update(modelpackage_custom_metadata)
+            create_model_package_input_dict.update(modelpackage_inference_specification)
+            create_model_package_input_dict.update(modelpackage_custom_metadata)
 
-    #         create_model_package_response =
-    # self.client_sagemaker.create_model_package(
-    #             **create_model_package_input_dict
-    #         )
-    #         print(create_model_package_response["ModelPackageArn"])
-    #     except Exception:
-    #         raise Exception("error in uploading creating version in model registry")
+            create_model_package_response = self.client_sagemaker.create_model_package(
+                **create_model_package_input_dict
+            )
+            print(create_model_package_response["ModelPackageArn"])
+        except Exception:
+            raise Exception("error in uploading creating version in model registry")
 
-    #     return 0
+        return 0
