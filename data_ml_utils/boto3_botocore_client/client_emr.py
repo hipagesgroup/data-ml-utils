@@ -1,13 +1,13 @@
-import os
 import sys
 import time
 from typing import List
 
-import boto3
 import botocore
 
+from data_ml_utils.boto3_botocore_client.client_initialisation import AwsClients
 
-class AwsServicesEMR:
+
+class AwsEMRServices:
     """
     Class that handles all aws related services
     This includes creating of EMR cluster, terminating cluster,
@@ -16,22 +16,8 @@ class AwsServicesEMR:
     """
 
     def __init__(self):
-        self.client_aws_services = boto3.Session(
-            region_name="ap-southeast-2",
-            aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
-            aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
-        )
-        self.client_emr = self._initialize_emr_client()
-
-    def _initialize_emr_client(self) -> "botocore.client.EMR":
-        """
-        initialise emr client from boto3 session
-        Returns
-        -------
-        botocore.client.EMR
-            botocore client for EMR related services
-        """
-        return self.client_aws_services.client("emr")
+        client_class = AwsClients()
+        self.client_emr = client_class.client_emr
 
     def create_emr_cluster(
         self,
