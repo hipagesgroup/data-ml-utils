@@ -1,6 +1,5 @@
 import filecmp
 
-import botocore
 from botocore.exceptions import ParamValidationError
 from botocore.exceptions import StubAssertionError
 from botocore.stub import ANY
@@ -9,8 +8,6 @@ from moto import mock_s3
 from moto import mock_sagemaker
 
 from data_ml_utils.boto3_botocore_client.client_sagemaker import AwsSagemakerServices
-
-orig = botocore.client.BaseClient._make_api_call
 
 
 class TestAWSServices:
