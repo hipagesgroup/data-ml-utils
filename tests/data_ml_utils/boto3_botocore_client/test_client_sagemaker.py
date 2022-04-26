@@ -1,12 +1,10 @@
 import filecmp
 
-import boto3
 import botocore
 from botocore.exceptions import ParamValidationError
 from botocore.exceptions import StubAssertionError
 from botocore.stub import ANY
 from botocore.stub import Stubber
-from mock import patch
 from moto import mock_s3
 from moto import mock_sagemaker
 
@@ -17,29 +15,6 @@ orig = botocore.client.BaseClient._make_api_call
 
 class TestAWSServices:
     """test class for AWS session"""
-
-    def test_boto3_session(self, aws_credentials):
-        """
-        test function to initialise a boto3 session
-
-        Parameters
-        ----------
-        aws_credientials
-            inherits the aws creds when invoking aws functions
-
-        Returns
-        -------
-        assert
-            if class session is boto3.session.Session
-        """
-        bc_session_patch = patch("boto3.session.Session")
-        bc_session_cls = bc_session_patch.start()
-        loader = bc_session_cls.return_value.get_component.return_value
-        loader.data_path = ""
-        patch_global_session = patch("boto3.DEFAULT_SESSION")
-        patch_global_session.start()
-
-        assert bc_session_cls == boto3.session.Session
 
     def test_get_model_uri_from_aws_model_registry(
         self,
