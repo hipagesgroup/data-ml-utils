@@ -1,8 +1,5 @@
-import sys
 import time
 from typing import List
-
-import botocore
 
 from data_ml_utils.boto3_botocore_client.client_initialisation import AwsClients
 
@@ -21,7 +18,6 @@ class AwsEMRServices:
 
     def create_emr_cluster(
         self,
-        session: "botocore.client.EMR",
         master_instance_type: str,
         core_instance_type: str,
         core_instance_count: int,
@@ -37,8 +33,6 @@ class AwsEMRServices:
 
         Parameters
         ----------
-        session : botocore.client.EMR
-            session of EMR
         master_instance_type: str
             master instance type
         core_instance_type: str
@@ -63,7 +57,7 @@ class AwsEMRServices:
         dict
             response of request of creating cluster, raises exception if not successful
         """
-        response = session.run_job_flow(
+        response = self.client_emr.run_job_flow(
             Name=f"churn__{task_id}__{identifier}",
             LogUri=log_uri,
             ReleaseLabel="emr-6.1.0",
@@ -138,21 +132,16 @@ class AwsEMRServices:
             raise Exception(  # pragma: no cover
                 f"Encountered Error while Launching the EMR Cluster \n {response}"
             )
-            sys.exit(1)  # pragma: no cover
 
         return response
 
-    def check_emr_cluster_status(
-        self, session: "botocore.client.EMR", cluster_id: str
-    ) -> int:
+    def check_emr_cluster_status(self, cluster_id: str) -> int:
         """
         check emr cluster that is created
         raises exception if the cluster runs into termination issues
 
         Parameters
         ----------
-        session : botocore.client.EMR
-            session boto3 EMR
         cluster_id : str
             cluster identifier string value
 
@@ -170,7 +159,7 @@ class AwsEMRServices:
             "TERMINATED",
             "TERMINATED_WITH_ERRORS",
         ):
-            get_cluster_status = session.describe_cluster(ClusterId=cluster_id)
+            get_cluster_status = self.client_emr.describe_cluster(ClusterId=cluster_id)
             cluster_status = get_cluster_status["Cluster"]["Status"]["State"]
             state_change_reason = get_cluster_status["Cluster"]["Status"][
                 "StateChangeReason"
@@ -179,21 +168,16 @@ class AwsEMRServices:
             time.sleep(30)
         if cluster_status in ("TERMINATING", "TERMINATED", "TERMINATED_WITH_ERRORS"):
             raise Exception(f"Cluster terminated with errors \n {state_change_reason}")
-            sys.exit(1)
 
         print("Cluster is up and running, please proceed")
         return 0
 
-    def terminate_emr_cluster(
-        self, session: "botocore.client.EMR", cluster_id: str
-    ) -> int:
+    def terminate_emr_cluster(self, cluster_id: str) -> int:
         """
         terminate created cluster
 
         Parameters
         ----------
-        session : botocore.client.EMR
-            session boto3 EMR
         cluster_id : str
             cluster identifier string value
 
@@ -202,19 +186,15 @@ class AwsEMRServices:
         int
             0 if the cluster is terminated
         """
-        session.terminate_job_flows(JobFlowIds=[cluster_id])
+        self.client_emr.terminate_job_flows(JobFlowIds=[cluster_id])
         return 0
 
-    def get_cluster_id(
-        self, session: "botocore.client.EMR", task_id: str, identifier: str
-    ) -> str:
+    def get_cluster_id(self, task_id: str, identifier: str) -> str:
         """
         fetch cluster identifier string value
 
         Parameters
         ----------
-        session : botocore.client.EMR
-            session boto3 EMR
         task_id: str
             task identifier from airflow
         identifier: str
@@ -225,7 +205,7 @@ class AwsEMRServices:
         str
             cluster identifier string value
         """
-        all_clusters = session.list_clusters(
+        all_clusters = self.client_emr.list_clusters(
             ClusterStates=[
                 "WAITING",
             ],
@@ -240,16 +220,12 @@ class AwsEMRServices:
 
         return cluster_id
 
-    def get_emr_master_dns_name(
-        self, session: "botocore.client.EMR", cluster_id: str
-    ) -> str:
+    def get_emr_master_dns_name(self, cluster_id: str) -> str:
         """
         fetch cluster master node dns address
 
         Parameters
         ----------
-        session : botocore.client.EMR
-            session boto3 EMR
         cluster_id : str
             cluster identifier string value
 
@@ -258,7 +234,7 @@ class AwsEMRServices:
         str
             cluster master node dns address
         """
-        dns_name = session.describe_cluster(ClusterId=cluster_id)["Cluster"][
+        dns_name = self.client_emr.describe_cluster(ClusterId=cluster_id)["Cluster"][
             "MasterPublicDnsName"
         ]
 
@@ -266,7 +242,6 @@ class AwsEMRServices:
 
     def spin_up_emr_cluster(
         self,
-        session: "botocore.client.EMR",
         master_instance_type: str,
         core_instance_type: str,
         core_instance_count: int,
@@ -282,8 +257,6 @@ class AwsEMRServices:
 
         Parameters
         ----------
-        session : botocore.client.EMR
-            session of EMR
         master_instance_type: str
             master instance type
         core_instance_type: str
@@ -313,7 +286,6 @@ class AwsEMRServices:
 
         while (create_loop == 1) and (max_tries < 4):
             response = self.create_emr_cluster(
-                session=session,
                 master_instance_type=master_instance_type,
                 core_instance_type=core_instance_type,
                 core_instance_count=core_instance_count,
@@ -331,23 +303,20 @@ class AwsEMRServices:
             # get all results
             try:
                 ip_address = self.get_emr_master_dns_name(
-                    session=session, cluster_id=response["JobFlowId"]
+                    cluster_id=response["JobFlowId"]
                 ).split("-")[1]
             except Exception:
                 ip_address = "3"
 
             if len(ip_address) == 1:
                 # terminate cluster
-                self.terminate_emr_cluster(
-                    session=session, cluster_id=response["JobFlowId"]
-                )
+                self.terminate_emr_cluster(cluster_id=response["JobFlowId"])
                 max_tries += 1
                 continue
             create_loop = 0
 
         # check created cluster in waiting state
         cluster_response = self.check_emr_cluster_status(
-            session=session,
             cluster_id=response["JobFlowId"],
         )
         if cluster_response:
