@@ -84,7 +84,7 @@ def get_config_yaml(file_path: str) -> Tuple[str, str, str, str, str, str]:
 
 
 # function to format create schema or repair table
-def format_sql_create_schema(sql: str, yaml_file_path: str) -> str:
+def format_sql_create_schema(sql: str, yaml_file_path: str) -> Tuple[str, str]:
     """
     format sql create table to input parameters
 

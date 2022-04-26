@@ -34,7 +34,158 @@
 
   <div class="section" id="pyathena-utils-api-specs">
 <h1>Pyathena Utils API Specs<a class="headerlink" href="#pyathena-utils-api-specs" title="Permalink to this headline">¶</a></h1>
-<p>placeholder</p>
+<p><cite>Methods</cite></p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>read_sql</strong> (<cite>file_path</cite>)</p></td>
+<td><p>read sql file</p></td>
+<td><p><a class="reference internal" href="#read-sql"><span class="std std-ref">read_sql</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>get_config_yaml</strong> (<cite>file_path</cite>)</p></td>
+<td><p>get table schema config</p></td>
+<td><p><a class="reference internal" href="#get-config-yaml"><span class="std std-ref">get_config_yaml</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>format_sql_create_schema</strong> (<cite>sql, yaml_file_path</cite>)</p></td>
+<td><p>create table sql from config schema</p></td>
+<td><p><a class="reference internal" href="#format-sql-create-schema"><span class="std std-ref">format_sql_create_schema</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>format_sql_repair_table</strong> (<cite>sql, table_name</cite>)</p></td>
+<td><p>create repair table sql</p></td>
+<td><p><a class="reference internal" href="#format-sql-repair-table"><span class="std std-ref">format_sql_repair_table</span></a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="read-sql">
+<span id="id1"></span><h2>read_sql<a class="headerlink" href="#read-sql" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="read_sql">
+<span class="sig-name descname"><span class="pre">read_sql</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#read_sql" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">read</span> <span class="pre">sql</span> <span class="pre">file</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> (<em>str</em>) – filepath of sql file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>sql query</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="get-config-yaml">
+<span id="id2"></span><h2>get_config_yaml<a class="headerlink" href="#get-config-yaml" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="get_config_yaml">
+<span class="sig-name descname"><span class="pre">get_config_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#get_config_yaml" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">get</span> <span class="pre">table</span> <span class="pre">schema</span> <span class="pre">config</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> (<em>str</em>) – filepath; of sql file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>table_name; name of table</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>table_description; description of table</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>table_column_name; table column names</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>partition_column; name of partitioned column</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>partition_column_comment; description of partitioned column</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>s3_bucket name; of s3 bucket</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="format-sql-create-schema">
+<span id="id3"></span><h2>format_sql_create_schema<a class="headerlink" href="#format-sql-create-schema" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="format_sql_create_schema">
+<span class="sig-name descname"><span class="pre">format_sql_create_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sql</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaml_file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#format_sql_create_schema" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">create</span> <span class="pre">table</span> <span class="pre">sql</span> <span class="pre">from</span> <span class="pre">config</span> <span class="pre">schema</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sql</strong> (<em>str</em>) – sql query</p></li>
+<li><p><strong>yaml_file_path</strong> (<em>str</em>) – schema file path</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>return_sql; final sql to create table</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>table_name; name of table</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="format-sql-repair-table">
+<span id="id4"></span><h2>format_sql_repair_table<a class="headerlink" href="#format-sql-repair-table" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="format_sql_repair_table">
+<span class="sig-name descname"><span class="pre">format_sql_repair_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sql</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#format_sql_repair_table" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">create</span> <span class="pre">repair</span> <span class="pre">table</span> <span class="pre">sql</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sql</strong> (<em>str</em>) – sql query</p></li>
+<li><p><strong>table_name</strong> (<em>str</em>) – name of table to repair</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>repair sql</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 </div>
 
 
