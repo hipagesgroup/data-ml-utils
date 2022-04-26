@@ -13,6 +13,7 @@ from data_ml_utils.boto3_botocore_client.client_sagemaker import AwsSagemakerSer
 class TestAWSServices:
     """test class for AWS session"""
 
+    @mock_sagemaker
     def test_get_model_uri_from_aws_model_registry(
         self,
         aws_credentials,
@@ -36,9 +37,6 @@ class TestAWSServices:
         assert
             if file name is the same
         """
-
-        mock = mock_sagemaker()
-        mock.start()
         aws_client = AwsSagemakerServices()
 
         stubber = Stubber(aws_client.client_sagemaker)
@@ -59,10 +57,9 @@ class TestAWSServices:
             "churn-test"
         )
 
-        mock.stop()
-
         assert test_file == "model_testing.tar.gz"
 
+    @mock_sagemaker
     def test_get_model_uri_from_aws_model_registry_error_approved(
         self,
         aws_credentials,
@@ -86,9 +83,6 @@ class TestAWSServices:
         assert
             captures ParamValidationError
         """
-
-        mock = mock_sagemaker()
-        mock.start()
         aws_client = AwsSagemakerServices()
 
         stubber = Stubber(aws_client.client_sagemaker)
@@ -110,10 +104,9 @@ class TestAWSServices:
         except ParamValidationError:
             message = "ModelGroupName does not have approved status"
 
-        mock.stop()
-
         assert message == "ModelGroupName does not have approved status"
 
+    @mock_sagemaker
     def test_get_model_uri_from_aws_model_registry_invalid_modelname(
         self,
         aws_credentials,
@@ -137,9 +130,6 @@ class TestAWSServices:
         assert
             captures ParamValidationError
         """
-
-        mock = mock_sagemaker()
-        mock.start()
         aws_client = AwsSagemakerServices()
 
         stubber = Stubber(aws_client.client_sagemaker)
@@ -161,10 +151,9 @@ class TestAWSServices:
         except StubAssertionError:
             message = "incorrect model group name"
 
-        mock.stop()
-
         assert message == "incorrect model group name"
 
+    @mock_s3
     def test_unzip_targz_file(self, aws_credentials):
         """
         test function to unzip tar gz file
@@ -179,9 +168,6 @@ class TestAWSServices:
         assert
             if returns non exit function value
         """
-
-        mock = mock_s3()
-        mock.start()
         aws_client = AwsSagemakerServices()
         # create bucket
         aws_client.client_s3.create_bucket(
@@ -202,11 +188,10 @@ class TestAWSServices:
             "scratchpad/muriel/models/2022_01_01",
         )
 
-        mock.stop()
-
         assert response_result == 0
         assert filecmp.cmp("dummy.tar.gz", "tests/dummy.tar.gz")
 
+    @mock_s3
     def test_upload_retrained_model_s3(self, aws_credentials):
         """
         test function to upload retrained model to s3
@@ -221,8 +206,6 @@ class TestAWSServices:
         assert
             if model file name is as expected
         """
-        mock = mock_s3()
-        mock.start()
         aws_client = AwsSagemakerServices()
 
         aws_client.client_s3.create_bucket(
@@ -234,10 +217,9 @@ class TestAWSServices:
             "2022_01_01", "test-bucket", "", "model_muriel"
         )
 
-        mock.stop()
-
         assert test_file == "model_muriel_2022_01_01.tar.gz"
 
+    @mock_sagemaker
     def test_create_model_package_version_error(self, aws_credentials):
         """
         test function to create model package version in AWS model registry
@@ -252,8 +234,6 @@ class TestAWSServices:
         assert
             if response is as expected
         """
-        mock = mock_sagemaker()
-        mock.start()
         aws_client = AwsSagemakerServices()
 
         retrained_model_metrics_dict = {
@@ -284,10 +264,9 @@ class TestAWSServices:
         except Exception:
             message = "error message"
 
-        mock.stop()
-
         assert message == "error message"
 
+    @mock_sagemaker
     def test_create_model_package_version(self, aws_credentials):
         """
         test function to create model package version in AWS model registry
@@ -302,8 +281,6 @@ class TestAWSServices:
         assert
             if response is as expected
         """
-        mock = mock_sagemaker()
-        mock.start()
         aws_client = AwsSagemakerServices()
 
         current_retrained_model_metrics_dict = {
@@ -334,7 +311,5 @@ class TestAWSServices:
             "testing",
             "description",
         )
-
-        mock.stop()
 
         assert response == 0
