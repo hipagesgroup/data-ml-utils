@@ -1,0 +1,11 @@
+site_name: data ml utils python library
+site_description: A utility python package that covers the common libraries we use for our (data and) ML projects.
+
+repo_name: hipagesgroup/data-ml-utils
+repo_url: https://github.com/hipagesgroup/data-ml-utils
+edit_uri: "edit/master/docs"
+
+copyright: Copyright &copy; hipages
+
+nav:
+  - Home: index.md
