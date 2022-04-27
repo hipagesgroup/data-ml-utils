@@ -8,7 +8,8 @@ data-ml-utils
 
 This python library package covers the common utility packages that data/ml project will use
 
-.. image:: https://badge.fury.io/py/data-ml-utils.svg
+.. image:: _static/github_logo.png
+    :scale: 4%
     :target: https://github.com/hipagesgroup/data-ml-utils/tree/master
 
 data-ml-utils has a few utilities that we try to generalise across projects.
