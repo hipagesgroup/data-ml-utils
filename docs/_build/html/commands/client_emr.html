@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Client boto3 and botocore (EMR) &#8212; data_ml_utils 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Pyathena API Specs" href="pyathena_api_specs.html" />
+    <link rel="prev" title="Client boto3 and botocore (sagemaker)" href="client_sagemaker.html" />
+
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+
+
+          <div class="body" role="main">
+
+  <div class="section" id="client-boto3-and-botocore-emr">
+<h1>Client boto3 and botocore (EMR)<a class="headerlink" href="#client-boto3-and-botocore-emr" title="Permalink to this headline">¶</a></h1>
+<p>The EMR client class initialises botocore EMR client. It has methods that creates an EMR cluster, check status and terminate cluster.</p>
+<div class="section" id="environment-variables">
+<h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
+<p>Before initialising the EMR client, we will need to define two environment variables; <cite>AWS_ACCESS_KEY_ID</cite>, <cite>AWS_SECRET_ACCESS_KEY</cite></p>
+<p>This can be the <cite>gandalf_dev_aws_keypair</cite> from KeyBase or your own AWS creds from <cite>~/.aws/credentials</cite></p>
+<p>Defining the environment variables can be done through <cite>cli</cite> or in your <cite>.ipynb</cite></p>
+<p><cite>cli</cite></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>xxx
+<span class="gp">$ </span><span class="nb">export</span> <span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>xxx
+</pre></div>
+</div>
+<p><cite>.ipynb</cite></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;AWS_ACCESS_KEY_ID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xxx&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;AWS_SECRET_ACCESS_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xxx&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="initialising-emr-client">
+<h2>Initialising EMR client<a class="headerlink" href="#initialising-emr-client" title="Permalink to this headline">¶</a></h2>
+<p>We will need to import the python package</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_ml_utils.boto3_botocore_client.client_emr</span> <span class="kn">import</span> <span class="n">AwsEMRServices</span>
+</pre></div>
+</div>
+<p>And then initialise the class</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">aws_client</span> <span class="o">=</span> <span class="n">AwsEMRServices</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can now access the EMR client with <cite>aws_client.</cite></p>
+<img alt="../_images/emr_init.png" class="align-center" src="../_images/emr_init.png" />
+<p>The initialisation of this class would have the EMR and boto3 session accessible too.</p>
+</div>
+<div class="section" id="create-emr-cluster">
+<h2>Create EMR cluster<a class="headerlink" href="#create-emr-cluster" title="Permalink to this headline">¶</a></h2>
+<p>This function creates an EMR cluster.</p>
+<p>A successful response return the API response, and raises an exception otherwise</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">aws_client</span><span class="o">.</span><span class="n">create_emr_cluster</span><span class="p">(</span>
+   <span class="n">master_instance_type</span><span class="o">=</span><span class="s2">&quot;ml.m5.xlarge&quot;</span><span class="p">,</span>
+   <span class="n">core_instance_type</span><span class="o">=</span><span class="s2">&quot;m5.xlarge&quot;</span><span class="p">,</span>
+   <span class="n">core_instance_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+   <span class="n">configurations</span><span class="o">=</span><span class="n">configurations</span><span class="p">,</span>
+   <span class="n">applications</span><span class="o">=</span><span class="n">applications</span><span class="p">,</span>
+   <span class="n">log_uri</span><span class="o">=</span><span class="s2">&quot;s3n://au-com-hipages-data-scratchpad/shuming-development/elasticmapreduce/&quot;</span><span class="p">,</span>
+   <span class="n">task_id</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
+   <span class="n">identifier</span><span class="o">=</span><span class="s2">&quot;1989-01-01&quot;</span><span class="p">,</span>
+   <span class="n">bidprice</span><span class="o">=</span><span class="s2">&quot;0.6&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/emr_create_cluster.png" class="align-center" src="../_images/emr_create_cluster.png" />
+<p>Example of configuration: <a class="reference external" href="https://github.com/hipagesgroup/hipages-offline-feature-store/blob/master/src/settings.py#L76">config</a>
+Example of application: <a class="reference external" href="https://github.com/hipagesgroup/hipages-offline-feature-store/blob/master/src/settings.py#L127">application</a></p>
+</div>
+<div class="section" id="check-emr-cluster-status">
+<h2>Check EMR cluster status<a class="headerlink" href="#check-emr-cluster-status" title="Permalink to this headline">¶</a></h2>
+<p>This function checks the status of the created EMR cluster. It waits for the cluster to be in <cite>WAITING</cite> status.</p>
+<p>A successful response return <cite>0</cite>, and raises an exception otherwise</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">aws_client</span><span class="o">.</span><span class="n">check_emr_cluster_status</span><span class="p">(</span>
+   <span class="n">cluster_id</span><span class="o">=</span><span class="s2">&quot;j-2VIIDF2WQVW12&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/emr_check_status.png" class="align-center" src="../_images/emr_check_status.png" />
+</div>
+<div class="section" id="terminate-emr-cluster-status">
+<h2>Terminate EMR cluster status<a class="headerlink" href="#terminate-emr-cluster-status" title="Permalink to this headline">¶</a></h2>
+<p>This function terminates the created EMR cluster.</p>
+<p>A successful response return <cite>0</cite></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">aws_client</span><span class="o">.</span><span class="n">terminate_emr_cluster</span><span class="p">(</span>
+   <span class="n">cluster_id</span><span class="o">=</span><span class="s2">&quot;j-2VIIDF2WQVW12&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/emr_terminate_cluster.png" class="align-center" src="../_images/emr_terminate_cluster.png" />
+</div>
+<div class="section" id="get-emr-cluster-id">
+<h2>Get EMR cluster id<a class="headerlink" href="#get-emr-cluster-id" title="Permalink to this headline">¶</a></h2>
+<p>This function gets the EMR cluster id through task and identifier</p>
+<p>A successful response return the cluster id</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">aws_client</span><span class="o">.</span><span class="n">get_cluster_id</span><span class="p">(</span>
+   <span class="n">task_id</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
+   <span class="n">identifier</span><span class="o">=</span><span class="s2">&quot;1989-01-01&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/emr_get_cluster_id.png" class="align-center" src="../_images/emr_get_cluster_id.png" />
+</div>
+<div class="section" id="get-emr-cluster-master-dns-name">
+<h2>Get EMR cluster master dns name<a class="headerlink" href="#get-emr-cluster-master-dns-name" title="Permalink to this headline">¶</a></h2>
+<p>This function retrieves the EMR cluster master dns name</p>
+<p>A successful response return the EMR cluster master dns name</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">aws_client</span><span class="o">.</span><span class="n">get_emr_master_dns_name</span><span class="p">(</span>
+   <span class="n">cluster_id</span><span class="o">=</span><span class="s2">&quot;j-2VIIDF2WQVW12&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/emr_master_dns_name.png" class="align-center" src="../_images/emr_master_dns_name.png" />
+</div>
+<div class="section" id="wrapper-function-to-spin-up-emr-cluster">
+<h2>Wrapper function to spin up EMR cluster<a class="headerlink" href="#wrapper-function-to-spin-up-emr-cluster" title="Permalink to this headline">¶</a></h2>
+<p>This function is a wrapper function that spins up an EMR cluster and uses the check EMR cluster and get master dns name methods</p>
+<p>A successful response return <cite>0</cite>, and raises an exception otherwise</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">aws_client</span><span class="o">.</span><span class="n">spin_up_emr_cluster</span><span class="p">(</span>
+   <span class="n">master_instance_type</span><span class="o">=</span><span class="s2">&quot;ml.m5.xlarge&quot;</span><span class="p">,</span>
+   <span class="n">core_instance_type</span><span class="o">=</span><span class="s2">&quot;m5.xlarge&quot;</span><span class="p">,</span>
+   <span class="n">core_instance_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+   <span class="n">configurations</span><span class="o">=</span><span class="n">configurations</span><span class="p">,</span>
+   <span class="n">applications</span><span class="o">=</span><span class="n">applications</span><span class="p">,</span>
+   <span class="n">log_uri</span><span class="o">=</span><span class="s2">&quot;s3n://au-com-hipages-data-scratchpad/shuming-development/elasticmapreduce/&quot;</span><span class="p">,</span>
+   <span class="n">task_id</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
+   <span class="n">identifier</span><span class="o">=</span><span class="s2">&quot;1989-01-01&quot;</span><span class="p">,</span>
+   <span class="n">bidprice</span><span class="o">=</span><span class="s2">&quot;0.6&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/emr_wrapper_spin_up_cluster.png" class="align-center" src="../_images/emr_wrapper_spin_up_cluster.png" />
+</div>
+</div>
+
+
+          </div>
+
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">data_ml_utils</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="pyathena.html">Pyathena client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_sagemaker.html">Client boto3 and botocore (sagemaker)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Client boto3 and botocore (EMR)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyathena_api_specs.html">Pyathena API Specs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyathena_utils_api_specs.html">Pyathena Utils API Specs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_sagemaker_api_specs.html">Client boto3 SageMaker API Specs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_emr_api_specs.html">Client boto3 EMR API Specs</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="client_sagemaker.html" title="previous chapter">Client boto3 and botocore (sagemaker)</a></li>
+      <li>Next: <a href="pyathena_api_specs.html" title="next chapter">Pyathena API Specs</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, ShuMing Peh.
+
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+
+      |
+      <a href="../_sources/commands/client_emr.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+
+
+
+  </body>
+</html>

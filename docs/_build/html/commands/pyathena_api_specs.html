@@ -15,7 +15,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Pyathena Utils API Specs" href="pyathena_utils_api_specs.html" />
-    <link rel="prev" title="Client boto3 and botocore" href="client_boto3.html" />
+    <link rel="prev" title="Client boto3 and botocore (EMR)" href="client_emr.html" />
 
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
 
@@ -38,14 +38,10 @@
 <span id="init"></span><h2>data_ml_utils.pyathena_client.client.PyAthenaClient<a class="headerlink" href="#data-ml-utils-pyathena-client-client-pyathenaclient" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="data_ml_utils.pyathena_client.client.PyAthenaClient">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">data_ml_utils.pyathena_client.client.</span></span><span class="sig-name descname"><span class="pre">PyAthenaClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_ml_utils.pyathena_client.client.PyAthenaClient" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">data_ml_utils.pyathena_client.client.</span></span><span class="sig-name descname"><span class="pre">PyAthenaClient</span></span><a class="headerlink" href="#data_ml_utils.pyathena_client.client.PyAthenaClient" title="Permalink to this definition">¶</a></dt>
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">Initialises</span> <span class="pre">pyathena</span> <span class="pre">connection.</span></span></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>kind</strong> – None.</p>
-</dd>
-</dl>
+<dd><p>:param : None.</p>
 </dd></dl>
 
 <p>The <cite>PyAthenaClient</cite> class does not take in any parameters to initialise it.</p>
@@ -59,23 +55,23 @@
 <tbody>
 <tr class="row-odd"><td><p><strong>__init__</strong> ()</p></td>
 <td><p>initialise self</p></td>
-<td><p><a class="reference internal" href="pyathena_utils_api_specs.html#init"><span class="std std-ref">data_ml_utils.pyathena_client.client.PyAthenaClient</span></a></p></td>
+<td><p><a class="reference internal" href="#init"><span class="std std-ref">data_ml_utils.pyathena_client.client.PyAthenaClient</span></a></p></td>
 </tr>
 <tr class="row-even"><td><p><strong>_connect</strong> ()</p></td>
 <td><p>create pyathena connection</p></td>
-<td><p><a class="reference internal" href="pyathena_utils_api_specs.html#connect"><span class="std std-ref">_connect</span></a></p></td>
+<td><p><a class="reference internal" href="#connect"><span class="std std-ref">_connect</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>create_msck_repair_table</strong> (<cite>create_raw_query, repair_raw_query, yaml_schema_file_path</cite>)</p></td>
 <td><p>create and repair table through defined schema</p></td>
-<td><p><a class="reference internal" href="pyathena_utils_api_specs.html#create-msck-repair-table"><span class="std std-ref">create_msck_repair_table</span></a></p></td>
+<td><p><a class="reference internal" href="#create-msck-repair-table"><span class="std std-ref">create_msck_repair_table</span></a></p></td>
 </tr>
 <tr class="row-even"><td><p><strong>drop_table</strong> (<cite>table_name, database</cite>)</p></td>
 <td><p>drop table</p></td>
-<td><p><a class="reference internal" href="pyathena_utils_api_specs.html#drop-table"><span class="std std-ref">drop_table</span></a></p></td>
+<td><p><a class="reference internal" href="#drop-table"><span class="std std-ref">drop_table</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>query_as_pandas</strong> (<cite>final_query</cite>)</p></td>
 <td><p>query athena tables and return as pandas dataframe</p></td>
-<td><p><a class="reference internal" href="pyathena_utils_api_specs.html#query-as-pandas"><span class="std std-ref">query_as_pandas</span></a></p></td>
+<td><p><a class="reference internal" href="#query-as-pandas"><span class="std std-ref">query_as_pandas</span></a></p></td>
 </tr>
 </tbody>
 </table>
@@ -87,17 +83,9 @@
 <span id="_connect"></span><span class="sig-name descname"><span class="pre">_connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">create</span> <span class="pre">a</span> <span class="pre">pyathena</span> <span class="pre">connection</span> <span class="pre">with</span> <span class="pre">pandas</span> <span class="pre">cursor</span></span></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>kind</strong> – None.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>pyathena connection engine</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>pyathena.connection.Connection</p>
-</dd>
-</dl>
+<dd><p>:param : None
+:return: pyathena connection engine
+:rtype: pyathena.connection.Connection</p>
 </dd></dl>
 
 </div>
@@ -196,17 +184,19 @@
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="pyathena.html">Pyathena client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="client_boto3.html">Client boto3 and botocore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_sagemaker.html">Client boto3 and botocore (sagemaker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_emr.html">Client boto3 and botocore (EMR)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Pyathena API Specs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyathena_utils_api_specs.html">Pyathena Utils API Specs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="client_boto3_api_specs.html">Client boto3 API Specs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_sagemaker_api_specs.html">Client boto3 SageMaker API Specs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_emr_api_specs.html">Client boto3 EMR API Specs</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="client_boto3.html" title="previous chapter">Client boto3 and botocore</a></li>
+      <li>Previous: <a href="client_emr.html" title="previous chapter">Client boto3 and botocore (EMR)</a></li>
       <li>Next: <a href="pyathena_utils_api_specs.html" title="next chapter">Pyathena Utils API Specs</a></li>
   </ul></li>
 </ul>

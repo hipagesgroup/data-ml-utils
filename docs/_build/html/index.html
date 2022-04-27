@@ -40,10 +40,12 @@
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="commands/pyathena.html">Pyathena client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="commands/client_boto3.html">Client boto3 and botocore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/client_sagemaker.html">Client boto3 and botocore (sagemaker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/client_emr.html">Client boto3 and botocore (EMR)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="commands/pyathena_api_specs.html">Pyathena API Specs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="commands/pyathena_utils_api_specs.html">Pyathena Utils API Specs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="commands/client_boto3_api_specs.html">Client boto3 API Specs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/client_sagemaker_api_specs.html">Client boto3 SageMaker API Specs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/client_emr_api_specs.html">Client boto3 SageMaker API Specs</a></li>
 </ul>
 </div>
 <div class="section" id="why-are-packaging-this-into-a-python-library">
@@ -68,9 +70,26 @@ This covers:
 - create athena tables through schema, and update table with missing partitions</p>
 <p>See <a class="reference internal" href="commands/pyathena.html"><span class="doc">Pyathena client</span></a> for more details.</p>
 </div>
-<div class="section" id="client-boto3-and-botocore">
-<h2>Client boto3 and botocore<a class="headerlink" href="#client-boto3-and-botocore" title="Permalink to this headline">¶</a></h2>
-<p>placeholder</p>
+<div class="section" id="client-boto3-and-botocore-sagemaker">
+<h2>Client boto3 and botocore (Sagemaker)<a class="headerlink" href="#client-boto3-and-botocore-sagemaker" title="Permalink to this headline">¶</a></h2>
+<p>We try to fit the function calls to be as simple as possible with a one-liner.
+This covers:
+- get prod model uri from AWS model registry
+- unzips tar gz model file from AWS model registry
+- upload retrained model tar gz file to s3
+- create model package version in AWS model registry</p>
+<p>See <a class="reference internal" href="commands/client_sagemaker.html"><span class="doc">Client boto3 and botocore (sagemaker)</span></a> for more details.</p>
+</div>
+<div class="section" id="client-boto3-and-botocore-emr">
+<h2>Client boto3 and botocore (EMR)<a class="headerlink" href="#client-boto3-and-botocore-emr" title="Permalink to this headline">¶</a></h2>
+<p>We try to fit the function calls to be as simple as possible with a one-liner.
+This covers:
+- create EMR cluster
+- check creation of EMR cluster status
+- terminate EMR cluster
+- get EMR cluster id
+- get EMR cluster master dns name</p>
+<p>See <a class="reference internal" href="commands/client_emr.html"><span class="doc">Client boto3 and botocore (EMR)</span></a> for more details.</p>
 </div>
 </div>
 
@@ -94,10 +113,12 @@ This covers:
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="commands/pyathena.html">Pyathena client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="commands/client_boto3.html">Client boto3 and botocore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/client_sagemaker.html">Client boto3 and botocore (sagemaker)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/client_emr.html">Client boto3 and botocore (EMR)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="commands/pyathena_api_specs.html">Pyathena API Specs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="commands/pyathena_utils_api_specs.html">Pyathena Utils API Specs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="commands/client_boto3_api_specs.html">Client boto3 API Specs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/client_sagemaker_api_specs.html">Client boto3 SageMaker API Specs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/client_emr_api_specs.html">Client boto3 SageMaker API Specs</a></li>
 </ul>
 
 <div class="relations">

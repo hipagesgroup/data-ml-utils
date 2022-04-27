@@ -62,7 +62,7 @@ class AwsSagemakerServices:
         file_targz : str
             model tar gz file name
         bucket_name_trunc: str
-            truncated s3 muriel bucket directory
+            truncated s3 bucket directory
         targz_file_uri: str
             targz file full s3 uri
         s3_file_path: str
@@ -134,7 +134,7 @@ class AwsSagemakerServices:
         Parameters
         ----------
         model_name : str
-            name of churn model in AWS model registry
+            name of model in AWS model registry
         model_file_name : str
             model tar gz file path in s3
         current_retrained_model_metrics_dict : Dict

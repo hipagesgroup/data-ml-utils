@@ -40,7 +40,7 @@ get_config_yaml
 
    :param filepath: filepath; of sql file
    :type filepath: str
-   :return: table_name; name of table
+   :return table_name: name of table
    :rtype: str
    :return: table_description; description of table
    :rtype: str

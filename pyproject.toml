@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "data_ml_utils"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
 authors = ["Shu Ming Peh"]
 license = "MIT"
@@ -42,6 +42,12 @@ moto = "^3.1.5"
 pydantic = "^1.9.0"
 pyathena = "^2.5.2"
 pandas = "1.3.5"
+boto3 = "1.19.8"
+botocore = "1.22.8"
+aiobotocore = "2.0.1"
+s3fs = "2021.11.1"
+numpy = "^1.22.3"
+pyarrow = "^7.0.0"
 
 [tool.poetry.dev-dependencies]
 
