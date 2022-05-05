@@ -1,4 +1,0 @@
-Pyathena API Specs
-==================
-
-Placeholder
