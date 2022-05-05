@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "data_ml_utils"
-version = "0.2.0"
+version = "0.2.1"
 description = ""
 authors = ["Shu Ming Peh"]
 license = "MIT"
