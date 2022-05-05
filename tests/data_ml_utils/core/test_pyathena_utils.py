@@ -1,3 +1,4 @@
+import pathlib
 from mock import mock_open
 from mock import patch
 
@@ -28,9 +29,7 @@ class TestReadSQL:
         """
 
         real_contents = read_sql("/dev/null")
-        with open("/dev/null") as f:
-            contents = f.read()
-
+        contents = pathlib.Path("/dev/null").read_text()
         assert contents == real_contents
 
 

@@ -1,8 +1,6 @@
 import datetime
 import os
-
 import pytest
-
 
 @pytest.fixture(scope="module")
 def aws_credentials():
@@ -14,7 +12,7 @@ def aws_credentials():
 
 @pytest.fixture(autouse=True)
 def get_rejected_list_package():
-    list_model_packages_response = {
+    return {
         "ModelPackageSummaryList": [
             {
                 "ModelPackageName": "churn-test",
@@ -25,12 +23,11 @@ def get_rejected_list_package():
             }
         ]
     }
-    return list_model_packages_response
 
 
 @pytest.fixture(autouse=True)
 def get_approved_list_package():
-    list_model_packages_response = {
+    return {
         "ModelPackageSummaryList": [
             {
                 "ModelPackageName": "churn-test",
@@ -41,12 +38,11 @@ def get_approved_list_package():
             }
         ]
     }
-    return list_model_packages_response
 
 
 @pytest.fixture(autouse=True)
 def get_describe_model_package_response():
-    describe_model_package_response = {
+    return {
         "ModelPackageName": "churn-test",
         "ModelPackageArn": "test",
         "CreationTime": datetime.datetime(2022, 1, 1),
@@ -71,4 +67,3 @@ def get_describe_model_package_response():
             "SupportedResponseMIMETypes": ["str"],
         },
     }
-    return describe_model_package_response
