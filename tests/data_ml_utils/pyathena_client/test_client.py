@@ -1,8 +1,8 @@
 import pandas as pd
 import pyathena
 from mock import patch
-
 from data_ml_utils.pyathena_client.client import PyAthenaClient
+
 
 class TestPyAthenaClient:
     """test class for pyathena client"""

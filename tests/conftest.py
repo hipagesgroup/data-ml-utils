@@ -2,6 +2,7 @@ import datetime
 import os
 import pytest
 
+
 @pytest.fixture(scope="module")
 def aws_credentials():
     """Mocked AWS Credentials for moto."""

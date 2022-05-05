@@ -1,7 +1,6 @@
 import pathlib
 from mock import mock_open
 from mock import patch
-
 from data_ml_utils.core.pyathena_utils import format_sql_create_schema
 from data_ml_utils.core.pyathena_utils import format_sql_repair_table
 from data_ml_utils.core.pyathena_utils import get_config_yaml
