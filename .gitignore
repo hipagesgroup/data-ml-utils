@@ -78,3 +78,6 @@ __pycache__
 *.sqlite3
 *.sqlite
 *.dump
+
+# docs
+docs/_build

@@ -37,7 +37,7 @@ class PyAthenaClient:
 
         connection = connect(
             s3_staging_dir=f"{settings.S3_ATHENA_QUERY_DIRECTORY}query_{today_date}",
-            region_name="ap-southeast-2",
+            region_name=settings.AWS_DEFAULT_REGION,
             aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
             aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
             cursor_class=PandasCursor,
