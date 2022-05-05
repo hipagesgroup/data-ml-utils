@@ -1,3 +1,5 @@
+import pathlib
+
 from mock import mock_open
 from mock import patch
 
@@ -10,7 +12,7 @@ from data_ml_utils.core.pyathena_utils import read_sql
 class TestReadSQL:
     """test class to read sql file"""
 
-    @patch("builtins.open", new_callable=mock_open, read_data="test")
+    @patch("pathlib.Path.open", new_callable=mock_open, read_data="test")
     def test_read_sql(self, mock_open_sql):
         """
         test function to read sql file
@@ -28,9 +30,7 @@ class TestReadSQL:
         """
 
         real_contents = read_sql("/dev/null")
-        with open("/dev/null") as f:
-            contents = f.read()
-
+        contents = pathlib.Path("/dev/null").read_text()
         assert contents == real_contents
 
 

@@ -5,10 +5,10 @@ Pyathena API Specs
 
 data_ml_utils.pyathena_client.client.PyAthenaClient
 ---------------------------------------------------
-.. py:class:: data_ml_utils.pyathena_client.client.PyAthenaClient(kind=None)
+.. py:class:: data_ml_utils.pyathena_client.client.PyAthenaClient()
    Initialises pyathena connection.
 
-   :param kind: None.
+   :param : None.
 
 The `PyAthenaClient` class does not take in any parameters to initialise it.
 
@@ -40,7 +40,7 @@ _connect
 .. py:function:: _connect()
    create a pyathena connection with pandas cursor
 
-   :param kind: None.
+   :param : None
    :return: pyathena connection engine
    :rtype: pyathena.connection.Connection
 

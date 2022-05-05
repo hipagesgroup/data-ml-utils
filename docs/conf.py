@@ -8,9 +8,10 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath("."))
 # -- Project information -----------------------------------------------------
 
 project = "data_ml_utils"
@@ -18,7 +19,7 @@ copyright = "2022, ShuMing Peh"
 author = "ShuMing Peh"
 
 # The full version, including alpha/beta/rc tags
-release = "0.1.0"
+release = "0.2.0"
 
 
 # -- General configuration ---------------------------------------------------
@@ -31,10 +32,22 @@ extensions = []
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
+# The suffix(es) of source filenames.
+# You can specify multiple suffix as a list of string:
+#
+# source_suffix = ['.rst', '.md']
+source_suffix = ".rst"
+
+# The master toctree document.
+master_doc = "index"
+
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+
+# The name of the Pygments (syntax highlighting) style to use.
+pygments_style = None
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -48,3 +61,53 @@ html_theme = "alabaster"
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
+
+html_theme_options = {
+    "logo": "hipages_logo.png",
+    "logo_name": False,
+    "logo_text_align": "center",
+    "github_user": "shumingpeh",
+    "github_repo": "data-ml-utils",
+    "github_banner": True,
+    "github_button": False,
+    "fixed_sidebar": True,
+    "extra_nav_links": {
+        "data-ml-utils@github": "https://github.com/hipagesgroup/data-ml-utils",
+    },
+}
+
+# -- Options for HTMLHelp output ---------------------------------------------
+
+# Output file base name for HTML help builder.
+htmlhelp_basename = "datamlutilsdoc"
+
+# -- Options for manual page output ------------------------------------------
+
+# One entry per manual page. List of tuples
+# (source start file, name, description, authors, manual section).
+man_pages = [(master_doc, "data-ml-utils", "Data ML Utils Documentation", [author], 1)]
+
+# -- Options for Texinfo output ----------------------------------------------
+
+# Grouping the document tree into Texinfo files. List of tuples
+# (source start file, target name, title, author,
+#  dir menu entry, description, category)
+texinfo_documents = [
+    (
+        master_doc,
+        "data-ml-utils",
+        "Data ML Utils Documentation",
+        author,
+        "data-ml-utils",
+        "One line description of project.",
+        "Miscellaneous",
+    )
+]
+
+
+# -- Extension configuration -------------------------------------------------
+
+# -- Options for todo extension ----------------------------------------------
+
+# If true, `todo` and `todoList` produce output, else they produce nothing.
+todo_include_todos = True

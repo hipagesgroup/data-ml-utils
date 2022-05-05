@@ -1,7 +1,6 @@
 import pandas as pd
 import pyathena
 from mock import patch
-
 from data_ml_utils.pyathena_client.client import PyAthenaClient
 
 
@@ -46,6 +45,7 @@ class TestPyAthenaClient:
     @patch("data_ml_utils.pyathena_client.client.format_sql_repair_table")
     def test_create_msck_repair_table_error(
         self,
+        # mocked_pyathena,
         mocked_repair_table,
         mocked_create_schema,
         mocked_read_sql,
@@ -74,8 +74,11 @@ class TestPyAthenaClient:
         mocked_create_schema.return_value = ("query", "table_test_name")
         mocked_read_sql.return_value = "query"
 
-        # let it assume the default aws_creds which is invalid
-        test = PyAthenaClient().create_msck_repair_table(
+        test_client = PyAthenaClient()
+        # explicitly return an exception when querying
+        test_client.engine = Exception
+
+        test = test_client.create_msck_repair_table(
             create_raw_query="test.sql",
             repair_raw_query="test.sql",
             yaml_schema_file_path="test.yaml",
@@ -150,8 +153,11 @@ class TestPyAthenaClient:
             return value is 1
         """
 
-        # let it assume the default aws_creds which is invalid
-        test = PyAthenaClient().drop_table(
+        test_client = PyAthenaClient()
+        # explicitly return an exception when querying
+        test_client.engine = Exception
+
+        test = test_client.drop_table(
             table_name="test_table",
             database="whatever",
         )

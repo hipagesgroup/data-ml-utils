@@ -8,7 +8,8 @@ data-ml-utils
 
 This python library package covers the common utility packages that data/ml project will use
 
-.. image:: https://badge.fury.io/py/data-ml-utils.svg
+.. image:: _static/github_logo.png
+    :scale: 4%
     :target: https://github.com/hipagesgroup/data-ml-utils/tree/master
 
 data-ml-utils has a few utilities that we try to generalise across projects.
@@ -18,10 +19,12 @@ data-ml-utils has a few utilities that we try to generalise across projects.
    :caption: Contents:
 
    commands/pyathena
-   commands/client_boto3
+   commands/client_sagemaker
+   commands/client_emr
    commands/pyathena_api_specs
    commands/pyathena_utils_api_specs
-   commands/client_boto3_api_specs
+   commands/client_sagemaker_api_specs
+   commands/client_emr_api_specs
 
 Why are packaging this into a python library?
 ---------------------------------------------
@@ -54,6 +57,25 @@ This covers:
 See :doc:`commands/pyathena` for more details.
 
 
-Client boto3 and botocore
--------------------------
-placeholder
+Client boto3 and botocore (Sagemaker)
+-------------------------------------
+We try to fit the function calls to be as simple as possible with a one-liner.
+This covers:
+- get prod model uri from AWS model registry
+- unzips tar gz model file from AWS model registry
+- upload retrained model tar gz file to s3
+- create model package version in AWS model registry
+
+See :doc:`commands/client_sagemaker` for more details.
+
+Client boto3 and botocore (EMR)
+-------------------------------
+We try to fit the function calls to be as simple as possible with a one-liner.
+This covers:
+- create EMR cluster
+- check creation of EMR cluster status
+- terminate EMR cluster
+- get EMR cluster id
+- get EMR cluster master dns name
+
+See :doc:`commands/client_emr` for more details.
