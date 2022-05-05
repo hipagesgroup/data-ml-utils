@@ -1,3 +1,4 @@
+import pathlib
 from typing import Tuple
 
 import yaml
@@ -18,8 +19,7 @@ def read_sql(file_path: str) -> str:
     str
         query string of sql file
     """
-    with open(file_path, "r") as f:
-        raw_query = f.read()
+    raw_query = pathlib.Path(file_path).read_text()
     return raw_query
 
 
