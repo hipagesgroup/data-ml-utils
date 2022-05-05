@@ -41,3 +41,13 @@ Visit [link](https://data-ml-utils.readthedocs.io/en/latest/#client-boto3-and-bo
 
 ### More to Come
 * You suggest, raise a feature request issue and we will review!
+
+## Tutorials
+### Pyathena
+There is a jupyter notebook to show how to use the package utility package for `pyathena`: [notebook](tutorials/[TUTO]%20pyathena.ipynb)
+
+### Boto3 EMR
+There is a jupyter notebook to show how to use the package utility package for `EMR`: [notebook](tutorials/[TUTO]%20emr.ipynb)
+
+### Boto3 Sagemaker
+There is a jupyter notebook to show how to use the package utility package for `Sagemaker`: [notebook](tutorials/[TUTO]%20sagemaker.ipynb)
