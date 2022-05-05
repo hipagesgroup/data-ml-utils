@@ -35,3 +35,9 @@ query = """
 df_raw = pyathena_client.query_as_pandas(final_query=query)
 ```
 ![Pyathena query](docs/_static/query_pyathena_client.png)
+
+### Boto3 client
+Visit [link](https://data-ml-utils.readthedocs.io/en/latest/#client-boto3-and-botocore-sagemaker)
+
+### More to Come
+* You suggest, raise a feature request issue and we will review!
