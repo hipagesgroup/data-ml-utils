@@ -77,8 +77,8 @@ class AwsSagemakerServices:
             f"{s3_file_path}/{file_targz}", file_targz
         )
 
-        open_file = tarfile.open(file_targz)
-        open_file.extractall(".")
+        with tarfile.open(file_targz) as open_file:
+            open_file.extractall(".")
 
         return 0
 
