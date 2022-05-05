@@ -41,47 +41,51 @@ class TestPyAthenaClient:
 
         assert isinstance(return_connection, pyathena.connection.Connection)
 
-    # @patch("data_ml_utils.pyathena_client.client.read_sql")
-    # @patch("data_ml_utils.pyathena_client.client.format_sql_create_schema")
-    # @patch("data_ml_utils.pyathena_client.client.format_sql_repair_table")
-    # def test_create_msck_repair_table_error(
-    #     self,
-    #     mocked_repair_table,
-    #     mocked_create_schema,
-    #     mocked_read_sql,
-    #     aws_credentials,
-    # ):
-    #     """
-    #     test function for erraneous creating and repairing athena table
-    #     Parameters
-    #     ----------
-    #     mocked_repair_table
-    #         mocked repair table sql function
-    #     mocked_create_schema
-    #         mocked create schema sql function
-    #     mocked_read_sql
-    #         mocked read sql function
-    #     aws_credentials
-    #         inherits the aws creds when invoking aws functions
+    @patch("data_ml_utils.pyathena_client.client.read_sql")
+    @patch("data_ml_utils.pyathena_client.client.format_sql_create_schema")
+    @patch("data_ml_utils.pyathena_client.client.format_sql_repair_table")
+    def test_create_msck_repair_table_error(
+        self,
+        # mocked_pyathena,
+        mocked_repair_table,
+        mocked_create_schema,
+        mocked_read_sql,
+        aws_credentials,
+    ):
+        """
+        test function for erraneous creating and repairing athena table
+        Parameters
+        ----------
+        mocked_repair_table
+            mocked repair table sql function
+        mocked_create_schema
+            mocked create schema sql function
+        mocked_read_sql
+            mocked read sql function
+        aws_credentials
+            inherits the aws creds when invoking aws functions
 
-    #     Returns
-    #     -------
-    #     assert
-    #         return value is 1
-    #     """
+        Returns
+        -------
+        assert
+            return value is 1
+        """
 
-    #     mocked_repair_table.return_value = "query_repair"
-    #     mocked_create_schema.return_value = ("query", "table_test_name")
-    #     mocked_read_sql.return_value = "query"
+        mocked_repair_table.return_value = "query_repair"
+        mocked_create_schema.return_value = ("query", "table_test_name")
+        mocked_read_sql.return_value = "query"
 
-    #     # let it assume the default aws_creds which is invalid
-    #     test = PyAthenaClient().create_msck_repair_table(
-    #         create_raw_query="test.sql",
-    #         repair_raw_query="test.sql",
-    #         yaml_schema_file_path="test.yaml",
-    #     )
+        test_client = PyAthenaClient()
+        # explicitly return an exception when querying
+        test_client.engine = Exception
 
-    #     assert test == 1
+        test = test_client.create_msck_repair_table(
+            create_raw_query="test.sql",
+            repair_raw_query="test.sql",
+            yaml_schema_file_path="test.yaml",
+        )
+
+        assert test == 1
 
     @patch("data_ml_utils.pyathena_client.client.read_sql")
     @patch("data_ml_utils.pyathena_client.client.format_sql_create_schema")
@@ -133,30 +137,33 @@ class TestPyAthenaClient:
 
         assert test == 0
 
-    # def test_drop_table_error(
-    #     self,
-    #     aws_credentials,
-    # ):
-    #     """
-    #     test function for erraneous creating and repairing athena table
-    #     Parameters
-    #     ----------
-    #     aws_credentials
-    #         inherits the aws creds when invoking aws functions
+    def test_drop_table_error(
+        self,
+        aws_credentials,
+    ):
+        """
+        test function for erraneous creating and repairing athena table
+        Parameters
+        ----------
+        aws_credentials
+            inherits the aws creds when invoking aws functions
 
-    #     Returns
-    #     -------
-    #     assert
-    #         return value is 1
-    #     """
+        Returns
+        -------
+        assert
+            return value is 1
+        """
 
-    #     # let it assume the default aws_creds which is invalid
-    #     test = PyAthenaClient().drop_table(
-    #         table_name="test_table",
-    #         database="whatever",
-    #     )
+        test_client = PyAthenaClient()
+        # explicitly return an exception when querying
+        test_client.engine = Exception
 
-    #     assert test == 1
+        test = test_client.drop_table(
+            table_name="test_table",
+            database="whatever",
+        )
+
+        assert test == 1
 
     @patch("data_ml_utils.pyathena_client.client.PyAthenaClient")
     def test_drop_table(
