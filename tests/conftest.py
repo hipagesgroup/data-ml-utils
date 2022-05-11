@@ -1,5 +1,6 @@
 import datetime
 import os
+
 import pytest
 
 
@@ -67,4 +68,50 @@ def get_describe_model_package_response():
             "SupportedContentTypes": ["str"],
             "SupportedResponseMIMETypes": ["str"],
         },
+    }
+
+
+@pytest.fixture(autouse=True)
+def get_list_cluster_response():
+    return {
+        "Clusters": [
+            {
+                "Id": "test",
+                "Name": "churn__mock_test__2022-01-01",
+                "Status": {
+                    "State": "WAITING",
+                    "StateChangeReason": {"Code": "ALL_STEPS_COMPLETED"},
+                },
+            }
+        ]
+    }
+
+
+@pytest.fixture(autouse=True)
+def get_describe_cluster_response():
+    return {
+        "Cluster": {
+            "Id": "test",
+            "Name": "churn__mock_test__2022-01-01",
+            "Status": {
+                "State": "WAITING",
+                "StateChangeReason": {"Code": "ALL_STEPS_COMPLETED"},
+            },
+            "MasterPublicDnsName": "ec2-13-50-100.aws.com",
+        }
+    }
+
+
+@pytest.fixture(autouse=True)
+def get_describe_cluster_error_response():
+    return {
+        "Cluster": {
+            "Id": "test",
+            "Name": "churn__mock_test__2022-01-01",
+            "Status": {
+                "State": "TERMINATED_WITH_ERRORS",
+                "StateChangeReason": {"Code": "ALL_STEPS_COMPLETED"},
+            },
+            "MasterPublicDnsName": "ec2-1-50-100.aws.com",
+        }
     }
