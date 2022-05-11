@@ -72,7 +72,7 @@ def get_describe_model_package_response():
 
 
 @pytest.fixture(autouse=True)
-def get_cluster_id_response():
+def get_list_cluster_response():
     return {
         "Clusters": [
             {
@@ -98,5 +98,20 @@ def get_describe_cluster_response():
                 "StateChangeReason": {"Code": "ALL_STEPS_COMPLETED"},
             },
             "MasterPublicDnsName": "ec2-13-50-100.aws.com",
+        }
+    }
+
+
+@pytest.fixture(autouse=True)
+def get_describe_cluster_error_response():
+    return {
+        "Cluster": {
+            "Id": "test",
+            "Name": "churn__mock_test__2022-01-01",
+            "Status": {
+                "State": "TERMINATED_WITH_ERRORS",
+                "StateChangeReason": {"Code": "ALL_STEPS_COMPLETED"},
+            },
+            "MasterPublicDnsName": "ec2-1-50-100.aws.com",
         }
     }
