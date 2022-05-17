@@ -16,6 +16,7 @@ eggs/
 .installed.cfg
 *.egg
 kube*
+dist
 
 # Installer
 *.manifest
