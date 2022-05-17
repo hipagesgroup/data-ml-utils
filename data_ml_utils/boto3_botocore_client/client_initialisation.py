@@ -4,12 +4,13 @@ import os
 
 import boto3
 import botocore
+from data_ml_utils.core.config import settings
 
 
 class AwsClients:
     def __init__(self):
         self.client_aws_services = boto3.Session(
-            region_name="ap-southeast-2",
+            region_name=settings.AWS_DEFAULT_REGION,
             aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
             aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
         )
