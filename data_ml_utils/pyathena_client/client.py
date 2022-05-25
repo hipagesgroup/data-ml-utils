@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import datetime
 import os
-import re
 
 import pandas as pd
 import pyathena
@@ -128,12 +127,14 @@ class PyAthenaClient:
 
         # change all pandas Int64 and Float64 to numpy int and float
         for col in return_df.columns:
-            if ("Int" in str(return_df[col].dtype)) | (
-                "Float" in str(return_df[col].dtype)
+            if (
+                ("Int" in str(return_df[col].dtype))
+                and (return_df[col].isna().sum(axis=0) > 0)
+            ) or ("Float" in str(return_df[col].dtype)):
+                return_df[col] = return_df[col].astype(float)
+            elif ("Int" in str(return_df[col].dtype)) and (
+                return_df[col].isna().sum(axis=0) == 0
             ):
-                type_replace = re.sub(
-                    "\d+", "", str(return_df[col].dtype)  # noqa W605
-                ).lower()
-                return_df[col] = return_df[col].astype(type_replace)
+                return_df[col] = return_df[col].astype(int)
 
         return return_df
