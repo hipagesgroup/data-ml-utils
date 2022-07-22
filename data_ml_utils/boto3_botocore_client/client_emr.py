@@ -87,7 +87,7 @@ class AwsEMRServices:
                         ],
                         "LaunchSpecifications": {
                             "SpotSpecification": {
-                                "TimeoutDurationMinutes": 20,
+                                "TimeoutDurationMinutes": 5,
                                 "TimeoutAction": "SWITCH_TO_ON_DEMAND",
                             }
                         },
@@ -298,7 +298,7 @@ class AwsEMRServices:
             )
 
             # sleep for 3.5 minutes before checking
-            time.sleep(210)
+            time.sleep(510)
 
             # get all results
             try:
