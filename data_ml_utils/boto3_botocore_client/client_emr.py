@@ -87,7 +87,7 @@ class AwsEMRServices:
                         ],
                         "LaunchSpecifications": {
                             "SpotSpecification": {
-                                "TimeoutDurationMinutes": 20,
+                                "TimeoutDurationMinutes": 5,
                                 "TimeoutAction": "SWITCH_TO_ON_DEMAND",
                             }
                         },
@@ -297,8 +297,8 @@ class AwsEMRServices:
                 bidprice=bidprice,
             )
 
-            # sleep for 3.5 minutes before checking
-            time.sleep(210)
+            # sleep for 10.5 minutes before checking
+            time.sleep(630)
 
             # get all results
             try:
