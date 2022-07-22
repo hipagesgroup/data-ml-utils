@@ -297,8 +297,8 @@ class AwsEMRServices:
                 bidprice=bidprice,
             )
 
-            # sleep for 3.5 minutes before checking
-            time.sleep(510)
+            # sleep for 10.5 minutes before checking
+            time.sleep(630)
 
             # get all results
             try:
