@@ -27,6 +27,7 @@ class AwsEMRServices:
         task_id: str,
         identifier: str,
         bidprice: str,
+        emr_version: str,
     ) -> dict:
         """
         creates EMR cluster
@@ -51,6 +52,8 @@ class AwsEMRServices:
             identifier date
         bidprice: str
             bidprice of spot instances
+        emr_version: str
+            version of EMR, emr-6.7.0
 
         Returns
         -------
@@ -60,7 +63,7 @@ class AwsEMRServices:
         response = self.client_emr.run_job_flow(
             Name=f"churn__{task_id}__{identifier}",
             LogUri=log_uri,
-            ReleaseLabel="emr-6.1.0",
+            ReleaseLabel=emr_version,
             Instances={
                 "InstanceFleets": [
                     {
