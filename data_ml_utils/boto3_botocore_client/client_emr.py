@@ -126,6 +126,16 @@ class AwsEMRServices:
             VisibleToAllUsers=True,
             ServiceRole="EMR_DefaultRole",
             ScaleDownBehavior="TERMINATE_AT_TASK_COMPLETION",
+            ManagedScalingPolicy={
+                "ComputeLimits": {
+                    "UnitType": "InstanceFleetUnits",
+                    "MinimumCapacityUnits": 60,
+                    "MaximumCapacityUnits": 120,
+                    "MaximumOnDemandCapacityUnits": 120,
+                    "MaximumCoreCapacityUnits": 120,
+                }
+            },
+            AutoTerminationPolicy={"IdleTimeout": 3600},
         )
 
         if response["ResponseMetadata"]["HTTPStatusCode"] != 200:
