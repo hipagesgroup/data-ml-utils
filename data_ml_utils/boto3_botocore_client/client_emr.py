@@ -264,6 +264,7 @@ class AwsEMRServices:
         task_id: str,
         identifier: str,
         bidprice: str,
+        emr_version: str,
     ) -> int:
         """
         fetch cluster master node dns address
@@ -288,6 +289,8 @@ class AwsEMRServices:
             identifier date
         bidprice: str
             bidprice of spot instances
+        emr_version: str
+            version of EMR, emr-6.7.0
 
         Returns
         -------
@@ -308,6 +311,7 @@ class AwsEMRServices:
                 task_id=task_id,
                 identifier=identifier,
                 bidprice=bidprice,
+                emr_version=emr_version,
             )
 
             # sleep for 10.5 minutes before checking
