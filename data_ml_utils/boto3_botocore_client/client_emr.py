@@ -142,7 +142,7 @@ class AwsEMRServices:
         )
 
         if response["ResponseMetadata"]["HTTPStatusCode"] != 200:
-            raise Exception(  # pragma: no cover
+            raise Exception(
                 f"Encountered Error while Launching the EMR Cluster \n {response}"
             )
 
