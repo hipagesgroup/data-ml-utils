@@ -10,12 +10,18 @@ class TestEMRCreateCluster:
     """test class for creating EMR cluster"""
 
     @mock_emr
-    def test_create_emr_cluster(self, aws_credentials):
+    def test_create_emr_cluster(
+        self, get_run_job_flow_response, get_run_job_flow_parameters, aws_credentials
+    ):
         """
         test function to create EMR cluster
 
         Parameters
         ----------
+        get_run_job_flow_response
+            emr run_job_flow response
+        get_run_job_flow_parameters
+            emr run_job_flow parameters
         aws_credientials
             inherits the aws creds when invoking aws functions
 
@@ -24,7 +30,19 @@ class TestEMRCreateCluster:
         assert
             if endpoint response status is successful, 200
         """
+        # aws_client = AwsEMRServices()
+
         aws_client = AwsEMRServices()
+        stubber = Stubber(aws_client.client_emr)
+
+        stubber.add_response(
+            "run_job_flow",
+            get_run_job_flow_response,
+            get_run_job_flow_parameters,
+        )
+
+        stubber.activate()
+
         response_test = aws_client.create_emr_cluster(
             master_instance_type="c3.xlarge",
             core_instance_type="c3.xlarge",
@@ -41,17 +59,27 @@ class TestEMRCreateCluster:
             task_id="mock_test",
             identifier="2022-01-01",
             bidprice="0.01",
+            emr_version="emr-6.7.0",
         )
 
         assert response_test["ResponseMetadata"]["HTTPStatusCode"] == 200
 
     @mock_emr
-    def test_create_emr_cluster_error(self, aws_credentials):
+    def test_create_emr_cluster_error(
+        self,
+        get_run_job_flow_error_response,
+        get_run_job_flow_parameters,
+        aws_credentials,
+    ):
         """
         test function to create EMR cluster with error
 
         Parameters
         ----------
+        get_run_job_flow_error_response
+            emr run_job_flow error response
+        get_run_job_flow_parameters
+            emr run_job_flow parameters
         aws_credientials
             inherits the aws creds when invoking aws functions
 
@@ -62,32 +90,40 @@ class TestEMRCreateCluster:
             if exception has been reached
         """
         aws_client = AwsEMRServices()
-        response_test = aws_client.create_emr_cluster(
-            master_instance_type="c3.xlarge",
-            core_instance_type="c3.xlarge",
-            core_instance_count=1,
-            configurations=[
-                {
-                    "Classification": "spark-hive-site",
-                    "Properties": {},
-                    "Configurations": [],
-                }
-            ],
-            applications=[{"Name": "Spark"}],
-            log_uri="s3://test",
-            task_id="mock_test",
-            identifier="2022-01-01",
-            bidprice="0.01",
+
+        stubber = Stubber(aws_client.client_emr)
+
+        stubber.add_response(
+            "run_job_flow",
+            get_run_job_flow_error_response,
+            get_run_job_flow_parameters,
         )
-        response_test["ResponseMetadata"]["HTTPStatusCode"] = 404
+
+        stubber.activate()
 
         try:
-            if response_test["ResponseMetadata"]["HTTPStatusCode"] != 200:
-                raise Exception("Encountered Error while Launching the EMR Cluster")
+            _ = aws_client.create_emr_cluster(
+                master_instance_type="c3.xlarge",
+                core_instance_type="c3.xlarge",
+                core_instance_count=1,
+                configurations=[
+                    {
+                        "Classification": "spark-hive-site",
+                        "Properties": {},
+                        "Configurations": [],
+                    }
+                ],
+                applications=[{"Name": "Spark"}],
+                log_uri="s3://test",
+                task_id="mock_test",
+                identifier="2022-01-01",
+                bidprice="0.01",
+                emr_version="emr-6.7.0",
+            )
+
         except Exception:
             message = "Encountered Error while Launching the EMR Cluster"
 
-        assert response_test["ResponseMetadata"]["HTTPStatusCode"] != 200
         assert message == "Encountered Error while Launching the EMR Cluster"
 
 
@@ -193,26 +229,17 @@ class TestEMRTerminateCluster:
             if returns non exit function response
         """
         aws_client = AwsEMRServices()
+        stubber = Stubber(aws_client.client_emr)
 
-        response_test = aws_client.create_emr_cluster(
-            master_instance_type="c3.xlarge",
-            core_instance_type="c3.xlarge",
-            core_instance_count=1,
-            configurations=[
-                {
-                    "Classification": "spark-hive-site",
-                    "Properties": {},
-                    "Configurations": [],
-                }
-            ],
-            applications=[{"Name": "Spark"}],
-            log_uri="s3://test",
-            task_id="mock_test",
-            identifier="2022-01-01",
-            bidprice="0.01",
+        stubber.add_response(
+            "terminate_job_flows",
+            {},
+            {"JobFlowIds": ANY},
         )
 
-        cluster_response = aws_client.terminate_emr_cluster(response_test["JobFlowId"])
+        stubber.activate()
+
+        cluster_response = aws_client.terminate_emr_cluster("test")
 
         assert cluster_response == 0
 
@@ -359,6 +386,7 @@ class TestEMRSpinUpCluster:
             task_id="mock_test",
             identifier="2022-01-01",
             bidprice="0.01",
+            emr_version="emr-6.7.0",
         )
 
         assert response_test == 0
