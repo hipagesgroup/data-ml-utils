@@ -159,7 +159,6 @@ def get_run_job_flow_error_response():
 def get_run_job_flow_parameters():
     return {
         "Applications": [{"Name": "Spark"}],
-        "AutoScalingRole": "EMR_AutoScaling_DefaultRole",
         "AutoTerminationPolicy": {"IdleTimeout": 1200},
         "Configurations": [
             {

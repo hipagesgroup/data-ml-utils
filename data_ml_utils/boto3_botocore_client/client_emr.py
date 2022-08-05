@@ -1,6 +1,9 @@
 import time
 from typing import List
 
+import polling
+import requests
+
 from data_ml_utils.boto3_botocore_client.client_initialisation import AwsClients
 
 
@@ -126,7 +129,6 @@ class AwsEMRServices:
             Applications=applications,
             Configurations=configurations,
             JobFlowRole="EMR_EC2_DefaultRole",
-            AutoScalingRole="EMR_AutoScaling_DefaultRole",
             ServiceRole="EMR_DefaultRole",
             VisibleToAllUsers=True,
             ScaleDownBehavior="TERMINATE_AT_TASK_COMPLETION",
@@ -254,6 +256,24 @@ class AwsEMRServices:
 
         return dns_name
 
+    def get_dns_status(self, response_body: dict) -> bool:
+        """
+        check if EMR cluster has an master DNS address
+
+        Parameters
+        ----------
+        response_body: dict
+            task identifier from airflow
+
+        Returns
+        -------
+        bool
+            boolean if EMR cluster has an master DNS address
+        """
+        if response_body.get("MasterPublicDnsName") is None:
+            return False
+        return True
+
     def spin_up_emr_cluster(
         self,
         master_instance_type: str,
@@ -298,10 +318,9 @@ class AwsEMRServices:
         0
             raises an exception if the cluster does not exist
         """
-        create_loop = 1
         max_tries = 1
 
-        while (create_loop == 1) and (max_tries < 4):
+        while max_tries < 4:
             response = self.create_emr_cluster(
                 master_instance_type=master_instance_type,
                 core_instance_type=core_instance_type,
@@ -315,10 +334,21 @@ class AwsEMRServices:
                 emr_version=emr_version,
             )
 
-            # sleep for 5.5 minutes before checking
-            time.sleep(330)
+            # get response body
+            response_body_dict = self.client_emr.describe_cluster(
+                ClusterId=response["JobFlowId"]
+            )["Cluster"]
 
-            # get all results
+            # poll get emr master dns name every 30 seconds
+            polling_response = polling.poll(
+                lambda: self.get_dns_status(response_body_dict),
+                step=15,
+                ignore_exceptions=(requests.exceptions.ConnectionError,),
+                poll_forever=False,
+                timeout=330,
+            )
+
+            # logic of checking if address is valid
             try:
                 ip_address = self.get_emr_master_dns_name(
                     cluster_id=response["JobFlowId"]
@@ -326,12 +356,12 @@ class AwsEMRServices:
             except Exception:
                 ip_address = "3"
 
-            if len(ip_address) == 1:
+            if (len(ip_address) == 1) | (not polling_response):
                 # terminate cluster
                 self.terminate_emr_cluster(cluster_id=response["JobFlowId"])
                 max_tries += 1
                 continue
-            create_loop = 0
+            break
 
         # check created cluster in waiting state
         cluster_response = self.check_emr_cluster_status(
