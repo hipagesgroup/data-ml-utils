@@ -321,6 +321,42 @@ class TestEMRMasterAddress:
         assert cluster_response == "ec2-13-50-100.aws.com"
 
 
+class TestGetEMRMasterStatus:
+    """test class to check EMR master node address status"""
+
+    @mock_emr
+    def test_get_dns_status(self, aws_credentials):
+        """
+        test function to get EMR master node address
+
+        Parameters
+        ----------
+        get_describe_cluster_response
+            emr describe_cluster response
+        aws_credientials
+            inherits the aws creds when invoking aws functions
+
+        Returns
+        -------
+        assert
+            returns cluster master node address
+        """
+        aws_client = AwsEMRServices()
+        input_params = {
+            "Id": "test",
+            "Name": "churn__mock_test__2022-01-01",
+            "Status": {
+                "State": "WAITING",
+                "StateChangeReason": {"Code": "ALL_STEPS_COMPLETED"},
+            },
+            "MasterPublicDnsName": "ec2-13-50-100.aws.com",
+        }
+
+        cluster_response = aws_client.get_dns_status(input_params)
+
+        assert cluster_response
+
+
 class TestEMRSpinUpCluster:
     """test class to create EMR cluster"""
 
@@ -328,8 +364,13 @@ class TestEMRSpinUpCluster:
     @patch(
         "data_ml_utils.boto3_botocore_client.client_emr.AwsEMRServices.create_emr_cluster"  # noqa E501
     )
+    @patch("polling.poll")
     def test_spin_up_emr_cluster(
-        self, mocked_create_emr_cluster, get_describe_cluster_response, aws_credentials
+        self,
+        mocked_poll,
+        mocked_create_emr_cluster,
+        get_describe_cluster_response,
+        aws_credentials,
     ):
         """
         test function to create EMR cluster and check if master node address
@@ -337,6 +378,8 @@ class TestEMRSpinUpCluster:
 
         Parameters
         ----------
+        mocked_poll
+            mocked poll function
         mocked_create_emr_cluster
             mocked create emr cluster function
         get_describe_cluster_response
@@ -352,10 +395,17 @@ class TestEMRSpinUpCluster:
         aws_client = AwsEMRServices()
 
         mocked_create_emr_cluster.return_value = {"JobFlowId": "test"}
+        mocked_poll.return_value = True
 
         stubber = Stubber(aws_client.client_emr)
 
         expected_params = {"ClusterId": ANY}
+        stubber.add_response(
+            "describe_cluster",
+            get_describe_cluster_response,
+            expected_params,
+        )
+
         stubber.add_response(
             "describe_cluster",
             get_describe_cluster_response,
