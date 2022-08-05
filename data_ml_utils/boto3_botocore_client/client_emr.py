@@ -126,8 +126,9 @@ class AwsEMRServices:
             Applications=applications,
             Configurations=configurations,
             JobFlowRole="EMR_EC2_DefaultRole",
-            VisibleToAllUsers=True,
+            AutoScalingRole="EMR_AutoScaling_DefaultRole",
             ServiceRole="EMR_DefaultRole",
+            VisibleToAllUsers=True,
             ScaleDownBehavior="TERMINATE_AT_TASK_COMPLETION",
             ManagedScalingPolicy={
                 "ComputeLimits": {
@@ -138,7 +139,7 @@ class AwsEMRServices:
                     "MaximumCoreCapacityUnits": 120,
                 }
             },
-            AutoTerminationPolicy={"IdleTimeout": 3600},
+            AutoTerminationPolicy={"IdleTimeout": 1200},
         )
 
         if response["ResponseMetadata"]["HTTPStatusCode"] != 200:
@@ -314,8 +315,8 @@ class AwsEMRServices:
                 emr_version=emr_version,
             )
 
-            # sleep for 10.5 minutes before checking
-            time.sleep(630)
+            # sleep for 5.5 minutes before checking
+            time.sleep(330)
 
             # get all results
             try:
