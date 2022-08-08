@@ -334,14 +334,13 @@ class AwsEMRServices:
                 emr_version=emr_version,
             )
 
-            # get response body
-            response_body_dict = self.client_emr.describe_cluster(
-                ClusterId=response["JobFlowId"]
-            )["Cluster"]
-
             # poll get emr master dns name every 30 seconds
             polling_response = polling.poll(
-                lambda: self.get_dns_status(response_body_dict),
+                lambda: self.get_dns_status(
+                    self.client_emr.describe_cluster(ClusterId=response["JobFlowId"])[
+                        "Cluster"
+                    ]
+                ),
                 step=15,
                 ignore_exceptions=(requests.exceptions.ConnectionError,),
                 poll_forever=False,
