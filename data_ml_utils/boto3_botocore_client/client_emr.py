@@ -137,7 +137,7 @@ class AwsEMRServices:
                     "UnitType": "InstanceFleetUnits",
                     "MinimumCapacityUnits": 60,
                     "MaximumCapacityUnits": 120,
-                    "MaximumOnDemandCapacityUnits": 120,
+                    "MaximumOnDemandCapacityUnits": 0,
                     "MaximumCoreCapacityUnits": 120,
                 }
             },

@@ -209,7 +209,7 @@ def get_run_job_flow_parameters():
             "ComputeLimits": {
                 "MaximumCapacityUnits": 120,
                 "MaximumCoreCapacityUnits": 120,
-                "MaximumOnDemandCapacityUnits": 120,
+                "MaximumOnDemandCapacityUnits": 0,
                 "MinimumCapacityUnits": 60,
                 "UnitType": "InstanceFleetUnits",
             }
