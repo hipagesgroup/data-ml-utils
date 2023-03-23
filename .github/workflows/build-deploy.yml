@@ -50,8 +50,7 @@ jobs:
               run: poetry install --no-dev
             - name: Test with pytest
               run: |
-                  pytest -m tests --doctest-modules --junitxml=junit/test-results.xml --cov=. --cov-report=xml --cov-report=html --cov-fail-under=80 --suppress-no-test-exit-code
-                  coverage xml -i
+                  poetry run pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=. --cov-report=xml --cov-report=html --cov-fail-under=80 --suppress-no-test-exit-code
                   cp -f coverage.xml coverage/
             - uses: hipagesgroup/actions/coverage@master
               with:
