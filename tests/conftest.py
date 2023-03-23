@@ -1,5 +1,6 @@
 import datetime
 import os
+from unittest.mock import patch
 
 import pytest
 
@@ -8,7 +9,9 @@ import pytest
 def aws_credentials():
     """Mocked AWS Credentials for moto."""
     os.environ["AWS_ACCESS_KEY_ID"] = "testing"  # pragma: allowlist secret
-    os.environ["AWS_SECRET_ACCESS_KEY"] = "testing"  # pragma: allowlist secret
+    os.environ[  # pragma: allowlist secret
+        "AWS_SECRET_ACCESS_KEY"  # noqa: S105
+    ] = "testing"
     os.environ["AWS_DEFAULT_REGION"] = "ap-southeast-2"  # pragma: allowlist secret
 
 
@@ -240,3 +243,14 @@ def get_run_job_flow_parameters():
         ],
         "VisibleToAllUsers": True,
     }
+
+
+@pytest.fixture
+def mock_active_run():
+    """mocked mlflow.active_run()"""
+
+    with patch(
+        "data_ml_utils.mlflow_databricks.mlflow_tracker.mlflow.active_run"
+    ) as mock_active_run:
+        mock_active_run.return_value = None
+        yield mock_active_run
