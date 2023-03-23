@@ -10,7 +10,6 @@ from mlflow.exceptions import MlflowException
 
 from data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_end_run
 from data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_artifact
-from data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_artifacts
 from data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_metric
 from data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_params
 from data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_register_model
@@ -114,46 +113,6 @@ class TestMlflowTracking:
 
         with pytest.raises(MlflowException, match="No active run to log artifact"):
             mlflow_log_artifact(artifact="test", artifact_name="test")
-
-    @pytest.mark.integration
-    def test_mlflow_log_artifacts(self) -> None:
-        """
-        test if mlflow_log_artifacts() can log artifacts
-        """
-
-        # create temporary artifacts
-        tmp_dir = tempfile.mkdtemp()
-        _, path_0 = tempfile.mkstemp(dir=tmp_dir, text=True)
-        _, path_1 = tempfile.mkstemp(dir=tmp_dir, text=True)
-
-        # insert text into artifacts
-        for i, path in enumerate([path_0, path_1]):
-            expected_str = "test"
-            with open(path, "w") as f:
-                f.write(f"{expected_str}_{i}")
-
-        with mlflow.start_run() as run:
-            mlflow_log_artifacts(local_dir=tmp_dir)
-            artifact_uri = run.info.artifact_uri
-
-            for i, path in enumerate([path_0, path_1]):
-                artifact = mlflow.artifacts.download_artifacts(
-                    f"{artifact_uri}/{path[path.rfind('/')+1:]}"
-                )
-                with open(artifact) as f:
-                    artifact_content = f.read()
-                assert artifact_content == f"{expected_str}_{i}"  # noqa: S101
-
-        if os.path.exists(tmp_dir):
-            rmtree(tmp_dir)
-
-    def test_mlflow_log_artifacts_error(self) -> None:
-        """
-        test if mlflow_log_artifact() raises the right exception
-        """
-
-        with pytest.raises(MlflowException, match="No active run to log artifacts"):
-            mlflow_log_artifacts(local_dir="test")
 
     @patch("data_ml_utils.mlflow_databricks.mlflow_tracker.getattr")
     def test_mlflow_log_register_model(self, mock_model_func, mock_active_run) -> None:

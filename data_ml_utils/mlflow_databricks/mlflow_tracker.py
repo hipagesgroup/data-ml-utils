@@ -66,23 +66,6 @@ def mlflow_log_artifact(
             raise MlflowException("No active run to log artifact")
 
 
-def mlflow_log_artifacts(local_dir: str, artifact_path: Optional[str] = None) -> None:
-    """
-    function to log artifacts to mlflow
-    Parameters
-    ----------
-    local_dir: str
-        Path to the directory to write
-    artifact_path: Optional[str]
-        If provided, the directory in ``artifact_uri`` to write to
-    """
-
-    if mlflow.active_run():
-        mlflow.log_artifacts(local_dir=local_dir, artifact_path=artifact_path)
-    else:
-        raise MlflowException("No active run to log artifacts")
-
-
 def mlflow_log_register_model(
     model,
     type_of_model: str,
