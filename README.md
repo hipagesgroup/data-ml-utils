@@ -2,10 +2,13 @@
 A utility python package that covers the common libraries we use.
 
 ## Installation
-Since this is hosted privately on git, you will need to be under VPN, then run
+This is an open source library hosted on pypi. Run the following command to install the library
 ```
-pip install git+ssh://git@github.com/hipagesgroup/data-ml-utils@v0.2.4
+pip install data-ml-utils --upgrade
 ```
+
+## Documentation
+Head over to https://data-ml-utils.readthedocs.io/en/latest/index.html# to read our library documentation
 
 ## Feature
 ### Pyathena client initialisation
@@ -15,7 +18,7 @@ import os
 from data_ml_utils.pyathena_client.client import PyAthenaClient
 
 os.environ["AWS_ACCESS_KEY_ID"] = "xxx"
-os.environ["AWS_SECRET_ACCESS_KEY"] = "xxx"
+os.environ["AWS_SECRET_ACCESS_KEY"] = "xxx" # pragma: allowlist secret
 
 pyathena_client = PyAthenaClient()
 ```
@@ -36,8 +39,8 @@ df_raw = pyathena_client.query_as_pandas(final_query=query)
 ```
 ![Pyathena query](docs/_static/query_pyathena_client.png)
 
-### Boto3 client
-Visit [link](https://data-ml-utils.readthedocs.io/en/latest/#client-boto3-and-botocore-sagemaker)
+### MLflow utils
+Visit [link](https://data-ml-utils.readthedocs.io/en/latest/index.html#mlflow-utils)
 
 ### More to Come
 * You suggest, raise a feature request issue and we will review!
@@ -46,8 +49,5 @@ Visit [link](https://data-ml-utils.readthedocs.io/en/latest/#client-boto3-and-bo
 ### Pyathena
 There is a jupyter notebook to show how to use the package utility package for `pyathena`: [notebook](tutorials/[TUTO]%20pyathena.ipynb)
 
-### Boto3 EMR
-There is a jupyter notebook to show how to use the package utility package for `EMR`: [notebook](tutorials/[TUTO]%20emr.ipynb)
-
-### Boto3 Sagemaker
-There is a jupyter notebook to show how to use the package utility package for `Sagemaker`: [notebook](tutorials/[TUTO]%20sagemaker.ipynb)
+### MLflow utils
+There is a jupyter notebook to show how to use the package utility package for `mlflow_databricks`: [notebook](tutorials/[TUTO]%20mlflow_databricks.ipynb)
