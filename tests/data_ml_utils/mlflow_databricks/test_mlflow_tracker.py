@@ -8,69 +8,10 @@ import mlflow
 import pytest
 from mlflow.exceptions import MlflowException
 
-from data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_end_run
 from data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_artifact
 from data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_metric
 from data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_params
 from data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_register_model
-from data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_start_run
-
-
-class TestMlflowRun:
-    """
-    test class for starting and ending mlflow run
-    """
-
-    @patch("data_ml_utils.mlflow_databricks.mlflow_tracker.mlflow.start_run")
-    def test_mlflow_start_run(self, mock_start_run) -> None:
-        """
-        test if mlflow_start_run() can run correctly
-
-        Parameters
-        ----------
-        mock_start_run:
-            mocked mlflow.start_run
-        """
-
-        mock_start_run.return_value = MagicMock()
-        mlflow_start_run(run_name="test_run", experiment_id="test_id")
-        mock_start_run.assert_called_once_with(
-            run_name="test_run",
-            experiment_id="test_id",
-        )
-
-    def test_mlflow_start_run_error(self, mock_active_run) -> None:
-        """
-        test mlflow_start_run error
-        """
-
-        with pytest.raises(MlflowException, match="Run already active"):
-            mock_active_run.return_value = MagicMock()
-            mlflow_start_run(run_name="test_run")
-
-    @patch("data_ml_utils.mlflow_databricks.mlflow_tracker.mlflow.end_run")
-    def test_mlflow_end_run(self, mock_end_run, mock_active_run) -> None:
-        """
-        test if mlflow_end_run() can end run
-
-        Parameters
-        ----------
-        mock_end_run:
-            mocked mlflow.end_run
-        """
-
-        mock_active_run.return_value = MagicMock()
-        mock_end_run.return_value = MagicMock()
-        mlflow_end_run()
-        mock_end_run.assert_called_once()
-
-    def test_mlflow_end_run_error(self) -> None:
-        """
-        test mlflow_end_run error
-        """
-
-        with pytest.raises(MlflowException, match="No active run to end"):
-            mlflow_end_run()
 
 
 class TestMlflowTracking:
@@ -94,7 +35,7 @@ class TestMlflowTracking:
             f.write(expected_str)
 
         with mlflow.start_run() as run:
-            mlflow_log_artifact("test", "test", local_path=path)
+            expected_result = mlflow_log_artifact("test", "test", local_path=path)
             artifact_uri = run.info.artifact_uri
             artifact = mlflow.artifacts.download_artifacts(
                 f"{artifact_uri}/{path[path.rfind('/')+1:]}"
@@ -102,6 +43,7 @@ class TestMlflowTracking:
             with open(artifact) as f:
                 artifact_content = f.read()
             assert artifact_content == expected_str  # noqa: S101
+            assert expected_result == "artifact test logged"  # noqa: S101
 
         if os.path.exists(tmp_dir):
             rmtree(tmp_dir)
@@ -127,13 +69,14 @@ class TestMlflowTracking:
 
         mock_active_run.return_value = MagicMock()
         mock_model_func.return_value = MagicMock()
-        mlflow_log_register_model(
+        expected_result = mlflow_log_register_model(
             model="test",
             type_of_model="test",
             model_func_dict={"test": ["test", "test"]},
             artifact_path="test",
         )
         mock_model_func.assert_called_once()
+        assert expected_result == "model logged"  # noqa: S101
 
     def test_mlflow_log_model_error(self) -> None:
         """
@@ -161,12 +104,13 @@ class TestMlflowTracking:
         }
 
         with mlflow.start_run() as run:
-            mlflow_log_params(params=expected_params)
+            expected_result = mlflow_log_params(params=expected_params)
 
             logged_params_run = mlflow.get_run(run.info.run_id)
 
             assert len(logged_params_run.data.params) == 3  # noqa: S101
             assert logged_params_run.data.params == expected_params  # noqa: S101
+            assert expected_result == f"params {expected_params} logged"  # noqa: S101
 
     def test_mlflow_log_params_error(self) -> None:
         """
@@ -189,9 +133,19 @@ class TestMlflowTracking:
         }
 
         with mlflow.start_run() as run:
-            mlflow_log_metric(key="metric_1", value=1.0)
-            mlflow_log_metric(key="metric_2", value=2.0)
-            mlflow_log_metric(key="metric_3", value=3.0)
+            expected_result_1 = mlflow_log_metric(key="metric_1", value=1.0)
+            expected_result_2 = mlflow_log_metric(key="metric_2", value=2.0)
+            expected_result_3 = mlflow_log_metric(key="metric_3", value=3.0)
+
+            assert (  # noqa: S101
+                expected_result_1 == "model evaluation metric metric_1, 1.0 logged"
+            )
+            assert (  # noqa: S101
+                expected_result_2 == "model evaluation metric metric_2, 2.0 logged"
+            )
+            assert (  # noqa: S101
+                expected_result_3 == "model evaluation metric metric_3, 3.0 logged"
+            )
 
             logged_metric_run = mlflow.get_run(run.info.run_id)
             assert len(logged_metric_run.data.metrics) == 3  # noqa: S101

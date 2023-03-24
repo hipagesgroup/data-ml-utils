@@ -7,39 +7,12 @@ from joblib import dump
 from mlflow.exceptions import MlflowException
 
 
-def mlflow_start_run(run_name: str, experiment_id: Optional[str] = None) -> None:
-    """
-    function to start mlflow run
-
-    Parameters
-    ----------
-    run_name: str
-        name of the run
-    experiment_id: Optional[int]
-        id of the experiment
-    """
-
-    if mlflow.active_run() is None:
-        mlflow.start_run(run_name=run_name, experiment_id=experiment_id)
-    else:
-        raise MlflowException("Run already active")
-
-
-def mlflow_end_run() -> None:
-    """function to end mlflow run"""
-
-    if mlflow.active_run():
-        mlflow.end_run()
-    else:
-        raise MlflowException("No active run to end")
-
-
 def mlflow_log_artifact(
     artifact: Any,
     artifact_name: str,
     local_path: Optional[str] = None,
     artifact_path: Optional[str] = None,
-) -> None:
+) -> str:
     """
     function to log artifact to mlflow
 
@@ -62,6 +35,7 @@ def mlflow_log_artifact(
 
         if mlflow.active_run():
             mlflow.log_artifact(local_path=local_path, artifact_path=artifact_path)
+            return f"artifact {artifact_name} logged"
         else:
             raise MlflowException("No active run to log artifact")
 
@@ -74,9 +48,9 @@ def mlflow_log_register_model(
     name_of_registered_model: str = None,
     extra_pip_requirements: Optional[list] = None,
     code_path: Optional[list] = None,
-) -> None:
+) -> str:
     """
-    function to log model to mlflow
+    function to log and register model to mlflow
 
     Parameters
     ----------
@@ -120,13 +94,18 @@ def mlflow_log_register_model(
                 artifact_path=artifact_path,
                 extra_pip_requirements=extra_pip_requirements,
             )
+            return (
+                "model logged"
+                if name_of_registered_model is None
+                else f"model logged and registered as {name_of_registered_model}"
+            )
         else:
             raise MlflowException("No active run to log model")
     else:
         raise ValueError("Model type not supported")
 
 
-def mlflow_log_params(params: dict) -> None:
+def mlflow_log_params(params: dict) -> str:
     """
     function to log params to mlflow
 
@@ -138,11 +117,12 @@ def mlflow_log_params(params: dict) -> None:
 
     if mlflow.active_run():
         mlflow.log_params(params=params)
-    else:
-        raise MlflowException("No active run to log params")
+        return f"params {params} logged"
+
+    raise MlflowException("No active run to log params")
 
 
-def mlflow_log_metric(key: str, value: float) -> None:
+def mlflow_log_metric(key: str, value: float) -> str:
     """
     function to log metric to mlflow
 
@@ -156,5 +136,6 @@ def mlflow_log_metric(key: str, value: float) -> None:
 
     if mlflow.active_run():
         mlflow.log_metric(key=key, value=value)
-    else:
-        raise MlflowException("No active run to log metric")
+        return f"model evaluation metric {key}, {value} logged"
+
+    raise MlflowException("No active run to log metric")
