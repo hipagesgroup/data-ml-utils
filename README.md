@@ -31,7 +31,7 @@ query = """
     SELECT
         *
     FROM
-        dev.test_tutorial_table
+        dev.example_pyathena_client_table
     LIMIT 10
 """
 
