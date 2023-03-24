@@ -103,7 +103,6 @@ jobs:
     deploy:
         if: github.ref_name == 'master'
         # needs: [lint, test, scan]
-        needs: [lint]
         name: Publish and build pypi package
         runs-on: ubuntu-latest
         steps:
