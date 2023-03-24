@@ -89,9 +89,11 @@ jobs:
               with:
                   python-version: 3.9
             - name: Build and publish to pypi
-              uses: JRubics/poetry-publish@v1.16
-              with:
-                  pypi_token: ${{ secrets.PYPI_TOKEN_DATA_ML_UTILS }}
+              env:
+                  PYPI_TOKEN: ${{ secrets.PYPI_TOKEN_DATA_ML_UTILS }}
+              run: |
+                  poetry config pypi-token.pypi $PYPI_TOKEN
+                  poetry publish --build
 
     deploy:
         if: github.ref_name == 'master'
