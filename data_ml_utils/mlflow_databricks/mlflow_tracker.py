@@ -36,8 +36,8 @@ def mlflow_log_artifact(
         if mlflow.active_run():
             mlflow.log_artifact(local_path=local_path, artifact_path=artifact_path)
             return f"artifact {artifact_name} logged"
-        else:
-            raise MlflowException("No active run to log artifact")
+
+        raise MlflowException("No active run to log artifact")
 
 
 def mlflow_log_register_model(
@@ -99,10 +99,10 @@ def mlflow_log_register_model(
                 if name_of_registered_model is None
                 else f"model logged and registered as {name_of_registered_model}"
             )
-        else:
-            raise MlflowException("No active run to log model")
-    else:
-        raise ValueError("Model type not supported")
+
+        raise MlflowException("No active run to log model")
+
+    raise ValueError("Model type not supported")
 
 
 def mlflow_log_params(params: dict) -> str:
