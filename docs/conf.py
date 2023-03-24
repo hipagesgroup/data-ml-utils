@@ -19,7 +19,7 @@ copyright = "2022 - 2023, ShuMing Peh"  # noqa: A001
 author = "ShuMing Peh"
 
 # The full version, including alpha/beta/rc tags
-release = "0.3.3"
+release = "0.3.4"
 
 
 # -- General configuration ---------------------------------------------------
