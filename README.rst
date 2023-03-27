@@ -1,0 +1,95 @@
+data-ml-utils
+=============
+
+A utility python package that covers the common libraries we use.
+
+Installation
+------------
+
+This is an open source library hosted on pypi. Run the following command
+to install the library
+
+::
+
+   pip install data-ml-utils --upgrade
+
+Documentation
+-------------
+
+Head over to https://data-ml-utils.readthedocs.io/en/latest/index.html#
+to read our library documentation
+
+Feature
+-------
+
+Pyathena client initialisation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Almost one liner
+
+.. code:: python
+
+   import os
+   from data_ml_utils.pyathena_client.client import PyAthenaClient
+
+   os.environ["AWS_ACCESS_KEY_ID"] = "xxx"
+   os.environ["AWS_SECRET_ACCESS_KEY"] = "xxx" # pragma: allowlist secret
+
+   pyathena_client = PyAthenaClient()
+
+.. figure:: docs/_static/initialise_pyathena_client.png
+   :alt: Pyathena client initialisation
+
+   Pyathena client initialisation
+
+Pyathena query
+~~~~~~~~~~~~~~
+
+Almost one liner
+
+.. code:: python
+
+   query = """
+       SELECT
+           *
+       FROM
+           dev.example_pyathena_client_table
+       LIMIT 10
+   """
+
+   df_raw = pyathena_client.query_as_pandas(final_query=query)
+
+.. figure:: docs/_static/query_pyathena_client.png
+   :alt: Pyathena query
+
+   Pyathena query
+
+MLflow utils
+~~~~~~~~~~~~
+
+Visit
+`link <https://data-ml-utils.readthedocs.io/en/latest/index.html#mlflow-utils>`__
+
+More to Come
+~~~~~~~~~~~~
+
+-  You suggest, raise a feature request issue and we will review!
+
+Tutorials
+---------
+
+Pyathena
+~~~~~~~~
+
+There is a jupyter notebook to show how to use the package utility
+package for ``pyathena``:
+`notebook <tutorials/%5BTUTO%5D%20pyathena.ipynb>`__
+
+.. _mlflow-utils-1:
+
+MLflow utils
+~~~~~~~~~~~~
+
+There is a jupyter notebook to show how to use the package utility
+package for ``mlflow_databricks``:
+`notebook <tutorials/%5BTUTO%5D%20mlflow_databricks.ipynb>`__
