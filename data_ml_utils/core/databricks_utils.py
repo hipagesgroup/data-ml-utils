@@ -1,4 +1,6 @@
 import datetime
+import importlib
+from typing import Callable
 from typing import Dict
 
 import yaml
@@ -43,4 +45,26 @@ def get_test_date(datetime_provided: datetime.datetime, days_difference: int) ->
         (datetime_provided - datetime.timedelta(days=days_difference)).strftime(
             "%Y%m%d"
         )
+    )
+
+
+def get_function_to_load(function_dict: Dict, file_format: str) -> Callable:
+    """
+    function that retrieves the library function callable
+
+    Parameters
+    ----------
+    function_dict: Dict
+        dictionary that contains the function mapping
+    file_format: str
+        name of file format, pkl, parquet or delta table
+
+    Returns
+    -------
+    Callable
+        function that we intend to use
+    """
+    return getattr(
+        importlib.import_module(function_dict[file_format][0]),
+        function_dict[file_format][1],
     )

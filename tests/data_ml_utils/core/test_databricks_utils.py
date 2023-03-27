@@ -1,11 +1,13 @@
 import datetime
+from typing import Callable
 from unittest.mock import patch
 
+from data_ml_utils.core.databricks_utils import get_function_to_load
 from data_ml_utils.core.databricks_utils import get_test_date
 from data_ml_utils.core.databricks_utils import load_yaml
 
 
-class TestCommonUtils:
+class TestDatabricksCommonUtils:
     """
     test class for common utils
     """
@@ -48,3 +50,25 @@ class TestCommonUtils:
             datetime_provided=datetime_value, days_difference=21
         )
         assert expected_return == 20230227  # noqa: S101
+
+    def test_get_function_to_load(self, dummy_function_dict) -> None:
+        """
+        test get function loader works correctly
+
+        Parameters
+        ----------
+        dummy_function_dict
+            dummy function dictionary
+
+        Returns
+        -------
+        assert
+            returns True that the callable is the correct instance
+        """
+
+        return_function = get_function_to_load(
+            function_dict=dummy_function_dict,
+            file_format="pkl",
+        )
+
+        assert isinstance(return_function, Callable)  # noqa: S101

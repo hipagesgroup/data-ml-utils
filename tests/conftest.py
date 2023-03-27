@@ -23,3 +23,8 @@ def mock_active_run():
     ) as mock_active_run:
         mock_active_run.return_value = None
         yield mock_active_run
+
+
+@pytest.fixture(autouse=True)
+def dummy_function_dict():
+    return {"parquet": ["awswrangler.s3", "read_parquet"], "pkl": ["joblib", "load"]}
