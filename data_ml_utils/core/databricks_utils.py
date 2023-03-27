@@ -68,3 +68,26 @@ def get_function_to_load(function_dict: Dict, file_format: str) -> Callable:
         importlib.import_module(function_dict[file_format][0]),
         function_dict[file_format][1],
     )
+
+
+def get_target_stage_for_env(env: str) -> str:
+    """
+    function to get corresponding target stage based on running environment
+
+    Parameters
+    ----------
+    env: str
+        running environment "dev", "staging" or "prod"
+
+    Returns
+    -------
+    str
+        target stage
+        "Staging" for "dev" and "staging" env
+        "Production" for "prod" env
+    """
+
+    if not (isinstance(env, str)) or (env.lower() not in ["dev", "staging", "prod"]):
+        raise ValueError("Invalid environment")
+
+    return "Staging" if env.lower() in ("dev", "staging") else "Production"

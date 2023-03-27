@@ -3,6 +3,7 @@ from typing import Callable
 from unittest.mock import patch
 
 from data_ml_utils.core.databricks_utils import get_function_to_load
+from data_ml_utils.core.databricks_utils import get_target_stage_for_env
 from data_ml_utils.core.databricks_utils import get_test_date
 from data_ml_utils.core.databricks_utils import load_yaml
 
@@ -72,3 +73,17 @@ class TestDatabricksCommonUtils:
         )
 
         assert isinstance(return_function, Callable)  # noqa: S101
+
+    def test_get_target_stage_for_env(self) -> None:
+        """
+        test function for returning env
+
+        Returns
+        -------
+        assert
+            returns True that the env is as expected
+        """
+
+        assert get_target_stage_for_env("dev") == "Staging"  # noqa: S101
+        assert get_target_stage_for_env("staging") == "Staging"  # noqa: S101
+        assert get_target_stage_for_env("prod") == "Production"  # noqa: S101
