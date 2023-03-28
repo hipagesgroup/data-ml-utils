@@ -48,7 +48,7 @@ jobs:
               uses: snok/install-poetry@v1
             - name: Install dependencies
               run: |
-                  pip install --upgrade wheel setuptools coverage
+                  pip install --upgrade pip
                   poetry install --no-dev
             - name: Test with pytest
               run: |
