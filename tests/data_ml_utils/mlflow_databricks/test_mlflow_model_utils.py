@@ -216,7 +216,6 @@ class TestMlflowModelUtils:
         mock_mlflow_client.search_model_versions.return_value = [
             dummy_nested_callable_object
         ]
-        # mock_mlflow_client.transition_model_version_stage.return_value = MagicMock()
 
         expected_return = mlflow_promote_model(
             name="test",
