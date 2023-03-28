@@ -36,14 +36,11 @@ jobs:
               uses: hipagesgroup/actions/checkout@master
               with:
                   token: ${{ secrets.GITHUB_TOKEN }}
-            - name: Import .env File
-              shell: bash
-              run: cat .env >>${GITHUB_ENV}
             - name: Setup Python Environment
               uses: hipagesgroup/actions/install-dependencies@master
               id: setup
               with:
                   language: Python
-                  version: ${{ env.PY_VERSION }}
+                  version: 3.9
                   cache: pip
             - uses: pre-commit/action@v3.0.0
