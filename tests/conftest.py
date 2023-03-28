@@ -28,3 +28,8 @@ def mock_active_run():
 @pytest.fixture(autouse=True)
 def dummy_function_dict():
     return {"parquet": ["awswrangler.s3", "read_parquet"], "pkl": ["joblib", "load"]}
+
+
+@pytest.fixture(autouse=True)
+def dummy_test_table():
+    return "dev.test_table"
