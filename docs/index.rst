@@ -19,12 +19,11 @@ data-ml-utils has a few utilities that we try to generalise across projects.
    :caption: Contents:
 
    commands/pyathena
-   commands/client_sagemaker
-   commands/client_emr
    commands/pyathena_api_specs
    commands/pyathena_utils_api_specs
-   commands/client_sagemaker_api_specs
-   commands/client_emr_api_specs
+   commands/databricks_utils_api_specs
+   commands/mlflow_databricks
+   commands/mlflow_databricks_api_specs
 
 Why are packaging this into a python library?
 ---------------------------------------------
@@ -43,13 +42,14 @@ You can install `data-ml-utils` from the git repo using pip
 
 .. code-block:: console
 
-   $ pip install git+ssh://git@github.com/hipagesgroup/data-ml-utils@v0.1.0
+   $ pip install data-ml-utils --upgrade
 
 
 Pyathena
 --------
 We try to fit the function calls to be as simple as possible with a one-liner.
 This covers:
+
 - query athena tables and return as pandas dataframe
 - drop athena tables from offline feature store
 - create athena tables through schema, and update table with missing partitions
@@ -57,25 +57,14 @@ This covers:
 See :doc:`commands/pyathena` for more details.
 
 
-Client boto3 and botocore (Sagemaker)
--------------------------------------
+MLflow utils
+------------
 We try to fit the function calls to be as simple as possible with a one-liner.
 This covers:
-- get prod model uri from AWS model registry
-- unzips tar gz model file from AWS model registry
-- upload retrained model tar gz file to s3
-- create model package version in AWS model registry
 
-See :doc:`commands/client_sagemaker` for more details.
+- log artifact
+- log and register a model
+- log params
+- log metrics
 
-Client boto3 and botocore (EMR)
--------------------------------
-We try to fit the function calls to be as simple as possible with a one-liner.
-This covers:
-- create EMR cluster
-- check creation of EMR cluster status
-- terminate EMR cluster
-- get EMR cluster id
-- get EMR cluster master dns name
-
-See :doc:`commands/client_emr` for more details.
+See :doc:`commands/mlflow_databricks` for more details.

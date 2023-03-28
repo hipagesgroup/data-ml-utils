@@ -1,12 +1,13 @@
+---
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: data-ml-utils
-  description: >-
-    Private utility python package for data/ML use cases.
-  annotations:
-    github.com/project-slug: hipagesgroup/data-ml-utils
+    name: data-ml-utils
+    description: >-
+        Private utility python package for data/ML use cases.
+    annotations:
+        github.com/project-slug: hipagesgroup/data-ml-utils
 spec:
-  type: service
-  lifecycle: experimental
-  owner: data-platform
+    type: service
+    lifecycle: experimental
+    owner: data-platform

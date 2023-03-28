@@ -1,6 +1,8 @@
+from unittest.mock import patch
+
 import pandas as pd
 import pyathena
-from mock import patch
+
 from data_ml_utils.pyathena_client.client import PyAthenaClient
 
 
@@ -38,7 +40,9 @@ class TestPyAthenaClient:
 
         return_connection = test_client.engine
 
-        assert isinstance(return_connection, pyathena.connection.Connection)
+        assert isinstance(  # noqa: S101
+            return_connection, pyathena.connection.Connection
+        )
 
     @patch("data_ml_utils.pyathena_client.client.read_sql")
     @patch("data_ml_utils.pyathena_client.client.format_sql_create_schema")
@@ -84,7 +88,7 @@ class TestPyAthenaClient:
             yaml_schema_file_path="test.yaml",
         )
 
-        assert test == 1
+        assert test == 1  # noqa: S101
 
     @patch("data_ml_utils.pyathena_client.client.read_sql")
     @patch("data_ml_utils.pyathena_client.client.format_sql_create_schema")
@@ -134,7 +138,7 @@ class TestPyAthenaClient:
             yaml_schema_file_path="test.yaml",
         )
 
-        assert test == 0
+        assert test == 0  # noqa: S101
 
     def test_drop_table_error(
         self,
@@ -162,7 +166,7 @@ class TestPyAthenaClient:
             database="whatever",
         )
 
-        assert test == 1
+        assert test == 1  # noqa: S101
 
     @patch("data_ml_utils.pyathena_client.client.PyAthenaClient")
     def test_drop_table(
@@ -196,7 +200,7 @@ class TestPyAthenaClient:
             database="whatever",
         )
 
-        assert test == 0
+        assert test == 0  # noqa: S101
 
     @patch("data_ml_utils.pyathena_client.client.PyAthenaClient")
     def test_query_as_pandas(
@@ -239,6 +243,6 @@ class TestPyAthenaClient:
 
         test = test_client.query_as_pandas(final_query="testquery")
 
-        assert isinstance(test, pd.DataFrame)
-        assert test[0].dtype == int
-        assert test[1].dtype == float
+        assert isinstance(test, pd.DataFrame)  # noqa: S101
+        assert test[0].dtype == int  # noqa: S101
+        assert test[1].dtype == float  # noqa: S101

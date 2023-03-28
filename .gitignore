@@ -1,5 +1,6 @@
 # Do not store data in repo unless its required modify below
 data/
+mlruns/
 model_files/
 *.tar.gz
 

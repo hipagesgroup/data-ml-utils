@@ -1,29 +1,30 @@
+---
 schema: dev
 tables:
-  - name: test_table
-    description: >-
-      This table tracks the tradies to be contacted by lifecycle team
-    s3_bucket: testing-bucket
-    folder: testing
-    columns:
-      - name: account_id
-        description: identifier of user
-        data_type: int
-      - name: user_id
-        description: identifier of user in user_id
-        data_type: int
-      - name: leads_sent
-        description: number of leads sent in the last 30 days
-        data_type: double
-      - name: leads_accepted
-        description: number of leads accepted in the last 30 days
-        data_type: double
-      - name: lead_hired
-        description: number of leads hired in the last 30 days
-        data_type: double
-      - name: theme
-        description: churn theme of churn reason
-        data_type: string
-      - name: inference_date_created
-        description: partition date
-        data_type: string
+    - name: test_table
+      description: >-
+          This table tracks the tradies to be contacted by lifecycle team
+      s3_bucket: testing-bucket
+      folder: testing
+      columns:
+          - name: account_id
+            description: identifier of user
+            data_type: int
+          - name: user_id
+            description: identifier of user in user_id
+            data_type: int
+          - name: leads_sent
+            description: number of leads sent in the last 30 days
+            data_type: double
+          - name: leads_accepted
+            description: number of leads accepted in the last 30 days
+            data_type: double
+          - name: lead_hired
+            description: number of leads hired in the last 30 days
+            data_type: double
+          - name: theme
+            description: churn theme of churn reason
+            data_type: string
+          - name: inference_date_created
+            description: partition date
+            data_type: string

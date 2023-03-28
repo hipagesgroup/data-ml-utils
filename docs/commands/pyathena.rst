@@ -24,8 +24,8 @@ Defining the environment variables can be done through `cli` or in your `.ipynb`
 .. code-block:: python
 
    import os
-   os.environ["AWS_ACCESS_KEY_ID"] = "xxx"
-   os.environ["AWS_SECRET_ACCESS_KEY"] = "xxx"
+   os.environ["AWS_ACCESS_KEY_ID"] = "xxx" # pragma: allowlist secret
+   os.environ["AWS_SECRET_ACCESS_KEY"] = "xxx" # pragma: allowlist secret
 
 
 Initialising pyathena connection
@@ -58,8 +58,7 @@ There is a function that will help to query your sql into a pandas dataframe
     SELECT
         *
     FROM
-        reporting_metrics_dev.int_active_tradies_count__tradie
-    LIMIT 10
+        dev.example_pyathena_client_table
    """
 
    df_raw = pyathena_client.query_as_pandas(final_query=query)
@@ -76,8 +75,8 @@ A successful response return `0`, and `1` otherwise
 .. code-block:: python
 
    pyathena_client.drop_table(
-      table_name="int_active_tradies_count__tradie",
-      database="reporting_metrics_dev"
+      table_name="example_pyathena_client_table",
+      database="dev"
    )
 
 .. image:: ../_static/drop_pyathena_client.png
@@ -94,7 +93,7 @@ A successful response return `0`, and `1` otherwise
    pyathena_client.create_msck_repair_table(
       create_raw_query="tutorial_sql_schema/create_table_schema.sql",
       repair_raw_query="tutorial_sql_schema/msck_repair_table.sql",
-      yaml_schema_file_path="tutorial_sql_schema/int_active_tradies_count__tradie.yaml"
+      yaml_schema_file_path="tutorial_sql_schema/test_tutorial_table.yaml"
    )
 
 .. image:: ../_static/create_repair_table_pyathena_client.png

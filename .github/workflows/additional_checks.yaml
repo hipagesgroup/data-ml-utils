@@ -1,0 +1,46 @@
+---
+name: hipages Checks
+
+on:
+    pull_request:
+        branches:
+            - master
+        types: [opened, synchronize, edited]
+    push:
+        branches:
+            - master
+
+jobs:
+    jira-title:
+        name: JIRA Title Check 🎪
+        if: github.ref_name != 'master'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Regex Check on PR Title
+              uses: morrisoncole/pr-lint-action@v1.7.0
+              with:
+                  title-regex: ^.*:.*\[[A-Z]{2,5}-\d+\]*
+                  on-failed-regex-fail-action: false
+                  on-failed-regex-request-changes: false
+                  on-failed-regex-create-review: true
+                  on-failed-regex-comment: Valid JIRA ticket title is required ie. [ABC-123]
+                  repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+    pre-commit:
+        name: Pre-Commit Check 🚧
+        if: github.ref_name != 'master'
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        steps:
+            - name: Checkout
+              uses: hipagesgroup/actions/checkout@master
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+            - name: Setup Python Environment
+              uses: hipagesgroup/actions/install-dependencies@master
+              id: setup
+              with:
+                  language: Python
+                  version: 3.9
+                  cache: pip
+            - uses: pre-commit/action@v3.0.0

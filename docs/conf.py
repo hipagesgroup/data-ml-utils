@@ -15,11 +15,11 @@ sys.path.insert(0, os.path.abspath("."))
 # -- Project information -----------------------------------------------------
 
 project = "data_ml_utils"
-copyright = "2022, ShuMing Peh"
+copyright = "2022 - 2023, ShuMing Peh"  # noqa: A001
 author = "ShuMing Peh"
 
 # The full version, including alpha/beta/rc tags
-release = "0.2.0"
+release = "0.3.5"
 
 
 # -- General configuration ---------------------------------------------------

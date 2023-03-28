@@ -1,19 +1,20 @@
+---
 schema: dev
 tables:
-  - name: test_tutorial_table
-    meta:
-      owner: shumingpeh@hipagesgroup.com.au
-    description: >-
-      This is a test tutorial table
-    s3_bucket: s3://au-com-hipages-data-scratchpad
-    folder: shuming-development/test-tutorial/
-    columns:
-      - name: dummy_column_one
-        description: dummy column one
-        data_type: int
-      - name: dummy_column_two
-        description: dummy column two
-        data_type: int
-      - name: date_created
-        description: partition date
-        data_type: string
+    - name: example_pyathena_client_table
+      meta:
+          owner: test
+      description: >-
+          This is a test tutorial table
+      s3_bucket: s3://dummy
+      folder: dev/example_pyathena_client_table/
+      columns:
+          - name: dummy_column
+            description: dummy column name
+            data_type: string
+          - name: dummy_value
+            description: dummy value
+            data_type: bigint
+          - name: date_created
+            description: partition column
+            data_type: string
