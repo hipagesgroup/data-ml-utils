@@ -7,7 +7,7 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.9,<3.11"
 aiobotocore = "2.4.2"
 appdirs = "1.4.4"
 attrs = "22.1.0"
