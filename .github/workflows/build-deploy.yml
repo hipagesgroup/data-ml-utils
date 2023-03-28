@@ -4,20 +4,6 @@ on:
     pull_request:
     workflow_dispatch:
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        concurrency:
-            group: ${{ github.ref }}
-            cancel-in-progress: true
-        steps:
-            - name: Checkout
-              uses: hipagesgroup/actions/checkout@master
-            - name: Configure AWS credentials
-              uses: aws-actions/configure-aws-credentials@v1
-              with:
-                  aws-access-key-id: ${{ secrets.MLOPS_AWS_ACCESS_KEY_ID }}
-                  aws-secret-access-key: ${{ secrets.MLOPS_AWS_SECRET_ACCESS_KEY }}
-                  aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
     lint:
         runs-on: ubuntu-latest
         steps:
@@ -61,7 +47,7 @@ jobs:
     scan:
         name: Run Code Quality Scan 🔍
         runs-on: ubuntu-latest
-        needs: [build, lint, test]
+        needs: [lint, test]
         timeout-minutes: 10
         steps:
             - name: Checkout

@@ -49,7 +49,7 @@ def get_config_yaml(file_path: str) -> Tuple[str, str, str, str, str, str]:
         s3 bucket
     """
     with open(file_path) as file:
-        config_yaml = yaml.load(file, Loader=yaml.FullLoader)
+        config_yaml = yaml.safe_load(file)
 
     table_name = f"{config_yaml['schema']}.{config_yaml['tables'][0]['name']}"
 

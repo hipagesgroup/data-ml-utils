@@ -1,7 +1,6 @@
 import pathlib
-
-from mock import mock_open
-from mock import patch
+from unittest.mock import mock_open
+from unittest.mock import patch
 
 from data_ml_utils.core.pyathena_utils import format_sql_create_schema
 from data_ml_utils.core.pyathena_utils import format_sql_repair_table
@@ -31,7 +30,7 @@ class TestReadSQL:
 
         real_contents = read_sql("/dev/null")
         contents = pathlib.Path("/dev/null").read_text()
-        assert contents == real_contents
+        assert contents == real_contents  # noqa: S101
 
 
 class TestFormatSQL:
@@ -55,9 +54,9 @@ class TestFormatSQL:
             s3_bucket,
         ) = get_config_yaml("tests/data_ml_utils/core/test_yaml.yaml")
 
-        assert table_name == "dev.test_table"
-        assert s3_bucket == "testing-bucket/testing/"
-        assert partition_column == "inference_date_created"
+        assert table_name == "dev.test_table"  # noqa: S101
+        assert s3_bucket == "testing-bucket/testing/"  # noqa: S101
+        assert partition_column == "inference_date_created"  # noqa: S101
 
     @patch("data_ml_utils.core.pyathena_utils.get_config_yaml")
     def test_format_sql_create_schema(self, mocked_config_function):
@@ -95,7 +94,7 @@ class TestFormatSQL:
             dummy_sql, "tests/data_ml_utils/core/test_yaml.yaml"
         )
 
-        assert return_table_name == "dev.test_table"
+        assert return_table_name == "dev.test_table"  # noqa: S101
 
     def test_format_sql_repair_table(self):
         """
@@ -113,4 +112,4 @@ class TestFormatSQL:
 
         return_sql = format_sql_repair_table(dummy_sql, dummy_table_name)
 
-        assert return_sql == "REPAIR TABLE dev.test_table"
+        assert return_sql == "REPAIR TABLE dev.test_table"  # noqa: S101
