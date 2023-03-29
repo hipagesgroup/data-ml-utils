@@ -159,6 +159,7 @@ def mlflow_promote_model(
     eval_date: str,
     env: str,
     mlflow_client: mlflow.tracking.client.MlflowClient,
+    metrics_name: str,
     prev_run_id: str = None,
     prev_metric: float = 0.0,
 ) -> str:
@@ -183,6 +184,8 @@ def mlflow_promote_model(
         running environment "dev", "staging" or "prod"
     mlflow_client: mlflow.tracking.client.MlflowClient
         initialised mlflow client
+    metrics_name: str
+        name of primary evaluation metric captured
     prev_run_id: str
         default None, run_id of previous model
     prev_metric: float
@@ -222,11 +225,11 @@ def mlflow_promote_model(
             name=name,
             version=rm_retrained.version,
             description=f"""
-            Data                        : {start_date} to {eval_date}
-            Curr Version                : {rm_retrained.version}
-            Curr Overall MAE            : {retrained_metric:.4f}
-            Prev Version                : {prev_version}
-            Prev Overall MAE            : {prev_metric:.4f}
+            Data                            : {start_date} to {eval_date}
+            Curr Version                    : {rm_retrained.version}
+            Curr Overall {metrics_name}     : {retrained_metric:.4f}
+            Prev Version                    : {prev_version}
+            Prev Overall MAE {metrics_name} : {prev_metric:.4f}
             """,
         )
         return "model is transitioned, and registered model description updated"

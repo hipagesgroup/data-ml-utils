@@ -202,6 +202,7 @@ class TestMlflowModelUtils:
                 start_date="test",
                 eval_date="test",
                 mlflow_client=MagicMock(),
+                metrics_name="MAE",
                 env="test",
             )
 
@@ -220,15 +221,16 @@ class TestMlflowModelUtils:
         mock_mlflow_client.search_model_versions.return_value = [
             dummy_nested_callable_object
         ]
-        with pytest.raises(ValueError, match="Invalid environment"):
+        with pytest.raises(ValueError, match="Model is already in target stage"):
             mlflow_promote_model(
                 name="test",
-                retrained_run_id="test",
+                retrained_run_id="test_123",
                 retrained_metric=0.0,
                 start_date="test",
                 eval_date="test",
                 mlflow_client=mock_mlflow_client,
-                env="test",
+                metrics_name="MAE",
+                env="staging",
             )
 
     @patch(
@@ -264,6 +266,7 @@ class TestMlflowModelUtils:
             eval_date="test",
             env="Staging",
             prev_run_id="test_123",
+            metrics_name="MAE",
             prev_metric=0.0,
             mlflow_client=mock_mlflow_client,
         )

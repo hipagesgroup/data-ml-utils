@@ -22,8 +22,10 @@ data-ml-utils has a few utilities that we try to generalise across projects.
    commands/pyathena_api_specs
    commands/pyathena_utils_api_specs
    commands/databricks_utils_api_specs
-   commands/mlflow_databricks
-   commands/mlflow_databricks_api_specs
+   commands/mlflow_tracker_databricks
+   commands/mlflow_tracker_databricks_api_specs
+   commands/mlflow_utils_databricks
+   commands/mlflow_utils_databricks_api_specs
 
 Why are packaging this into a python library?
 ---------------------------------------------
@@ -57,8 +59,8 @@ This covers:
 See :doc:`commands/pyathena` for more details.
 
 
-MLflow utils
-------------
+MLflow tracker
+--------------
 We try to fit the function calls to be as simple as possible with a one-liner.
 This covers:
 
@@ -67,4 +69,18 @@ This covers:
 - log params
 - log metrics
 
-See :doc:`commands/mlflow_databricks` for more details.
+See :doc:`commands/mlflow_tracker_databricks` for more details.
+
+
+MLflow utils
+------------
+We try to fit the function calls to be as simple as possible with a one-liner.
+This covers:
+
+- load model
+- load artifact
+- get mlflow model evaluation metrics
+- get registered model run info and mlflow run_id
+- mlflow promote model
+
+See :doc:`commands/mlflow_utils_databricks` for more details.

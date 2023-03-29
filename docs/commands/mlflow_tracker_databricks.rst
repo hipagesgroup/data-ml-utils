@@ -1,7 +1,7 @@
-MLflow utils
-============
+MLflow tracker utils
+====================
 
-This MLflow utils will be used when we run our workflow jobs in databricks. This would only work in databricks ML runtime cluster.
+This MLflow tracker utils will be used when we run our workflow jobs in databricks. This would only work in databricks ML runtime cluster.
 
 ML runtime cluster
 ------------------

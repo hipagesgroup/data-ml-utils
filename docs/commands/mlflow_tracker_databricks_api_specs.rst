@@ -1,21 +1,21 @@
-MLflow Databricks API Specs
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MLflow tracker Databricks API Specs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `Methods`
 
 .. list-table::
    :widths: 100 50 50
 
-   * -  **mlflow_log_artifact** (`file_path`)
+   * -  **mlflow_log_artifact** (`artifact, artifact_name, local_path, artifact_path`)
      - log an artifact to mlflow run
      - :ref:`mlflow_log_artifact`
-   * -  **mlflow_log_register_model** (`file_path`)
+   * -  **mlflow_log_register_model** (`model, type_of_model, model_func_dict, artifact_path, name_of_registered_model, extra_pip_requirements, code_path`)
      - log and register model to mlflow run
      - :ref:`mlflow_log_register_model`
-   * -  **mlflow_log_params** (`file_path`)
+   * -  **mlflow_log_params** (`params`)
      - log model parameters to mlflow run
      - :ref:`mlflow_log_params`
-   * -  **mlflow_log_metric** (`file_path`)
+   * -  **mlflow_log_metric** (`key, value`)
      - log model evaluation metrics to mlflow run
      - :ref:`mlflow_log_metric`
 
