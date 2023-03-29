@@ -56,7 +56,7 @@ class TestMlflowModelUtils:
         self, mock_download_artifacts, mock_active_run, dummy_load_artifact
     ) -> None:
         """
-        test if mlflow_load_artifact() can load model
+        test if mlflow_load_artifact() can load a non-yaml file
 
         Parameters
         ----------
@@ -84,7 +84,7 @@ class TestMlflowModelUtils:
         self, mock_download_artifacts, mock_active_run, dummy_load_artifact
     ) -> None:
         """
-        test if mlflow_load_artifact() can load model
+        test if mlflow_load_artifact() can load a yaml file
 
         Parameters
         ----------
@@ -104,6 +104,16 @@ class TestMlflowModelUtils:
             type_of_artifact="yaml",
         )
         assert isinstance(expected_return, dict)  # noqa: S101
+
+    def test_mlflow_load_artifact_error(self) -> None:
+        """
+        function test for mlflow_load_artifact to raise an error
+        """
+
+        with pytest.raises(ValueError, match="Artifact type not supported"):
+            mlflow_load_artifact(
+                artifact_uri="test", artifact_name="test", type_of_artifact="test"
+            )
 
     @patch("data_ml_utils.mlflow_databricks.mlflow_model_utils.mlflow.get_run")
     def test_mlflow_get_model_metrics_dict(
