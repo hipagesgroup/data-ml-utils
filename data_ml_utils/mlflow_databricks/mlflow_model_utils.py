@@ -7,6 +7,7 @@ import mlflow
 from joblib import load
 
 from data_ml_utils.core.databricks_utils import get_target_stage_for_env
+from data_ml_utils.core.databricks_utils import load_yaml
 
 
 def mlflow_load_model(
@@ -42,6 +43,7 @@ def mlflow_load_model(
 def mlflow_load_artifact(
     artifact_uri: str,
     artifact_name: str,
+    type_of_artifact: str = "joblib",
 ) -> Any:
     """
     function to load artifact from mlflow
@@ -61,7 +63,16 @@ def mlflow_load_artifact(
         artifact
     """
 
-    return load(
+    if type_of_artifact not in ("joblib", "pkl", "dict", "yaml"):
+        raise ValueError("Artifact type not supported")
+
+    if type_of_artifact in ("joblib", "pkl", "dict"):
+        return load(
+            mlflow.artifacts.download_artifacts(
+                artifact_uri=f"{artifact_uri}/{artifact_name}"
+            )
+        )
+    return load_yaml(
         mlflow.artifacts.download_artifacts(
             artifact_uri=f"{artifact_uri}/{artifact_name}"
         )

@@ -52,7 +52,7 @@ class TestMlflowModelUtils:
     @patch(
         "data_ml_utils.mlflow_databricks.mlflow_model_utils.mlflow.artifacts.download_artifacts"  # noqa: E501
     )
-    def test_mlflow_load_artifact(
+    def test_mlflow_load_artifact_pkl_joblib_dict(
         self, mock_download_artifacts, mock_active_run, dummy_load_artifact
     ) -> None:
         """
@@ -73,8 +73,37 @@ class TestMlflowModelUtils:
         expected_return = mlflow_load_artifact(
             artifact_uri="test_uri",
             artifact_name="test",
+            type_of_artifact="pkl",
         )
         pd.testing.assert_frame_equal(expected_return, dummy_load_artifact)
+
+    @patch(
+        "data_ml_utils.mlflow_databricks.mlflow_model_utils.mlflow.artifacts.download_artifacts"  # noqa: E501
+    )
+    def test_mlflow_load_artifact_yaml(
+        self, mock_download_artifacts, mock_active_run, dummy_load_artifact
+    ) -> None:
+        """
+        test if mlflow_load_artifact() can load model
+
+        Parameters
+        ----------
+        mock_download_artifacts:
+            mock patch mlflow.artifacts.download_artifacts
+        mock_active_run:
+            mock mlflow start run
+        dummy_load_artifact:
+            dummy load artifact dataframe
+        """
+
+        mock_active_run.return_value = MagicMock()
+        mock_download_artifacts.return_value = "tests/data_ml_utils/core/test_yaml.yaml"
+        expected_return = mlflow_load_artifact(
+            artifact_uri="test_uri",
+            artifact_name="test",
+            type_of_artifact="yaml",
+        )
+        assert isinstance(expected_return, dict)  # noqa: S101
 
     @patch("data_ml_utils.mlflow_databricks.mlflow_model_utils.mlflow.get_run")
     def test_mlflow_get_model_metrics_dict(
