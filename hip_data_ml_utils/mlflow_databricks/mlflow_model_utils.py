@@ -6,8 +6,8 @@ from typing import Union
 import mlflow
 from joblib import load
 
-from data_ml_utils.core.databricks_utils import get_target_stage_for_env
-from data_ml_utils.core.databricks_utils import load_yaml
+from hip_data_ml_utils.core.databricks_utils import get_target_stage_for_env
+from hip_data_ml_utils.core.databricks_utils import load_yaml
 
 
 def mlflow_load_model(

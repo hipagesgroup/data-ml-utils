@@ -6,7 +6,7 @@ repo_name: hipagesgroup/data-ml-utils
 repo_url: https://github.com/hipagesgroup/data-ml-utils
 edit_uri: edit/master/docs
 
-copyright: Copyright &copy; hipages
+copyright: Copyright &copy; hipages group
 
 nav:
     - Home: index.md

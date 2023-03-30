@@ -14,8 +14,8 @@ import sys
 sys.path.insert(0, os.path.abspath("."))
 # -- Project information -----------------------------------------------------
 
-project = "data_ml_utils"
-copyright = "2022 - 2023, ShuMing Peh"  # noqa: A001
+project = "hip-data-ml-utils"
+copyright = "2022 - 2023, hipages group"  # noqa: A001
 author = "ShuMing Peh"
 
 # The full version, including alpha/beta/rc tags

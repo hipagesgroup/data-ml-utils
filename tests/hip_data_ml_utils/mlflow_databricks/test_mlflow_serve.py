@@ -3,10 +3,10 @@ import pytest
 import requests
 import responses
 
-from data_ml_utils.mlflow_databricks.mlflow_serve import enable_endpoint
-from data_ml_utils.mlflow_databricks.mlflow_serve import get_endpoint_state_status
-from data_ml_utils.mlflow_databricks.mlflow_serve import get_endpoint_status
-from data_ml_utils.mlflow_databricks.mlflow_serve import update_compute_config
+from hip_data_ml_utils.mlflow_databricks.mlflow_serve import enable_endpoint
+from hip_data_ml_utils.mlflow_databricks.mlflow_serve import get_endpoint_state_status
+from hip_data_ml_utils.mlflow_databricks.mlflow_serve import get_endpoint_status
+from hip_data_ml_utils.mlflow_databricks.mlflow_serve import update_compute_config
 
 
 class TestServe:

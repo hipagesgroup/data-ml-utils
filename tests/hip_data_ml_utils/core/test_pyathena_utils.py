@@ -2,10 +2,10 @@ import pathlib
 from unittest.mock import mock_open
 from unittest.mock import patch
 
-from data_ml_utils.core.pyathena_utils import format_sql_create_schema
-from data_ml_utils.core.pyathena_utils import format_sql_repair_table
-from data_ml_utils.core.pyathena_utils import get_config_yaml
-from data_ml_utils.core.pyathena_utils import read_sql
+from hip_data_ml_utils.core.pyathena_utils import format_sql_create_schema
+from hip_data_ml_utils.core.pyathena_utils import format_sql_repair_table
+from hip_data_ml_utils.core.pyathena_utils import get_config_yaml
+from hip_data_ml_utils.core.pyathena_utils import read_sql
 
 
 class TestReadSQL:
@@ -57,13 +57,13 @@ class TestFormatSQL:
             partition_column,
             partition_column_comment,
             s3_bucket,
-        ) = get_config_yaml("tests/data_ml_utils/core/test_yaml.yaml")
+        ) = get_config_yaml("tests/hip_data_ml_utils/core/test_yaml.yaml")
 
         assert table_name == dummy_test_table  # noqa: S101
         assert s3_bucket == "testing-bucket/testing/"  # noqa: S101
         assert partition_column == "inference_date_created"  # noqa: S101
 
-    @patch("data_ml_utils.core.pyathena_utils.get_config_yaml")
+    @patch("hip_data_ml_utils.core.pyathena_utils.get_config_yaml")
     def test_format_sql_create_schema(
         self, mocked_config_function, dummy_test_table
     ) -> None:

@@ -3,13 +3,13 @@ from unittest.mock import patch
 import pandas as pd
 import pyathena
 
-from data_ml_utils.pyathena_client.client import PyAthenaClient
+from hip_data_ml_utils.pyathena_client.client import PyAthenaClient
 
 
 class TestPyAthenaClient:
     """test class for pyathena client"""
 
-    @patch("data_ml_utils.pyathena_client.client.connect")
+    @patch("hip_data_ml_utils.pyathena_client.client.connect")
     def test_connect(self, mocked_pyathena, aws_credentials):
         """
         test function to connect to pyathena
@@ -44,9 +44,9 @@ class TestPyAthenaClient:
             return_connection, pyathena.connection.Connection
         )
 
-    @patch("data_ml_utils.pyathena_client.client.read_sql")
-    @patch("data_ml_utils.pyathena_client.client.format_sql_create_schema")
-    @patch("data_ml_utils.pyathena_client.client.format_sql_repair_table")
+    @patch("hip_data_ml_utils.pyathena_client.client.read_sql")
+    @patch("hip_data_ml_utils.pyathena_client.client.format_sql_create_schema")
+    @patch("hip_data_ml_utils.pyathena_client.client.format_sql_repair_table")
     def test_create_msck_repair_table_error(
         self,
         # mocked_pyathena,
@@ -90,10 +90,10 @@ class TestPyAthenaClient:
 
         assert test == 1  # noqa: S101
 
-    @patch("data_ml_utils.pyathena_client.client.read_sql")
-    @patch("data_ml_utils.pyathena_client.client.format_sql_create_schema")
-    @patch("data_ml_utils.pyathena_client.client.format_sql_repair_table")
-    @patch("data_ml_utils.pyathena_client.client.PyAthenaClient")
+    @patch("hip_data_ml_utils.pyathena_client.client.read_sql")
+    @patch("hip_data_ml_utils.pyathena_client.client.format_sql_create_schema")
+    @patch("hip_data_ml_utils.pyathena_client.client.format_sql_repair_table")
+    @patch("hip_data_ml_utils.pyathena_client.client.PyAthenaClient")
     def test_create_msck_repair_table(
         self,
         mocked_pyathena,
@@ -168,7 +168,7 @@ class TestPyAthenaClient:
 
         assert test == 1  # noqa: S101
 
-    @patch("data_ml_utils.pyathena_client.client.PyAthenaClient")
+    @patch("hip_data_ml_utils.pyathena_client.client.PyAthenaClient")
     def test_drop_table(
         self,
         mocked_pyathena,
@@ -202,7 +202,7 @@ class TestPyAthenaClient:
 
         assert test == 0  # noqa: S101
 
-    @patch("data_ml_utils.pyathena_client.client.PyAthenaClient")
+    @patch("hip_data_ml_utils.pyathena_client.client.PyAthenaClient")
     def test_query_as_pandas(
         self,
         mocked_pyathena,

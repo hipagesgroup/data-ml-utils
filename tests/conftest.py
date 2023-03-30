@@ -20,7 +20,7 @@ def mock_active_run():
     """mocked mlflow.active_run()"""
 
     with patch(
-        "data_ml_utils.mlflow_databricks.mlflow_tracker.mlflow.active_run"
+        "hip_data_ml_utils.mlflow_databricks.mlflow_tracker.mlflow.active_run"
     ) as mock_active_run:
         mock_active_run.return_value = None
         yield mock_active_run
