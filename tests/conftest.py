@@ -13,7 +13,6 @@ def aws_credentials():
         "AWS_SECRET_ACCESS_KEY"  # noqa: S105
     ] = "testing"
     os.environ["AWS_DEFAULT_REGION"] = "ap-southeast-2"  # pragma: allowlist secret
-    os.environ["AWS_DEFAULT_REGION"] = "ap-southeast-2"  # pragma: allowlist secret
     os.environ["S3_BUCKET"] = "s3://au-com-dummy/athena_queries/"
 
 
