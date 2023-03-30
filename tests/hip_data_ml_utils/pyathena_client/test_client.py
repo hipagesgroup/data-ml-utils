@@ -5,6 +5,8 @@ import pyathena
 
 from hip_data_ml_utils.pyathena_client.client import PyAthenaClient
 
+TEST_SQL_FILE = "test.sql"
+
 
 class TestPyAthenaClient:
     """test class for pyathena client"""
@@ -80,8 +82,8 @@ class TestPyAthenaClient:
         test_client.engine = Exception
 
         test = test_client.create_msck_repair_table(
-            create_raw_query="test.sql",
-            repair_raw_query="test.sql",
+            create_raw_query=TEST_SQL_FILE,
+            repair_raw_query=TEST_SQL_FILE,
             yaml_schema_file_path="test.yaml",
         )
 
@@ -130,8 +132,8 @@ class TestPyAthenaClient:
         test_client.engine = mocked_pyathena
 
         test = test_client.create_msck_repair_table(
-            create_raw_query="test.sql",
-            repair_raw_query="test.sql",
+            create_raw_query=TEST_SQL_FILE,
+            repair_raw_query=TEST_SQL_FILE,
             yaml_schema_file_path="test.yaml",
         )
 
