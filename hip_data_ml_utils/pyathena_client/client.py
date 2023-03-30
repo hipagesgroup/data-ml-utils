@@ -8,10 +8,10 @@ import pyathena
 from pyathena import connect
 from pyathena.pandas.cursor import PandasCursor
 
-from data_ml_utils.core.config import settings
-from data_ml_utils.core.pyathena_utils import format_sql_create_schema
-from data_ml_utils.core.pyathena_utils import format_sql_repair_table
-from data_ml_utils.core.pyathena_utils import read_sql
+from hip_data_ml_utils.core.config import settings
+from hip_data_ml_utils.core.pyathena_utils import format_sql_create_schema
+from hip_data_ml_utils.core.pyathena_utils import format_sql_repair_table
+from hip_data_ml_utils.core.pyathena_utils import read_sql
 
 
 class PyAthenaClient:
@@ -27,6 +27,7 @@ class PyAthenaClient:
         """
         create a pyathena connection with pandas cursor
         this queries athena queries much faster
+
         Returns
         -------
         pyathena.connection.Connection
@@ -35,7 +36,7 @@ class PyAthenaClient:
         today_date = (datetime.datetime.now()).strftime("%Y-%m-%d")
 
         connection = connect(
-            s3_staging_dir=f"{settings.S3_ATHENA_QUERY_DIRECTORY}query_{today_date}",
+            s3_staging_dir=f"{os.environ['S3_BUCKET']}query_{today_date}",
             region_name=settings.AWS_DEFAULT_REGION,
             aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
             aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],

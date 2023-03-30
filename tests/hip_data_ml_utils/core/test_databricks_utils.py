@@ -2,10 +2,10 @@ import datetime
 from typing import Callable
 from unittest.mock import patch
 
-from data_ml_utils.core.databricks_utils import get_function_to_load
-from data_ml_utils.core.databricks_utils import get_target_stage_for_env
-from data_ml_utils.core.databricks_utils import get_test_date
-from data_ml_utils.core.databricks_utils import load_yaml
+from hip_data_ml_utils.core.databricks_utils import get_function_to_load
+from hip_data_ml_utils.core.databricks_utils import get_target_stage_for_env
+from hip_data_ml_utils.core.databricks_utils import get_test_date
+from hip_data_ml_utils.core.databricks_utils import load_yaml
 
 
 class TestDatabricksCommonUtils:

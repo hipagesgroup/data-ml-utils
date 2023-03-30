@@ -3,13 +3,15 @@ from unittest.mock import patch
 import pandas as pd
 import pyathena
 
-from data_ml_utils.pyathena_client.client import PyAthenaClient
+from hip_data_ml_utils.pyathena_client.client import PyAthenaClient
+
+TEST_SQL_FILE = "test.sql"
 
 
 class TestPyAthenaClient:
     """test class for pyathena client"""
 
-    @patch("data_ml_utils.pyathena_client.client.connect")
+    @patch("hip_data_ml_utils.pyathena_client.client.connect")
     def test_connect(self, mocked_pyathena, aws_credentials):
         """
         test function to connect to pyathena
@@ -27,10 +29,7 @@ class TestPyAthenaClient:
         """
 
         dummy_connection = pyathena.connect(
-            s3_staging_dir=(
-                """s3://au-com-hipages-offline-feature-store/athena_queries/"""
-                """query_2019-01-01"""
-            ),
+            s3_staging_dir=("s3://au-com-dummy/athena_queries/query_2019-01-01"),
             region_name="ap-southeast-2",
         )
 
@@ -44,9 +43,9 @@ class TestPyAthenaClient:
             return_connection, pyathena.connection.Connection
         )
 
-    @patch("data_ml_utils.pyathena_client.client.read_sql")
-    @patch("data_ml_utils.pyathena_client.client.format_sql_create_schema")
-    @patch("data_ml_utils.pyathena_client.client.format_sql_repair_table")
+    @patch("hip_data_ml_utils.pyathena_client.client.read_sql")
+    @patch("hip_data_ml_utils.pyathena_client.client.format_sql_create_schema")
+    @patch("hip_data_ml_utils.pyathena_client.client.format_sql_repair_table")
     def test_create_msck_repair_table_error(
         self,
         # mocked_pyathena,
@@ -83,17 +82,17 @@ class TestPyAthenaClient:
         test_client.engine = Exception
 
         test = test_client.create_msck_repair_table(
-            create_raw_query="test.sql",
-            repair_raw_query="test.sql",
+            create_raw_query=TEST_SQL_FILE,
+            repair_raw_query=TEST_SQL_FILE,
             yaml_schema_file_path="test.yaml",
         )
 
         assert test == 1  # noqa: S101
 
-    @patch("data_ml_utils.pyathena_client.client.read_sql")
-    @patch("data_ml_utils.pyathena_client.client.format_sql_create_schema")
-    @patch("data_ml_utils.pyathena_client.client.format_sql_repair_table")
-    @patch("data_ml_utils.pyathena_client.client.PyAthenaClient")
+    @patch("hip_data_ml_utils.pyathena_client.client.read_sql")
+    @patch("hip_data_ml_utils.pyathena_client.client.format_sql_create_schema")
+    @patch("hip_data_ml_utils.pyathena_client.client.format_sql_repair_table")
+    @patch("hip_data_ml_utils.pyathena_client.client.PyAthenaClient")
     def test_create_msck_repair_table(
         self,
         mocked_pyathena,
@@ -133,8 +132,8 @@ class TestPyAthenaClient:
         test_client.engine = mocked_pyathena
 
         test = test_client.create_msck_repair_table(
-            create_raw_query="test.sql",
-            repair_raw_query="test.sql",
+            create_raw_query=TEST_SQL_FILE,
+            repair_raw_query=TEST_SQL_FILE,
             yaml_schema_file_path="test.yaml",
         )
 
@@ -168,7 +167,7 @@ class TestPyAthenaClient:
 
         assert test == 1  # noqa: S101
 
-    @patch("data_ml_utils.pyathena_client.client.PyAthenaClient")
+    @patch("hip_data_ml_utils.pyathena_client.client.PyAthenaClient")
     def test_drop_table(
         self,
         mocked_pyathena,
@@ -202,7 +201,7 @@ class TestPyAthenaClient:
 
         assert test == 0  # noqa: S101
 
-    @patch("data_ml_utils.pyathena_client.client.PyAthenaClient")
+    @patch("hip_data_ml_utils.pyathena_client.client.PyAthenaClient")
     def test_query_as_pandas(
         self,
         mocked_pyathena,

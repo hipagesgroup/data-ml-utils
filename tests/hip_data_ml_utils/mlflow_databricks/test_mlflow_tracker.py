@@ -8,10 +8,10 @@ import mlflow
 import pytest
 from mlflow.exceptions import MlflowException
 
-from data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_artifact
-from data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_metric
-from data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_params
-from data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_register_model
+from hip_data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_artifact
+from hip_data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_metric
+from hip_data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_params
+from hip_data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_register_model
 
 
 class TestMlflowTracking:
@@ -56,7 +56,7 @@ class TestMlflowTracking:
         with pytest.raises(MlflowException, match="No active run to log artifact"):
             mlflow_log_artifact(artifact="test", artifact_name="test")
 
-    @patch("data_ml_utils.mlflow_databricks.mlflow_tracker.getattr")
+    @patch("hip_data_ml_utils.mlflow_databricks.mlflow_tracker.getattr")
     def test_mlflow_log_register_model(self, mock_model_func, mock_active_run) -> None:
         """
         test if mlflow_log_model() can log model
