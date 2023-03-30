@@ -8,10 +8,6 @@ data-ml-utils
 
 This python library package covers the common utility packages that data/ml project will use
 
-.. image:: _static/github_logo.png
-    :scale: 4%
-    :target: https://github.com/hipagesgroup/data-ml-utils/tree/master
-
 data-ml-utils has a few utilities that we try to generalise across projects.
 
 .. toctree::
@@ -26,6 +22,10 @@ data-ml-utils has a few utilities that we try to generalise across projects.
    commands/mlflow_tracker_databricks_api_specs
    commands/mlflow_utils_databricks
    commands/mlflow_utils_databricks_api_specs
+   commands/mlflow_serve
+   commands/mlflow_serve_api_specs
+   commands/mlflow_prediction_requests
+   commands/mlflow_prediction_requests_api_specs
 
 Why are packaging this into a python library?
 ---------------------------------------------
@@ -84,3 +84,25 @@ This covers:
 - mlflow promote model
 
 See :doc:`commands/mlflow_utils_databricks` for more details.
+
+MLflow serve
+------------
+We try to fit the function calls to be as simple as possible with a one-liner.
+This covers:
+
+- enable model endpoint
+- get endpoint status
+- get endpoint state status
+- update databricks model endpoint compute config
+
+See :doc:`commands/mlflow_serve` for more details.
+
+MLflow prediction requests
+--------------------------
+We try to fit the function calls to be as simple as possible with a one-liner.
+This covers:
+
+- verify prediction of requests and expected
+- post requests for integration tests
+
+See :doc:`commands/mlflow_prediction_requests` for more details.
