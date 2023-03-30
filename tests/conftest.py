@@ -82,3 +82,70 @@ def dummy_nested_callable_object():
             return 1
 
     return first_class()
+
+
+@pytest.fixture(autouse=True)
+def dummy_response():
+    return {
+        "endpoint_status": {
+            "registered_model_name": "clefairy",
+            "state": "ENDPOINT_STATE_READY",
+            "state_message": "Waiting for deployment to be created.",
+        }
+    }
+
+
+@pytest.fixture(autouse=True)
+def dummy_response_error():
+    return {
+        "endpoint_status": {
+            "registered_model_name": "clefairy",
+            "state_message": "Waiting for deployment to be created.",
+        }
+    }
+
+
+@pytest.fixture(scope="module")
+def dummy_url():
+    """dummy url"""
+
+    return "https://test.com"
+
+
+@pytest.fixture(autouse=True)
+def dummy_json_response():
+    return {
+        "predictions": {
+            "data": [
+                {
+                    "practice_id": 394,
+                    "practice_parent_id": 55,
+                    "practice_seo_key": "handyman_basic_painting",
+                    "practice_seo_name": "Basic Painting",
+                    "practice_parent_seo_name": "Handyman",
+                    "practice_parent_seo_key": "Handyman",
+                    "ranking": 0.3340230470456127,
+                }
+            ]
+        }
+    }
+
+
+@pytest.fixture(autouse=True)
+def dummy_settings_error():
+    return {
+        "random": {
+            "top_result": {"parent_seo_name": "Not related"},
+            "keywords": "random",
+        }
+    }
+
+
+@pytest.fixture(autouse=True)
+def dummy_settings_success():
+    return {
+        "random": {
+            "top_result": {"parent_seo_name": "Basic Painting"},
+            "keywords": "random",
+        }
+    }
