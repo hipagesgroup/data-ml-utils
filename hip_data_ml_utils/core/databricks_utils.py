@@ -90,4 +90,4 @@ def get_target_stage_for_env(env: str) -> str:
     if not (isinstance(env, str)) or (env.lower() not in ["dev", "staging", "prod"]):
         raise ValueError("Invalid environment")
 
-    return "Staging" if env.lower() in ("dev", "staging") else "Production"
+    return "Staging" if env.lower() in {"dev", "staging"} else "Production"

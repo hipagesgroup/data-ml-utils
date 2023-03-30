@@ -63,20 +63,22 @@ def mlflow_load_artifact(
         artifact
     """
 
-    if type_of_artifact not in ("joblib", "pkl", "dict", "yaml"):
-        raise ValueError("Artifact type not supported")
-
-    if type_of_artifact in ("joblib", "pkl", "dict"):
-        return load(
-            mlflow.artifacts.download_artifacts(
-                artifact_uri=f"{artifact_uri}/{artifact_name}"
+    if type_of_artifact in {"joblib", "pkl", "dict", "yaml"}:
+        return (
+            load(
+                mlflow.artifacts.download_artifacts(
+                    artifact_uri=f"{artifact_uri}/{artifact_name}"
+                )
+            )
+            if type_of_artifact in {"joblib", "pkl", "dict"}
+            else load_yaml(
+                mlflow.artifacts.download_artifacts(
+                    artifact_uri=f"{artifact_uri}/{artifact_name}"
+                )
             )
         )
-    return load_yaml(
-        mlflow.artifacts.download_artifacts(
-            artifact_uri=f"{artifact_uri}/{artifact_name}"
-        )
-    )
+    else:
+        raise ValueError("Artifact type not supported")
 
 
 def mlflow_get_model_metrics(
