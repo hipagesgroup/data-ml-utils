@@ -1,5 +1,5 @@
 ---
-site_name: data ml utils python library
+site_name: Data ML Utils python library
 site_description: A utility python package that covers the common libraries we use for our (data and) ML projects.
 
 repo_name: hipagesgroup/data-ml-utils
