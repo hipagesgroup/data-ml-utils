@@ -4,9 +4,18 @@ kind: Component
 metadata:
     name: data-ml-utils
     description: >-
-        Private utility python package for data/ML use cases.
+        Python utility package for data/ML use cases.
     annotations:
         github.com/project-slug: hipagesgroup/data-ml-utils
+        github.com/team-slug: data-platform
+        backstage.io/techdocs-ref: dir:/
+        sonarqube.org/project-key: hipagesgroup_data_ml_utils
+    tags:
+        - mlops
+    links:
+        - url: https://github.com/hipagesgroup/data-ml-utils
+          title: Repository
+          icon: github
 spec:
     type: service
     lifecycle: experimental
