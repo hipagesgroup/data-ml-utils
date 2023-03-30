@@ -27,10 +27,7 @@ class TestPyAthenaClient:
         """
 
         dummy_connection = pyathena.connect(
-            s3_staging_dir=(
-                """s3://au-com-hipages-offline-feature-store/athena_queries/"""
-                """query_2019-01-01"""
-            ),
+            s3_staging_dir=("s3://au-com-dummy/athena_queries/query_2019-01-01"),
             region_name="ap-southeast-2",
         )
 

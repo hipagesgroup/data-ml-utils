@@ -27,6 +27,7 @@ class PyAthenaClient:
         """
         create a pyathena connection with pandas cursor
         this queries athena queries much faster
+
         Returns
         -------
         pyathena.connection.Connection
@@ -35,7 +36,7 @@ class PyAthenaClient:
         today_date = (datetime.datetime.now()).strftime("%Y-%m-%d")
 
         connection = connect(
-            s3_staging_dir=f"{settings.S3_ATHENA_QUERY_DIRECTORY}query_{today_date}",
+            s3_staging_dir=f"{os.environ['S3_BUCKET']}query_{today_date}",
             region_name=settings.AWS_DEFAULT_REGION,
             aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
             aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
