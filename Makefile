@@ -1,9 +1,9 @@
 lint: ## Lint code
-	flake8 src/ tests/ --count
+	flake8 hip_data_ml_utils/ tests/ --count
 
 
 format: ## Format code
-	black src/ tests/
+	black hip_data_ml_utils/ tests/
 
 
 pytest: ## pytest
@@ -19,4 +19,5 @@ install-requirements:
 
 install-poetry:
 	pip install poetry==1.4.1
-	poetry add `cat requirements.txt`
+	poetry update
+	poetry install
