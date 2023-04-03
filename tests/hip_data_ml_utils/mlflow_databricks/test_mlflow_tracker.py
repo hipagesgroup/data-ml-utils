@@ -1,4 +1,5 @@
 import os
+import pathlib
 import tempfile
 from shutil import rmtree
 from unittest.mock import MagicMock
@@ -40,8 +41,7 @@ class TestMlflowTracking:
             artifact = mlflow.artifacts.download_artifacts(
                 f"{artifact_uri}/{path[path.rfind('/')+1:]}"
             )
-            with open(artifact) as f:
-                artifact_content = f.read()
+            artifact_content = pathlib.Path(artifact).read_text()
             assert artifact_content == expected_str  # noqa: S101
             assert expected_result == "artifact test logged"  # noqa: S101
 

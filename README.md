@@ -8,7 +8,7 @@ pip install data-ml-utils --upgrade
 ```
 
 ## Documentation
-Head over to https://data-ml-utils.readthedocs.io/en/latest/index.html# to read our library documentation
+Head over to https://hip-data-ml-utils.readthedocs.io/en/latest/index.html# to read our library documentation
 
 ## Feature
 ### Pyathena client initialisation

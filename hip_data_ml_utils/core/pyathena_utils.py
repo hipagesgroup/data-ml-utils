@@ -19,8 +19,7 @@ def read_sql(file_path: str) -> str:
     str
         query string of sql file
     """
-    raw_query = pathlib.Path(file_path).read_text()
-    return raw_query
+    return pathlib.Path(file_path).read_text()
 
 
 # function to get yaml config values
@@ -139,6 +138,4 @@ def format_sql_repair_table(sql: str, table_name: str) -> str:
         formatted sql with input parameters
     """
 
-    return_sql = sql.format(table_name=table_name)
-
-    return return_sql
+    return sql.format(table_name=table_name)
