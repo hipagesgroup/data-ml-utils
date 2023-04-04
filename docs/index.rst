@@ -3,12 +3,12 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-data-ml-utils
-+++++++++++++
+hip-data-ml-utils
++++++++++++++++++
 
 This python library package covers the common utility packages that data/ml project will use
 
-data-ml-utils has a few utilities that we try to generalise across projects.
+hip-data-ml-utils has a few utilities that we try to generalise across projects.
 
 .. toctree::
    :maxdepth: 1
@@ -40,11 +40,11 @@ Additionally, this would align the way how analysts query with athena through py
 Getting Started
 ---------------
 
-You can install `data-ml-utils` from the git repo using pip
+You can install `hip-data-ml-utils` from the git repo using pip
 
 .. code-block:: console
 
-   $ pip install data-ml-utils --upgrade
+   $ pip install hip-data-ml-utils --upgrade
 
 
 Pyathena
