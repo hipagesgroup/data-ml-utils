@@ -4,7 +4,7 @@ A utility python package that covers the common libraries we use.
 ## Installation
 This is an open source library hosted on pypi. Run the following command to install the library
 ```
-pip install data-ml-utils --upgrade
+pip install hip-data-ml-utils --upgrade
 ```
 
 ## Documentation
@@ -15,7 +15,7 @@ Head over to https://hip-data-ml-utils.readthedocs.io/en/latest/index.html# to r
 Almost one liner
 ```python
 import os
-from data_ml_utils.pyathena_client.client import PyAthenaClient
+from hip_data_ml_utils.pyathena_client.client import PyAthenaClient
 
 os.environ["AWS_ACCESS_KEY_ID"] = "xxx"
 os.environ["AWS_SECRET_ACCESS_KEY"] = "xxx" # pragma: allowlist secret

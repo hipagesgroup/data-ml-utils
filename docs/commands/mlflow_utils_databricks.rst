@@ -17,7 +17,7 @@ This loads an ML model from a list of allowed model types.
 
 .. code-block:: python
 
-   from data_ml_utils.core.config import settings
+   from hip_data_ml_utils.core.config import settings
    settings.model_func_dict
 
 .. image:: ../_static/allowed_model_types.png
