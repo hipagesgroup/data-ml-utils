@@ -19,7 +19,7 @@ copyright = "2022 - 2023, hipages group"  # noqa: A001
 author = "ShuMing Peh"
 
 # The full version, including alpha/beta/rc tags
-release = "0.3.5"
+release = "0.3.9"
 
 
 # -- General configuration ---------------------------------------------------
@@ -72,7 +72,7 @@ html_theme_options = {
     "github_button": False,
     "fixed_sidebar": True,
     "extra_nav_links": {
-        "data-ml-utils@github": "https://github.com/hipagesgroup/data-ml-utils",
+        "hip-data-ml-utils@github": "https://github.com/hipagesgroup/data-ml-utils",
     },
 }
 
@@ -85,7 +85,9 @@ htmlhelp_basename = "datamlutilsdoc"
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "data-ml-utils", "Data ML Utils Documentation", [author], 1)]
+man_pages = [
+    (master_doc, "hip-data-ml-utils", "Data ML Utils Documentation", [author], 1)
+]
 
 # -- Options for Texinfo output ----------------------------------------------
 
@@ -95,10 +97,10 @@ man_pages = [(master_doc, "data-ml-utils", "Data ML Utils Documentation", [autho
 texinfo_documents = [
     (
         master_doc,
-        "data-ml-utils",
+        "hip-data-ml-utils",
         "Data ML Utils Documentation",
         author,
-        "data-ml-utils",
+        "hip-data-ml-utils",
         "One line description of project.",
         "Miscellaneous",
     )

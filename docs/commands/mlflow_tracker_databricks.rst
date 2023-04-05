@@ -17,7 +17,7 @@ We will need to import the python package
 
 .. code-block:: python
 
-   from data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_artifact
+   from hip_data_ml_utils.mlflow_databricks.mlflow_tracker import mlflow_log_artifact
 
 And then call the function, when we have an artifact to log.
 

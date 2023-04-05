@@ -34,7 +34,7 @@ We will need to import the python package
 
 .. code-block:: python
 
-   from data_ml_utils.pyathena_client.client import PyAthenaClient
+   from hip_data_ml_utils.pyathena_client.client import PyAthenaClient
 
 And then initialise the class
 
