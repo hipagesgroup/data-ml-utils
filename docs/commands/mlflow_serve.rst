@@ -24,10 +24,9 @@ A successful response will return a True boolean, and raises an exception otherw
        model_name="clefairy",
        databricks_cluster_hostname=os.environ["CLUSTER_HOSTNAME"],
        databricks_workspace_token=os.environ["PAT_TOKEN"],
+       dbfs_table_path="dbfs:/test-logs",
+       model_version=151,
    )
-
-.. image:: ../_static/mlflow_serve_enable_model_endpoint.png
-   :align: center
 
 
 Get endpoint state status
@@ -83,12 +82,9 @@ A successful response will return a non zero exit function if successful
    update_compute_config(
        databricks_api_url="api/2.0/preview/mlflow/endpoints-v2/update-compute-config",
        model_name="clefairy",
-       stage="Staging",
        databricks_cluster_hostname=os.environ["CLUSTER_HOSTNAME"],
        databricks_workspace_token=os.environ["PAT_TOKEN"],
        workload_size_id="Small",
+       model_version=151,
        scale_to_zero_enabled="true",
    )
-
-.. image:: ../_static/mlflow_serve_update_compute_config.png
-   :align: center

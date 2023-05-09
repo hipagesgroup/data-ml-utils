@@ -15,6 +15,9 @@ MLflow utils Databricks API Specs
    * -  **mlflow_get_model_metrics** (`run_id, key_value_metrics`)
      - gets all model evaluation metrics logged in MLflow run, or a specified key value evaluation metric
      - :ref:`mlflow_get_model_metrics`
+   * -  **mlflow_get_model_version** (`mlflow_client, name, stage`)
+     - gets registered model version of "Staging" or "Production"
+     - :ref:`mlflow_get_model_version`
    * -  **mlflow_get_both_registered_model_info_run_id** (`name, mlflow_client, run_id, stage`)
      - log model evaluation metrics to mlflow run
      - :ref:`mlflow_get_both_registered_model_info_run_id`
@@ -67,6 +70,20 @@ mlflow_get_model_metrics
    :type key_value_metrics: str
    :return: all of evaluation metric (Dict), or singular evaluation metric as float or int
    :rtype: Union[float, int, Dict]
+
+.. _mlflow_get_model_version:
+
+mlflow_get_model_version
+------------------------
+.. py:function:: mlflow_get_model_version(mlflow_client: mlflow.tracking.client.MlflowClient, name: str, stage: str = "Production")
+   gets registered model version of "Staging" or "Production"
+
+   :param mlflow_client: mlflow client
+   :type mlflow_client: mlflow.tracking.client.MlflowClient
+   :param name: name of model
+   :type name: str
+   :param stage: name of stage
+   :type stage: str
 
 .. _mlflow_get_both_registered_model_info_run_id:
 
