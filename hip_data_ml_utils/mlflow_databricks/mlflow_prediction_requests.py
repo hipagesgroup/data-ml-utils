@@ -65,8 +65,8 @@ def get_requests(
     """
 
     url = (
-        f"""{databricks_cluster_hostname}/model-endpoint/"""
-        f"""{model_name}/{stage_env}/invocations"""
+        f"""{databricks_cluster_hostname}/serving-endpoints/"""
+        f"""{model_name}/invocations"""
     )
     headers = {
         "Authorization": f"Bearer {databricks_workspace_token}",
