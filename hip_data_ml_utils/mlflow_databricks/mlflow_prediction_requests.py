@@ -34,7 +34,6 @@ def get_requests(
     databricks_workspace_token: str,
     settings: dict,
     keywords: str,
-    stage_env: str = "Production",
     request_time_out: int = 60,
 ) -> int:
     """
@@ -52,8 +51,6 @@ def get_requests(
         repo settings and configuration
     keywords: str
         keywords to be used for prediction
-    stage_env: str
-        stage of the registered model (e.g. Staging or Production)
     request_time_out: int
         time out for the request
 
