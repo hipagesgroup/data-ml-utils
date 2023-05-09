@@ -10,6 +10,9 @@ from hip_data_ml_utils.mlflow_databricks.mlflow_model_utils import (
 from hip_data_ml_utils.mlflow_databricks.mlflow_model_utils import (
     mlflow_get_model_metrics,
 )
+from hip_data_ml_utils.mlflow_databricks.mlflow_model_utils import (
+    mlflow_get_model_version,
+)
 from hip_data_ml_utils.mlflow_databricks.mlflow_model_utils import mlflow_load_artifact
 from hip_data_ml_utils.mlflow_databricks.mlflow_model_utils import mlflow_load_model
 from hip_data_ml_utils.mlflow_databricks.mlflow_model_utils import mlflow_promote_model
@@ -167,6 +170,35 @@ class TestMlflowModelUtils:
         with pytest.raises(ValueError, match="stage can only be Staging or Production"):
             mlflow_get_both_registered_model_info_run_id(
                 name="test", mlflow_client=MagicMock(), stage="test"
+            )
+
+    def test_mlflow_get_model_version(self, dummy_nested_callable_object) -> None:
+        """
+        test if mlflow_get_model_version() can run correctly
+
+        Parameters
+        ----------
+        dummy_nested_callable_object:
+            dummy nested callable object
+        """
+        mock_mlflow_client = MagicMock()
+        mock_mlflow_client.search_model_versions.return_value = [
+            dummy_nested_callable_object
+        ]
+        expected_version = mlflow_get_model_version(
+            mlflow_client=mock_mlflow_client,
+            name="test",
+            stage="Staging",
+        )
+        assert expected_version == 1  # noqa: S101
+
+    def test_mlflow_get_model_version_error(self) -> None:
+        """
+        test if mlflow_get_model_version() raises correct error
+        """
+        with pytest.raises(ValueError, match="stage can only be Staging or Production"):
+            mlflow_get_model_version(
+                mlflow_client=MagicMock(), name="test", stage="test"
             )
 
     def test_mlflow_get_both_registered_model_info_run_id(
