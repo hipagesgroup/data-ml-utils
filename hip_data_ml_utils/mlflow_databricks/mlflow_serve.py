@@ -3,6 +3,8 @@ import logging
 import polling
 import requests
 
+from hip_data_ml_utils.core.config import settings
+
 log = logging.getLogger(__name__)
 
 
@@ -55,8 +57,8 @@ def enable_endpoint(
                 {
                     "model_name": model_name,
                     "model_version": model_version,
-                    "workload_size": "Medium",
-                    "scale_to_zero_enabled": "False",
+                    "workload_size": settings.MODEL_SERVING_WORKLOAD_SIZE,
+                    "scale_to_zero_enabled": settings.MODEL_SERVING_SCALE_TO_ZERO,
                 }
             ]
         },
