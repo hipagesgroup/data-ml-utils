@@ -84,7 +84,7 @@ get_endpoint_status
 
 update_compute_config
 ---------------------
-.. py:function:: mlflow_get_both_registered_model_info_run_id(databricks_api_url: str, model_name: str, databricks_cluster_hostname: str, databricks_workspace_token:str, workload_size_id: str = 10, scale_to_zero_enabled: str, model_version: int, request_time_out:int = 60,)
+.. py:function:: update_compute_config(databricks_api_url: str, model_name: str, databricks_cluster_hostname: str, databricks_workspace_token:str, workload_size_id: str = 10, scale_to_zero_enabled: str, model_version: int, request_time_out:int = 60,)
    update the databricks endpoint compute config of a registered model; cluster size and if it scales to zero
 
    :param databricks_api_url: url of the databricks api
