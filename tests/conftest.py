@@ -88,10 +88,9 @@ def dummy_nested_callable_object():
 @pytest.fixture(autouse=True)
 def dummy_response():
     return {
-        "endpoint_status": {
-            "registered_model_name": "clefairy",
-            "state": "ENDPOINT_STATE_READY",
-            "state_message": "Waiting for deployment to be created.",
+        "state": {
+            "ready": "READY",
+            "config_update": "IN_PROGRESS",
         }
     }
 

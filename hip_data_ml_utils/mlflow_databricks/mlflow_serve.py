@@ -11,6 +11,8 @@ def enable_endpoint(
     model_name: str,
     databricks_cluster_hostname: str,
     databricks_workspace_token: str,
+    dbfs_table_path: str,
+    model_version: int,
     request_time_out: int = 60,
 ) -> bool:
     """
@@ -26,6 +28,10 @@ def enable_endpoint(
         hostname of the databricks cluster
     databricks_workspace_token: str
         token of the databricks workspace
+    dbfs_table_path: str
+        dbfs file path for inference logging table
+    model_version: inte
+        registered model version of specified stage tag
     request_time_out: int
         timeout for the request
 
@@ -37,8 +43,25 @@ def enable_endpoint(
     """
 
     url = f"{databricks_cluster_hostname}/{databricks_api_url}"
-    headers = {"Authorization": f"Bearer {databricks_workspace_token}"}
-    json = {"registered_model_name": model_name}
+    headers = {
+        "Context-Type": "text/json",
+        "Authorization": f"Bearer {databricks_workspace_token}",
+    }
+
+    json = {
+        "name": model_name,
+        "config": {
+            "served_models": [
+                {
+                    "model_name": model_name,
+                    "model_version": model_version,
+                    "workload_size": "Medium",
+                    "scale_to_zero_enabled": "False",
+                }
+            ]
+        },
+        "inference_table_config": {"dbfs_destination_path": dbfs_table_path},
+    }
 
     response = requests.post(
         url=url,
@@ -46,10 +69,16 @@ def enable_endpoint(
         json=json,
         timeout=request_time_out,
     )
-    if response.status_code != 200:
-        response.raise_for_status()
+    if response.status_code == 200:
+        return True
+    if (response.status_code == 400) & (
+        response.json()["error_code"] == "RESOURCE_ALREADY_EXISTS"
+    ):
+        return True
 
-    return True
+    response.raise_for_status()
+
+    return False
 
 
 def get_endpoint_state_status(response_json: dict) -> str:
@@ -67,7 +96,7 @@ def get_endpoint_state_status(response_json: dict) -> str:
         returns the state of the endpoint
     """
     try:
-        return response_json["endpoint_status"]["state"]
+        return response_json["state"]["ready"]
     except Exception:
         return "NOT_READY"
 
@@ -108,20 +137,21 @@ def get_endpoint_status(
         raise an exception otherwise
     """
 
-    url = f"{databricks_cluster_hostname}/{databricks_api_url}"
-    headers = {"Authorization": f"Bearer {databricks_workspace_token}"}
-    json = {"registered_model_name": model_name}
+    url = f"{databricks_cluster_hostname}/{databricks_api_url}/{model_name}"
+    headers = {
+        "Context-Type": "text/json",
+        "Authorization": f"Bearer {databricks_workspace_token}",
+    }
 
     polling_response = polling.poll(
         lambda: get_endpoint_state_status(
             requests.get(
                 url=url,
                 headers=headers,
-                json=json,
                 timeout=request_time_out,
             ).json()
         )
-        == "ENDPOINT_STATE_READY",
+        == "READY",
         step=polling_step,
         ignore_exceptions=(requests.exceptions.ConnectionError,),
         poll_forever=False,
@@ -137,11 +167,11 @@ def get_endpoint_status(
 def update_compute_config(
     databricks_api_url: str,
     model_name: str,
-    stage: str,
     databricks_cluster_hostname: str,
     databricks_workspace_token: str,
     workload_size_id: str,
     scale_to_zero_enabled: str,
+    model_version: int,
     request_time_out: int = 60,
 ) -> int:
     """
@@ -153,8 +183,6 @@ def update_compute_config(
         url of the databricks api
     model_name: str
         name of the registered model
-    stage: str
-        stage of the registered model (e.g. Staging or Production)
     databricks_cluster_hostname: str
         hostname of the databricks cluster
     databricks_workspace_token: str
@@ -165,6 +193,8 @@ def update_compute_config(
         flag to enable/disable scaling to zero
         "true" to enable scaling to zero
         "false" to disable scaling to zero
+    model_version: int
+        registered model version of specified stage tag
     request_time_out: int
         timeout for the request
 
@@ -173,14 +203,20 @@ def update_compute_config(
     int
         0 if the compute config is updated successfully, 1 otherwise
     """
-    url = f"{databricks_cluster_hostname}/{databricks_api_url}"
+    url = f"{databricks_cluster_hostname}/{databricks_api_url}/{model_name}/config"
     headers = {"Authorization": f"Bearer {databricks_workspace_token}"}
     json = {
-        "registered_model_name": model_name,
-        "stage": stage.capitalize(),
-        "desired_workload_config_spec": {
-            "workload_size_id": f"{workload_size_id.capitalize()}",
-            "scale_to_zero_enabled": f"{scale_to_zero_enabled}",
+        "served_models": [
+            {
+                "name": model_name,
+                "model_name": model_name,
+                "model_version": model_version,
+                "workload_size": f"{workload_size_id.capitalize()}",
+                "scale_to_zero_enabled": f"{scale_to_zero_enabled}",
+            }
+        ],
+        "traffic_config": {
+            "routes": [{"served_model_name": model_name, "traffic_percentage": 100}]
         },
     }
 
