@@ -108,6 +108,39 @@ def mlflow_get_model_metrics(
     return model_metrics_informtion[key_value_metrics]
 
 
+def mlflow_get_model_version(
+    mlflow_client: mlflow.tracking.client.MlflowClient,
+    name: str,
+    stage: str = "Production",
+) -> int:
+    """
+    function to get model version of "Staging" or "Production"
+
+    Parameters
+    ----------
+    mlflow_client: mlflow.tracking.client.MlflowClient,
+        initialised mlflow client
+    name: str
+        name of registered model
+    stage: str
+        stage of registered model; Staging or Production
+
+    Returns
+    -------
+    int
+        return the model version of specified registered model tag
+    """
+
+    if stage not in ["Staging", "Production"]:
+        raise ValueError("stage can only be Staging or Production")
+
+    for _, rm in enumerate(mlflow_client.search_model_versions(f"name='{name}'")):
+        if rm.current_stage == stage:
+            return int(rm.version)
+
+    raise ValueError(f"There is no model version with the tag of '{stage}")
+
+
 def mlflow_get_both_registered_model_info_run_id(
     name: str,
     mlflow_client: mlflow.tracking.client.MlflowClient,

@@ -66,6 +66,20 @@ A successful response will return the artifact, and raises an exception otherwis
 At the moment, we allow for a few types of loading of artifacts; `pkl`, `joblib`, `dict` and `yaml`
 
 
+MLflow get registered tag of model version
+------------------------------------------
+This function gets the model version of "Staging" or "Production"
+
+A successful response will return the version in `int` type, and raises an error if registered tag does not exist
+
+.. code-block:: python
+   mlflow_get_model_version(
+       mlflow_client=mlflow_client,
+       name="clefairy",
+       stage="Staging"
+   )
+
+
 MLlflow retrieve model evaluation metrics
 -----------------------------------------
 This function retrieves (all of) the model evaluation metrics or just a singular key value

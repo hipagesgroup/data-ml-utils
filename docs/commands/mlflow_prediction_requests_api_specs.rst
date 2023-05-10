@@ -9,7 +9,7 @@ MLflow prediction requests API Specs
    * -  **verify_prediction** (`response_json, expected_keywords_response,`)
      - verifies if a prediction output is as expected
      - :ref:`verify_prediction`
-   * -  **get_requests** (`model_name, databricks_cluster_hostname, databricks_workspace_token, settings, keywords, stage_env, request_time_out`)
+   * -  **get_requests** (`model_name, databricks_cluster_hostname, databricks_workspace_token, settings, keywords, request_time_out`)
      - makes post requests for model inference and verify that inference is within expectations
      - :ref:`get_requests`
 
@@ -31,7 +31,7 @@ verify_prediction
 
 get_requests
 ------------
-.. py:function:: get_requests(model_name: str, databricks_cluster_hostname: str, databricks_workspace_token: str, settings: dict, keywords: str, stage_env: str = "Production", request_time_out: int = 60,)
+.. py:function:: get_requests(model_name: str, databricks_cluster_hostname: str, databricks_workspace_token: str, settings: dict, keywords: str, request_time_out: int = 60,)
    load an artifact from MLflow run, accepts `joblib, pkl, dict and yaml` file types
 
    :param model_name: name of the registered model
@@ -44,8 +44,6 @@ get_requests
    :type settings: dict
    :param keywords: keywords to be used for prediction
    :type keywords: str
-   :param stage_env: stage of the registered model (e.g. Staging or Production)
-   :type stage_env: str
    :param request_time_out: time out for the request
    :type request_time_out: int
    :return: returns a callable python object; dictionary, pandas dataframe, list

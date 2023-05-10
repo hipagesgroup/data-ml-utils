@@ -55,13 +55,13 @@ class TestPredictionRequests:
 
         responses.add(
             method=responses.POST,
-            url=f"{dummy_url}/model-endpoint/test_model/Production/invocations",
+            url=f"{dummy_url}/serving-endpoints/test_model/invocations",
             json=dummy_json_response,
             status=400,
         )
 
         r = requests.post(
-            f"{dummy_url}/model-endpoint/test_model/Production/invocations",
+            f"{dummy_url}/serving-endpoints/test_model/invocations",
             timeout=request_time_out,
         )
 
@@ -105,13 +105,13 @@ class TestPredictionRequests:
 
         responses.add(
             method=responses.POST,
-            url=f"{dummy_url}/model-endpoint/test_model/Production/invocations",
+            url=f"{dummy_url}/serving-endpoints/test_model/invocations",
             json=dummy_json_response,
             status=200,
         )
 
         r = requests.post(
-            f"{dummy_url}/model-endpoint/test_model/Production/invocations",
+            f"{dummy_url}/serving-endpoints/test_model/invocations",
             timeout=request_time_out,
         )
 
@@ -154,13 +154,13 @@ class TestPredictionRequests:
 
         responses.add(
             method=responses.POST,
-            url=f"{dummy_url}/model-endpoint/test_model/Production/invocations",
+            url=f"{dummy_url}/serving-endpoints/test_model/invocations",
             json=dummy_json_response,
             status=200,
         )
 
         r = requests.post(
-            f"{dummy_url}/model-endpoint/test_model/Production/invocations",
+            f"{dummy_url}/serving-endpoints/test_model/invocations",
             timeout=request_time_out,
         )
 

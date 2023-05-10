@@ -29,6 +29,8 @@ class TestServe:
             model_name="test_model",
             databricks_cluster_hostname=dummy_url,
             databricks_workspace_token="test_token",
+            dbfs_table_path="dbfs:/test-logs",
+            model_version=151,
         )
 
         assert r.json()["registered_model_name"] == "test_model"  # noqa: S101
@@ -41,7 +43,10 @@ class TestServe:
         responses.add(
             method=responses.POST,
             url=f"{dummy_url}/test_api_url",
-            json={"registered_model_name": "test_model"},
+            json={
+                "registered_model_name": "test_model",
+                "error_code": "RESOURCE_ALREADY_EXISTS",
+            },
             status=404,
         )
         r = requests.post(f"{dummy_url}/test_api_url", timeout=request_time_out)
@@ -52,6 +57,8 @@ class TestServe:
                 model_name="test_model",
                 databricks_cluster_hostname=dummy_url,
                 databricks_workspace_token="test_token",
+                dbfs_table_path="dbfs:/test-logs",
+                model_version=151,
             )
 
             assert r.status_code == 404  # noqa: S101
@@ -72,9 +79,7 @@ class TestServe:
             returns True that the state matches what we are expecting
         """
 
-        assert (  # noqa: S101
-            get_endpoint_state_status(dummy_response) == "ENDPOINT_STATE_READY"
-        )
+        assert get_endpoint_state_status(dummy_response) == "READY"  # noqa: S101
 
     def test_get_endpoint_state_status_error(self, dummy_response_error) -> None:
         """
@@ -118,11 +123,13 @@ class TestServe:
 
         responses.add(
             method=responses.GET,
-            url=f"{dummy_url}/test_api_url",
+            url=f"{dummy_url}/test_api_url/test_model",
             json=dummy_response,
             status=200,
         )
-        r = requests.get(f"{dummy_url}/test_api_url", timeout=request_time_out)
+        r = requests.get(
+            f"{dummy_url}/test_api_url/test_model", timeout=request_time_out
+        )
 
         get_endpoint_status_response = get_endpoint_status(  # noqa: S106
             databricks_api_url="test_api_url",
@@ -132,9 +139,7 @@ class TestServe:
             polling_step=1,
             polling_max_tries=1,
         )
-        assert (  # noqa: S101
-            r.json()["endpoint_status"]["registered_model_name"] == "clefairy"
-        )
+        assert r.json()["state"]["ready"] == "READY"  # noqa: S101
         assert get_endpoint_status_response  # noqa: S101
 
     @responses.activate
@@ -185,10 +190,9 @@ class TestServe:
 
         responses.add(
             method=responses.PUT,
-            url=f"{dummy_url}/test_api_url",
+            url=f"{dummy_url}/test_api_url/test_model/config",
             json={
                 "registered_model_name": "test_model",
-                "stage": "test_stage",
                 "desired_workload_config_spec": {
                     "workload_size_id": "test",
                     "scale_to_zero_enabled": "test",
@@ -196,20 +200,21 @@ class TestServe:
             },
             status=200,
         )
-        r = requests.put(f"{dummy_url}/test_api_url", timeout=request_time_out)
+        r = requests.put(
+            f"{dummy_url}/test_api_url/test_model/config", timeout=request_time_out
+        )
 
         update_compute_config_response = update_compute_config(  # noqa: S106
             databricks_api_url="test_api_url",
             model_name="test_model",
-            stage="test_stage",
             databricks_cluster_hostname=dummy_url,
             databricks_workspace_token="test_token",
             workload_size_id="test_workload_size_id",
             scale_to_zero_enabled="test_scale_to_zero_enabled",
+            model_version=151,
         )
 
         assert r.json()["registered_model_name"] == "test_model"  # noqa: S101
-        assert r.json()["stage"] == "test_stage"  # noqa: S101
         assert (  # noqa: S101
             r.json()["desired_workload_config_spec"]["workload_size_id"] == "test"
         )
@@ -223,10 +228,9 @@ class TestServe:
 
         responses.add(
             method=responses.PUT,
-            url=f"{dummy_url}/test_api_url",
+            url=f"{dummy_url}/test_api_url/test_model/config",
             json={
                 "registered_model_name": "test_model",
-                "stage": "test_stage",
                 "desired_workload_config_spec": {
                     "workload_size_id": "test",
                     "scale_to_zero_enabled": "test",
@@ -234,16 +238,18 @@ class TestServe:
             },
             status=404,
         )
-        r = requests.put(f"{dummy_url}/test_api_url", timeout=request_time_out)
+        r = requests.put(
+            f"{dummy_url}/test_api_url/test_model/config", timeout=request_time_out
+        )
 
         update_compute_config_response = update_compute_config(  # noqa: S106
             databricks_api_url="test_api_url",
             model_name="test_model",
-            stage="test_stage",
             databricks_cluster_hostname=dummy_url,
             databricks_workspace_token="test_token",
             workload_size_id="test_workload_size_id",
             scale_to_zero_enabled="test_scale_to_zero_enabled",
+            model_version=151,
         )
         assert r.json()["registered_model_name"] == "test_model"  # noqa: S101
         assert update_compute_config_response == 1  # noqa: S101
