@@ -9,6 +9,9 @@ format: ## Format code
 pytest: ## pytest
 	python -m pytest tests
 
+venv:
+	python3 -m venv venv
+	. venv/bin/activate
 
 pytest-coverage: ##
 	python -m pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=src --cov-report=xml --cov-report=html
