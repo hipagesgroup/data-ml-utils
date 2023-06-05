@@ -24,3 +24,6 @@ install-poetry:
 	pip install poetry==1.4.1
 	poetry update
 	poetry install
+
+precommit-all:
+	pre-commit run --all-files
