@@ -64,7 +64,6 @@ jobs:
             - name: Run code quality scanner
               uses: hipagesgroup/actions/code-quality@master
               with:
-      # default = wait for quality gate on master only
                   wait: ${{ github.ref_name == 'master' && true || false }}
                   coverage_dir: coverage
                   sonar_token: ${{ secrets.SONAR_TOKEN }}
