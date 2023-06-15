@@ -19,6 +19,7 @@ from hip_data_ml_utils.pyathena_client.client import PyAthenaClient
 
 os.environ["AWS_ACCESS_KEY_ID"] = "xxx"
 os.environ["AWS_SECRET_ACCESS_KEY"] = "xxx" # pragma: allowlist secret
+os.environ["S3_BUCKET"] = "xxx"
 
 pyathena_client = PyAthenaClient()
 ```
