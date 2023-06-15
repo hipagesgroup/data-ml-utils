@@ -62,7 +62,7 @@ jobs:
                   fetch-depth: 0
 
             - name: Run code quality scanner
-              uses: hipagesgroup/actions/code-quality@master
+              uses: hipagesgroup/actions/code-quality@sonar-branch-dummy
               with:
                   wait: ${{ github.ref_name == 'master' && true || false }}
                   coverage_dir: coverage
