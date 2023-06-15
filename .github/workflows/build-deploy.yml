@@ -57,12 +57,12 @@ jobs:
         timeout-minutes: 10
         steps:
             - name: Checkout
-              uses: hipagesgroup/actions/checkout@sonar-branch-dummy
+              uses: hipagesgroup/actions/checkout@master
               with:
                   fetch-depth: 0
 
             - name: Run code quality scanner
-              uses: hipagesgroup/actions/code-quality@sonar-branch-dummy
+              uses: hipagesgroup/actions/code-quality@master
               with:
                   wait: ${{ github.ref_name == 'master' && true || false }}
                   coverage_dir: coverage
