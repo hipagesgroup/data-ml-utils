@@ -93,6 +93,7 @@ def mlflow_log_register_model(
                 registered_model_name=name_of_registered_model,
                 artifact_path=artifact_path,
                 extra_pip_requirements=extra_pip_requirements,
+                await_registration_for=1800,
             )
             return (
                 "model logged"

@@ -2,7 +2,7 @@
 A utility python package that covers the common libraries we use.
 
 ## Installation
-This is an open source library hosted on pypi. Run the following command to install the library
+This is an open source library hosted on pypi. Run the following command to install the library.
 ```
 pip install hip-data-ml-utils --upgrade
 ```
