@@ -11,6 +11,9 @@ from hip_data_ml_utils.mlflow_databricks.mlflow_model_utils import (
     mlflow_get_model_metrics,
 )
 from hip_data_ml_utils.mlflow_databricks.mlflow_model_utils import (
+    mlflow_get_model_stage_description,
+)
+from hip_data_ml_utils.mlflow_databricks.mlflow_model_utils import (
     mlflow_get_model_version,
 )
 from hip_data_ml_utils.mlflow_databricks.mlflow_model_utils import mlflow_load_artifact
@@ -191,6 +194,28 @@ class TestMlflowModelUtils:
             stage="Staging",
         )
         assert expected_version == 1  # noqa: S101
+
+    def test_mlflow_get_model_stage_description(
+        self, dummy_nested_callable_object
+    ) -> None:
+        """
+        test if mlflow_get_model_stage_information() can run correctly
+
+        Parameters
+        ----------
+        dummy_nested_callable_object:
+            dummy nested callable object
+        """
+        mock_mlflow_client = MagicMock()
+        mock_mlflow_client.search_model_versions.return_value = [
+            dummy_nested_callable_object
+        ]
+        expected_information = mlflow_get_model_stage_description(
+            mlflow_client=mock_mlflow_client,
+            name="test",
+            stage="Staging",
+        )
+        assert expected_information == "testing"  # noqa: S101
 
     def test_mlflow_get_model_version_error(self) -> None:
         """
