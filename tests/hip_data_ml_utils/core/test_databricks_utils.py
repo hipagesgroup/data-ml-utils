@@ -2,6 +2,7 @@ import datetime
 from typing import Callable
 from unittest.mock import patch
 
+from hip_data_ml_utils.core.databricks_utils import get_date_intervals_model_drift
 from hip_data_ml_utils.core.databricks_utils import get_function_to_load
 from hip_data_ml_utils.core.databricks_utils import get_target_stage_for_env
 from hip_data_ml_utils.core.databricks_utils import get_test_date
@@ -87,3 +88,22 @@ class TestDatabricksCommonUtils:
         assert get_target_stage_for_env("dev") == "Staging"  # noqa: S101
         assert get_target_stage_for_env("staging") == "Staging"  # noqa: S101
         assert get_target_stage_for_env("prod") == "Production"  # noqa: S101
+
+    def test_get_date_intervals_model_drift(
+        self,
+    ) -> None:
+        """
+        test get date intervals works correctly
+
+        Returns
+        -------
+        assert
+            returns True that list is the same
+        """
+
+        expected_list = get_date_intervals_model_drift(
+            date_int=20230701,
+        )
+
+        assert expected_list[0] == "20230701_hour_pair_1"  # noqa: S101
+        assert expected_list[-1] == "20230701_hour_pair_4"  # noqa: S101
