@@ -2,6 +2,7 @@ import datetime
 import importlib
 from typing import Callable
 from typing import Dict
+from typing import List
 
 import yaml
 
@@ -91,3 +92,26 @@ def get_target_stage_for_env(env: str) -> str:
         raise ValueError("Invalid environment")
 
     return "Staging" if env.lower() in {"dev", "staging"} else "Production"
+
+
+def get_date_intervals_model_drift(
+    date_int: int,
+) -> List:
+    """
+    function to list of date intervals for model drift
+
+    Parameters
+    ----------
+    date_int: int
+        start date of monitoring in YYYYmmdd
+
+    Returns
+    -------
+    List
+        list of date intervals for model drift monitoring
+    """
+    return_list = []
+    for i in range(1, 5):
+        return_list.append(f"{date_int}_hour_pair_{i}")
+
+    return return_list

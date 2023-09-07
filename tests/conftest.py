@@ -72,6 +72,7 @@ def dummy_nested_callable_object():
             self.current_stage = self.current_stage()
             self.run_id = self.run_id()
             self.version = self.version()
+            self.description = self.description()
 
         def current_stage(self):
             return "Staging"
@@ -81,6 +82,9 @@ def dummy_nested_callable_object():
 
         def version(self):
             return 1
+
+        def description(self):
+            return "testing"
 
     return first_class()
 
