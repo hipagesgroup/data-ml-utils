@@ -31,6 +31,7 @@ class TestServe:
             databricks_workspace_token="test_token",
             dbfs_table_path="dbfs:/test-logs",
             model_version=151,
+            catalog_name="lakehouse_development",
         )
 
         assert r.json()["registered_model_name"] == "test_model"  # noqa: S101
@@ -59,6 +60,7 @@ class TestServe:
                 databricks_workspace_token="test_token",
                 dbfs_table_path="dbfs:/test-logs",
                 model_version=151,
+                catalog_name="lakehouse_development",
             )
 
             assert r.status_code == 404  # noqa: S101
