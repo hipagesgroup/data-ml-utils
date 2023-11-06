@@ -212,6 +212,7 @@ class TestServe:
             workload_size_id="test_workload_size_id",
             scale_to_zero_enabled="test_scale_to_zero_enabled",
             model_version=151,
+            catalog_name="lakehouse_development",
         )
 
         assert r.json()["registered_model_name"] == "test_model"  # noqa: S101
@@ -250,6 +251,7 @@ class TestServe:
             workload_size_id="test_workload_size_id",
             scale_to_zero_enabled="test_scale_to_zero_enabled",
             model_version=151,
+            catalog_name="lakehouse_development",
         )
         assert r.json()["registered_model_name"] == "test_model"  # noqa: S101
         assert update_compute_config_response == 1  # noqa: S101

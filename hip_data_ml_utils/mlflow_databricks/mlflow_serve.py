@@ -32,7 +32,7 @@ def enable_endpoint(
         token of the databricks workspace
     dbfs_table_path: str
         dbfs file path for inference logging table
-    model_version: inte
+    model_version: int
         registered model version of specified stage tag
     request_time_out: int
         timeout for the request
@@ -62,7 +62,6 @@ def enable_endpoint(
                 }
             ]
         },
-        "inference_table_config": {"dbfs_destination_path": dbfs_table_path},
     }
 
     response = requests.post(
@@ -174,6 +173,7 @@ def update_compute_config(
     workload_size_id: str,
     scale_to_zero_enabled: str,
     model_version: int,
+    catalog_name: str,
     request_time_out: int = 60,
 ) -> int:
     """
@@ -197,6 +197,8 @@ def update_compute_config(
         "false" to disable scaling to zero
     model_version: int
         registered model version of specified stage tag
+    catalog_name: str
+        name of catalog
     request_time_out: int
         timeout for the request
 
@@ -219,6 +221,11 @@ def update_compute_config(
         ],
         "traffic_config": {
             "routes": [{"served_model_name": model_name, "traffic_percentage": 100}]
+        },
+        "auto_capture_config": {
+            "catalog_name": catalog_name,
+            "schema_name": "ml_features",
+            "table_name_prefix": model_name,
         },
     }
 
