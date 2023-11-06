@@ -15,7 +15,6 @@ def enable_endpoint(
     databricks_workspace_token: str,
     dbfs_table_path: str,
     model_version: int,
-    catalog_name: str,
     request_time_out: int = 60,
 ) -> bool:
     """
@@ -35,8 +34,6 @@ def enable_endpoint(
         dbfs file path for inference logging table
     model_version: int
         registered model version of specified stage tag
-    catalog_name: str
-        name of unity catalog
     request_time_out: int
         timeout for the request
 
@@ -64,11 +61,6 @@ def enable_endpoint(
                     "scale_to_zero_enabled": settings.MODEL_SERVING_SCALE_TO_ZERO,
                 }
             ]
-        },
-        "auto_capture_config": {
-            "catalog_name": catalog_name,
-            "schema_name": "ml_features",
-            "table_name_prefix": model_name,
         },
     }
 
@@ -181,6 +173,7 @@ def update_compute_config(
     workload_size_id: str,
     scale_to_zero_enabled: str,
     model_version: int,
+    catalog_name: str,
     request_time_out: int = 60,
 ) -> int:
     """
@@ -204,6 +197,8 @@ def update_compute_config(
         "false" to disable scaling to zero
     model_version: int
         registered model version of specified stage tag
+    catalog_name: str
+        name of catalog
     request_time_out: int
         timeout for the request
 
@@ -226,6 +221,11 @@ def update_compute_config(
         ],
         "traffic_config": {
             "routes": [{"served_model_name": model_name, "traffic_percentage": 100}]
+        },
+        "auto_capture_config": {
+            "catalog_name": catalog_name,
+            "schema_name": "ml_features",
+            "table_name_prefix": model_name,
         },
     }
 
