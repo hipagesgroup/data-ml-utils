@@ -29,7 +29,6 @@ class TestServe:
             model_name="test_model",
             databricks_cluster_hostname=dummy_url,
             databricks_workspace_token="test_token",
-            dbfs_table_path="dbfs:/test-logs",
             model_version=151,
         )
 
@@ -57,7 +56,6 @@ class TestServe:
                 model_name="test_model",
                 databricks_cluster_hostname=dummy_url,
                 databricks_workspace_token="test_token",
-                dbfs_table_path="dbfs:/test-logs",
                 model_version=151,
             )
 
