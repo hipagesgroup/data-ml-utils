@@ -13,7 +13,6 @@ def enable_endpoint(
     model_name: str,
     databricks_cluster_hostname: str,
     databricks_workspace_token: str,
-    dbfs_table_path: str,
     model_version: int,
     request_time_out: int = 60,
 ) -> bool:
