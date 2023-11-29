@@ -111,11 +111,10 @@ jobs:
               continue-on-error: true
               id: pip-cache
               with:
-                path: ~/.cache/pip
-                key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
-                restore-keys: |
-                  ${{ runner.os }}-pip-
-
+                  path: ~/.cache/pip
+                  key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+                  restore-keys: |
+                   ${{ runner.os }}-pip-
 
             - name: Install Poetry
               uses: snok/install-poetry@v1
