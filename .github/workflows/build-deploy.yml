@@ -111,7 +111,7 @@ jobs:
               continue-on-error: true
               id: pip-cache
               with:
-                  path: ~/.cache/pip
+path: ~/.cache/pip
                   key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
                   restore-keys: |
                     ${{ runner.os }}-pip-
