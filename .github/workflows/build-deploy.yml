@@ -92,7 +92,6 @@ jobs:
                   coverage_dir: coverage
                   sonar_token: ${{ secrets.SONAR_TOKEN }}
                   github_token: ${{ secrets.GITHUB_TOKEN }}
-
     deploy:
         if: github.ref_name == 'master'
         needs: [lint, test, scan]
