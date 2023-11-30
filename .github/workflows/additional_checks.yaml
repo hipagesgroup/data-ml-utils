@@ -33,14 +33,22 @@ jobs:
         timeout-minutes: 5
         steps:
             - name: Checkout
-              uses: hipagesgroup/actions/checkout@master
+              uses: actions/checkout@v3
               with:
                   token: ${{ secrets.GITHUB_TOKEN }}
-            - name: Setup Python Environment
-              uses: hipagesgroup/actions/install-dependencies@master
-              id: setup
+            - name: Setup Python
+              uses: actions/setup-python@v4
               with:
-                  language: Python
-                  version: 3.9
+                  python-version: 3.9
                   cache: pip
+                  cache-dependency-path: '**/requirements*.txt'
+            - name: Cache pip dependencies
+              uses: actions/cache@v2
+              continue-on-error: true
+              id: pip-cache
+              with:
+                  path: ~/.cache/pip
+                  key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pip-
             - uses: pre-commit/action@v3.0.0
