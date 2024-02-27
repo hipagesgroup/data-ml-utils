@@ -37,7 +37,7 @@ pluggy = "1.0.0"
 polling = "0.3.2"
 pre-commit = "2.10.0"
 py = "1.10.0"
-pyarrow = "8.0.0"
+pyarrow = "^8.0.0"
 pyathena = "^2.25.0"
 pydantic = "^1.9.0"
 pyparsing = "2.4.7"
@@ -53,6 +53,7 @@ six = "1.15.0"
 toml = "0.10.2"
 typed-ast = "^1.5.3"
 typing-extensions = "^4.2.0"
+Werkzeug = "^2.2.3"
 
 [tool.poetry.dev-dependencies]
 
