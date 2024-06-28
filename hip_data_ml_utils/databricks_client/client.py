@@ -47,8 +47,9 @@ class DatabricksSQLClient:
             return of pandas dataframe
         """
 
-        return_values = self.engine.cursor().execute(final_query).fetchall()
+        _cursor = self.engine.cursor()
+        return_values = _cursor.execute(final_query).fetchall()
 
         return pd.DataFrame(
-            return_values, columns=[col[0] for col in self.engine.cursor.description]
+            return_values, columns=[col[0] for col in _cursor.description]
         )
