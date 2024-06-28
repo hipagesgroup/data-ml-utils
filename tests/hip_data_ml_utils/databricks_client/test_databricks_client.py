@@ -1,20 +1,19 @@
-from unittest.mock import MagicMock
+from unittest.mock import Mock
 from unittest.mock import patch
 
-from databricks.sql import connect
+from databricks import sql
 
 
 class TestDatabricksSQLClient:
     """test class for databricks sql client"""
 
-    @patch("hip_data_ml_utils.databricks_client.client.connect")
-    def test_connect(self, mocked_databricks):
+    def test_connect(self, dummy_client_args_dict):
         """
         test function to connect to pyathena
         Parameters
         ----------
-        mocked_databricks
-            mocked databricks sql connect
+        dummy_client_args_dict
+            dummy client args dict
 
         Returns
         -------
@@ -22,15 +21,6 @@ class TestDatabricksSQLClient:
             instance is athena connection
         """
 
-        mock_connection = MagicMock()
-        mocked_databricks.return_value = mock_connection
-
-        DUMMY_CONNECTION_ARGS = {
-            "server_hostname": "foo",
-            "http_path": "dummy_path",
-            "access_token": "tok",
-        }
-
-        _ = connect(**DUMMY_CONNECTION_ARGS)
-
-        mocked_databricks.assert_called_with(**DUMMY_CONNECTION_ARGS)
+        with patch("databricks.sql.connect", return_value=Mock()) as mock_connect:
+            _ = sql.connect(**dummy_client_args_dict)
+            mock_connect.assert_called_with(**dummy_client_args_dict)
