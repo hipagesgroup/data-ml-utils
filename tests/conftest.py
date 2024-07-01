@@ -28,6 +28,15 @@ def mock_active_run():
 
 
 @pytest.fixture(autouse=True)
+def dummy_client_args_dict():
+    return {
+        "server_hostname": "foo",
+        "http_path": "dummy_path",
+        "access_token": "tok",
+    }
+
+
+@pytest.fixture(autouse=True)
 def dummy_function_dict():
     return {"parquet": ["awswrangler.s3", "read_parquet"], "pkl": ["joblib", "load"]}
 
