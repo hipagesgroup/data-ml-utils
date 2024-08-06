@@ -1,9 +1,11 @@
 from typing import Any
 from typing import Dict
+from typing import Optional
 from typing import Tuple
 from typing import Union
 
 import mlflow
+import torch
 from joblib import load
 
 from hip_data_ml_utils.core.databricks_utils import get_target_stage_for_env
@@ -14,6 +16,7 @@ def mlflow_load_model(
     model_uri: str,
     type_of_model: str,
     model_func_dict: dict,
+    device: Optional[torch.device] = None,
 ) -> Any:
     """
     function to load model from mlflow
@@ -26,6 +29,8 @@ def mlflow_load_model(
         type of model to load
     model_func_dict: dict
         dictionary of model function to call
+    device: Optional[torch.device]
+        device to load the model onto; cpu, cuda
 
     Returns
     -------
@@ -33,6 +38,9 @@ def mlflow_load_model(
         model
     """
 
+    if type_of_model == "pytorch":
+        model_func = getattr(mlflow, model_func_dict[type_of_model][0])
+        return model_func.load_model(model_uri=model_uri, map_location=device)
     if type_of_model in model_func_dict:
         model_func = getattr(mlflow, model_func_dict[type_of_model][0])
         return model_func.load_model(model_uri=model_uri)
