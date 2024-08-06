@@ -45,6 +45,26 @@ class TestMlflowModelUtils:
         )
         mock_getattr.assert_called_once()
 
+    @patch("hip_data_ml_utils.mlflow_databricks.mlflow_model_utils.getattr")
+    def test_mlflow_load_model_pytorch(self, mock_getattr) -> None:
+        """
+        test if mlflow_load_model() can load model
+
+        Parameters
+        ----------
+        mock_model_func:
+            mock patch getattr
+        """
+
+        mock_getattr.return_value = MagicMock()
+        mlflow_load_model(
+            model_uri="test_uri",
+            type_of_model="pytorch",
+            model_func_dict={"pytorch": "test"},
+            device="test",
+        )
+        mock_getattr.assert_called_once()
+
     def test_mlflow_load_model_error(self) -> None:
         """
         test if mlflow_load_model() raises the right exception
