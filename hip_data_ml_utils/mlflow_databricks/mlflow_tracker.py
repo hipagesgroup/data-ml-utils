@@ -123,7 +123,7 @@ def mlflow_log_params(params: dict) -> str:
     raise MlflowException("No active run to log params")
 
 
-def mlflow_log_metric(key: str, value: float) -> str:
+def mlflow_log_metric(key: str, value: float, step: Optional[int] = None) -> str:
     """
     function to log metric to mlflow
 
@@ -133,10 +133,12 @@ def mlflow_log_metric(key: str, value: float) -> str:
         metric name
     value: float
         metric value
+    step: Optional[int]
+        step of the epoch
     """
 
     if mlflow.active_run():
-        mlflow.log_metric(key=key, value=value)
+        mlflow.log_metric(key=key, value=value, step=step)
         return f"model evaluation metric {key}, {value} logged"
 
     raise MlflowException("No active run to log metric")
