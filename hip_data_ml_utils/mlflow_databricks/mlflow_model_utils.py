@@ -38,7 +38,7 @@ def mlflow_load_model(
         model
     """
 
-    if type_of_model == "pytorch":
+    if type_of_model == "pytorch_model":
         model_func = getattr(mlflow, model_func_dict[type_of_model][0])
         return model_func.load_model(model_uri=model_uri, map_location=device)
     if type_of_model in model_func_dict:
