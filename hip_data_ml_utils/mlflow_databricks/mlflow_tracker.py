@@ -5,6 +5,7 @@ from typing import Optional
 import mlflow
 from joblib import dump
 from mlflow.exceptions import MlflowException
+from mlflow.models.signature import ModelSignature
 
 
 def mlflow_log_artifact(
@@ -45,6 +46,8 @@ def mlflow_log_register_model(
     type_of_model: str,
     model_func_dict: dict,
     artifact_path: str,
+    input_example: Optional[list] = None,
+    signature: Optional[ModelSignature] = None,
     name_of_registered_model: str = None,
     extra_pip_requirements: Optional[list] = None,
     code_path: Optional[list] = None,
@@ -62,6 +65,10 @@ def mlflow_log_register_model(
         dictionary of model function to call
     artifact_path: str
         Run-relative artifact path
+    input_example: Optional[list] = None
+        list of input examples, for now its tagged as List for data type
+    signature: Optional[ModelSignature] = None
+        model signature, default at None
     name_of_registered_model: str
         name of registered model, if it does not exist it will register a new model
         if it does, it will register a new version to the model
@@ -90,6 +97,8 @@ def mlflow_log_register_model(
             model_func = getattr(mlflow, model_func_dict[type_of_model][0])
             model_func.log_model(
                 **{type_of_model: model, model_func_dict[type_of_model][1]: code_path},
+                signature=signature,
+                input_example=input_example,
                 registered_model_name=name_of_registered_model,
                 artifact_path=artifact_path,
                 extra_pip_requirements=extra_pip_requirements,
