@@ -27,6 +27,7 @@ class TestServe:
         enable_endpoint_response = enable_endpoint(  # noqa: S106
             databricks_api_url="test_api_url",
             model_name="test_model",
+            workload_type="CPU",
             databricks_cluster_hostname=dummy_url,
             databricks_workspace_token="test_token",
             model_version=151,
@@ -54,6 +55,7 @@ class TestServe:
             enable_endpoint_response = enable_endpoint(  # noqa: S106
                 databricks_api_url="test_api_url",
                 model_name="test_model",
+                workload_type="CPU",
                 databricks_cluster_hostname=dummy_url,
                 databricks_workspace_token="test_token",
                 model_version=151,
@@ -205,6 +207,7 @@ class TestServe:
         update_compute_config_response = update_compute_config(  # noqa: S106
             databricks_api_url="test_api_url",
             model_name="test_model",
+            workload_type="CPU",
             databricks_cluster_hostname=dummy_url,
             databricks_workspace_token="test_token",
             workload_size_id="test_workload_size_id",
@@ -244,6 +247,7 @@ class TestServe:
         update_compute_config_response = update_compute_config(  # noqa: S106
             databricks_api_url="test_api_url",
             model_name="test_model",
+            workload_type="CPU",
             databricks_cluster_hostname=dummy_url,
             databricks_workspace_token="test_token",
             workload_size_id="test_workload_size_id",
