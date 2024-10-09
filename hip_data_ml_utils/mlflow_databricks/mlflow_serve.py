@@ -11,6 +11,7 @@ log = logging.getLogger(__name__)
 def enable_endpoint(
     databricks_api_url: str,
     model_name: str,
+    workload_type: str,
     databricks_cluster_hostname: str,
     databricks_workspace_token: str,
     model_version: int,
@@ -25,6 +26,8 @@ def enable_endpoint(
         url of the databricks api
     model_name: str
         name of the registered model
+    workload_type: str
+        type of serving endpoint; CPU or GPU_SMALL
     databricks_cluster_hostname: str
         hostname of the databricks cluster
     databricks_workspace_token: str
@@ -56,6 +59,7 @@ def enable_endpoint(
                 {
                     "model_name": model_name,
                     "model_version": model_version,
+                    "workload_type": workload_type,
                     "workload_size": settings.MODEL_SERVING_WORKLOAD_SIZE,
                     "scale_to_zero_enabled": settings.MODEL_SERVING_SCALE_TO_ZERO,
                 }
@@ -167,6 +171,7 @@ def get_endpoint_status(
 def update_compute_config(
     databricks_api_url: str,
     model_name: str,
+    workload_type: str,
     databricks_cluster_hostname: str,
     databricks_workspace_token: str,
     workload_size_id: str,
@@ -184,6 +189,8 @@ def update_compute_config(
         url of the databricks api
     model_name: str
         name of the registered model
+    workload_type: str
+        type of serving endpoint; CPU or GPU_SMALL
     databricks_cluster_hostname: str
         hostname of the databricks cluster
     databricks_workspace_token: str
@@ -214,6 +221,7 @@ def update_compute_config(
                 "name": model_name,
                 "model_name": model_name,
                 "model_version": model_version,
+                "workload_type": workload_type,
                 "workload_size": f"{workload_size_id.capitalize()}",
                 "scale_to_zero_enabled": f"{scale_to_zero_enabled}",
             }
