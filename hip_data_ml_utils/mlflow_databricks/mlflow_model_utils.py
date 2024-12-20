@@ -308,3 +308,89 @@ def mlflow_promote_model(
         )
         return "model is transitioned, and registered model description updated"
     raise ValueError("Model is already in target stage")
+
+
+def mlflow_decision_to_promote(
+    mlflow_model_name: str,  # NOSONAR
+    env: str,
+    mlflow_client: mlflow.tracking.client.MlflowClient,
+    challenger_run_id: str,
+    champion_model_run_id: str,
+    eval_date: str,
+    metrics_dict_champion: Dict,
+    metrics_dict_challenger: Dict,
+    metric_to_compare: str,
+) -> None:
+    """
+    function to decide whether to register/promote model and call promotion based on the
+    env and challenger vs champion metric comparison.
+
+    Parameters
+    ----------
+    mlflow_model_name: str
+        model name registered in mlflow
+    env: str
+        running environment "dev", "staging" or "prod"
+    mlflow_client: mlflow.tracking.client.MlflowClient
+        initialised mlflow client
+    challenger_run_id: str
+        run_id of the challenger model
+    champion_model_run_id: str
+        run_id of the champion model
+    eval_date: str
+        evaluation data date
+        from beginning to eval_date
+    metrics_dict_champion: Dict
+        dictionary for existing model evaluation metrics
+    metrics_dict_challenger: Dict
+        dictionary for retrained model evaluation metrics
+    metric_to_compare:
+        metric from metrics_dict to compare champion vs challenger e.g. "f1_score"
+
+    Returns
+    -------
+    str
+        decision result (promoted or not) and why (beats champion or no existing model)
+    """
+
+    if metric_to_compare not in metrics_dict_challenger:
+        raise KeyError(
+            f"'{metric_to_compare}' is not present in the challenger metrics."
+        )
+
+    if (metrics_dict_champion is not None) and (env == "prod"):
+        if metric_to_compare not in metrics_dict_champion:
+            raise KeyError(
+                f"'{metric_to_compare}' is not present in the champion metrics."
+            )
+
+        if (
+            metrics_dict_champion[metric_to_compare]
+            <= metrics_dict_challenger[metric_to_compare]
+        ):
+            mlflow_promote_model(
+                name=mlflow_model_name,
+                retrained_run_id=challenger_run_id,
+                retrained_metric=metrics_dict_challenger[metric_to_compare],
+                start_date="2023-01-01",
+                eval_date=eval_date,
+                env=env,
+                mlflow_client=mlflow_client,
+                metrics_name=metric_to_compare,
+                prev_run_id=champion_model_run_id,
+                prev_metric=metrics_dict_champion[metric_to_compare],
+            )
+            return "promoted | prod & champion <= challenger"
+        return "not promoted | prod & champion > challenger"
+    else:
+        mlflow_promote_model(
+            name=mlflow_model_name,
+            retrained_run_id=challenger_run_id,
+            retrained_metric=metrics_dict_challenger[metric_to_compare],
+            start_date="2023-01-01",
+            eval_date=eval_date,
+            env=env,
+            mlflow_client=mlflow_client,
+            metrics_name=metric_to_compare,
+        )
+        return "promoted | not prod or no existing model"

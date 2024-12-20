@@ -5,6 +5,9 @@ import pandas as pd
 import pytest
 
 from hip_data_ml_utils.mlflow_databricks.mlflow_model_utils import (
+    mlflow_decision_to_promote,
+)
+from hip_data_ml_utils.mlflow_databricks.mlflow_model_utils import (
     mlflow_get_both_registered_model_info_run_id,
 )
 from hip_data_ml_utils.mlflow_databricks.mlflow_model_utils import (
@@ -356,3 +359,102 @@ class TestMlflowModelUtils:
             expected_return
             == "model is transitioned, and registered model description updated"
         )
+
+    @patch(
+        "hip_data_ml_utils.mlflow_databricks.mlflow_model_utils.mlflow_promote_model"  # noqa: E501
+    )
+    def test_decision_to_promote(self):
+
+        # missing challenge metric
+        # prod -> challenge < champ, challenge > champ, missing champ metric
+        # not prod
+
+        common_args = {
+            "mlflow_model_name": "",
+            "artifact_path": "",
+            "type_of_model": "",
+            "model_func_dict": "",
+            "mlflow_client": MagicMock(),
+            "challenger_run_id": "",
+            "champion_run_id": "",
+            "eval_date": "",
+            "metric_to_compare": "f1_score",
+        }
+
+        # missing challenger metric
+        with pytest.raises(KeyError) as exc_info:
+            decision = mlflow_decision_to_promote(
+                **common_args,
+                env="prod",
+                metrics_dict_champion={
+                    "accuracy": 0.5,
+                    "f1_score": 0.75,
+                },
+                metrics_dict_challenger={
+                    "accuracy": 0.6,
+                },
+            )
+            assert (  # noqa: S101
+                str(exc_info.value)
+                == "'f1_score' is not present in the challenger metrics."
+            )
+
+        # missing champion metric
+        with pytest.raises(KeyError) as exc_info:
+            decision = mlflow_decision_to_promote(
+                **common_args,
+                env="prod",
+                metrics_dict_champion={
+                    "accuracy": 0.5,
+                },
+                metrics_dict_challenger={
+                    "accuracy": 0.6,
+                    "f1_score": 0.7,
+                },
+            )
+            assert (  # noqa: S101
+                str(exc_info.value)
+                == "'f1_score' is not present in the champion metrics."
+            )
+
+        # prod | champion <= challenger
+        decision = mlflow_decision_to_promote(
+            **common_args,
+            env="prod",
+            metrics_dict_champion={
+                "accuracy": 0.5,
+                "f1_score": 0.75,
+            },
+            metrics_dict_challenger={
+                "accuracy": 0.6,
+                "f1_score": 0.9,
+            },
+        )
+        assert decision == "promoted | prod & champion <= challenger"  # noqa: S101
+
+        # prod | champion > challenger
+        decision = mlflow_decision_to_promote(
+            **common_args,
+            env="prod",
+            metrics_dict_champion={
+                "accuracy": 0.5,
+                "f1_score": 0.75,
+            },
+            metrics_dict_challenger={
+                "accuracy": 0.6,
+                "f1_score": 0.7,
+            },
+        )
+        assert decision == "not promoted | prod & champion > challenger"  # noqa: S101
+
+        # not prod
+        decision = mlflow_decision_to_promote(
+            **common_args,
+            env="staging",
+            metrics_dict_champion={"accuracy": 0.5, "f1_score": 0.7},
+            metrics_dict_challenger={
+                "accuracy": 0.6,
+                "f1_score": 0.7,
+            },
+        )
+        assert decision == "promoted | not prod or no existing model"  # noqa: S101
