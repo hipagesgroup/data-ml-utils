@@ -363,7 +363,7 @@ class TestMlflowModelUtils:
     @patch(
         "hip_data_ml_utils.mlflow_databricks.mlflow_model_utils.mlflow_promote_model"  # noqa: E501
     )
-    def test_decision_to_promote(self):
+    def test_mlflow_decision_to_promote(self):
 
         # missing challenge metric
         # prod -> challenge < champ, challenge > champ, missing champ metric
