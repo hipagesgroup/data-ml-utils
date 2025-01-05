@@ -364,15 +364,17 @@ class TestMlflowModelUtils:
         "hip_data_ml_utils.mlflow_databricks.mlflow_model_utils.mlflow_promote_model"  # noqa: E501
     )
     def test_mlflow_decision_to_promote(self, mock_mlflow_promote_model):
+        """
+        test if test_mlflow_decision_to_promote() can run correctly
 
-        # missing challenge metric
-        # prod -> challenge < champ, challenge > champ, missing champ metric
-        # not prod
+        Parameters
+        ----------
+        mock_mlflow_promote_model:
+            mocked mlflow_promote_model function
+        """
 
         common_args = {
             "mlflow_model_name": "",
-            "artifact_path": "",
-            "type_of_model": "",
             "model_func_dict": "",
             "mlflow_client": MagicMock(),
             "challenger_run_id": "",
