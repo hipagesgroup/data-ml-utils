@@ -22,9 +22,9 @@ WORKDIR /app
 COPY . .
 
 RUN cp poetry.lock poetry185.lock \
-    && poetry@1.8.5 show > poetry185-tree.txt \
+    && poetry@1.8.5 show --tree > poetry185-tree.txt \
     && poetry@2.0.0 lock \
-    && poetry@2.0.0 show > poetry-tree.txt
+    && poetry@2.0.0 show --tree > poetry-tree.txt
 
 CMD ["/bin/bash"]
 
