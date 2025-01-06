@@ -60,7 +60,7 @@ jobs:
             - name: Install Poetry
               uses: snok/install-poetry@v1
             - name: Install dependencies
-              run: poetry install --no-dev
+              run: poetry install
             - name: Test with pytest
               run: |
                   poetry run pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=. --cov-report=xml --cov-report=html --cov-fail-under=80 --suppress-no-test-exit-code
@@ -100,7 +100,7 @@ jobs:
             - name: Install Poetry
               uses: snok/install-poetry@v1
             - name: Install dependencies
-              run: poetry install --no-dev
+              run: poetry install
             - name: Build and publish to pypi
               env:
                   PYPI_TOKEN: ${{ secrets.PYPI_TOKEN_DATA_ML_UTILS }}
