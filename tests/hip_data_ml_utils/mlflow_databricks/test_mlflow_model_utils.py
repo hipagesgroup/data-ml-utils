@@ -375,7 +375,6 @@ class TestMlflowModelUtils:
 
         common_args = {
             "mlflow_model_name": "",
-            "model_func_dict": "",
             "mlflow_client": MagicMock(),
             "challenger_run_id": "",
             "champion_run_id": "",

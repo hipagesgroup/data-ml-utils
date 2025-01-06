@@ -315,7 +315,7 @@ def mlflow_decision_to_promote(
     env: str,
     mlflow_client: mlflow.tracking.client.MlflowClient,
     challenger_run_id: str,
-    champion_model_run_id: str,
+    champion_run_id: str,
     eval_date: str,
     metrics_dict_champion: Dict,
     metrics_dict_challenger: Dict,
@@ -335,7 +335,7 @@ def mlflow_decision_to_promote(
         initialised mlflow client
     challenger_run_id: str
         run_id of the challenger model
-    champion_model_run_id: str
+    champion_run_id: str
         run_id of the champion model
     eval_date: str
         evaluation data date
@@ -377,7 +377,7 @@ def mlflow_decision_to_promote(
                 env=env,
                 mlflow_client=mlflow_client,
                 metrics_name=metric_to_compare,
-                prev_run_id=champion_model_run_id,
+                prev_run_id=champion_run_id,
                 prev_metric=metrics_dict_champion[metric_to_compare],
             )
             return "promoted | prod & champion <= challenger"
