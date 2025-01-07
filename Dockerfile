@@ -1,7 +1,7 @@
 # docker image to compare lock files for poetry 1.8.5 and poetry 2.0.0
 # used to assess the impact of poetry 2
 
-FROM python:3.10-slim
+FROM python:3.9-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl git \
@@ -24,10 +24,14 @@ COPY . .
 RUN cp poetry.lock poetry185.lock \
     && poetry@1.8.5 show --tree > poetry185-tree.txt \
     && poetry@2.0.0 lock \
-    && poetry@2.0.0 show --tree > poetry-tree.txt
+    && poetry@2.0.0 show --tree > poetry-tree.txt \
+    && poetry@2.0.0 install
 
 CMD ["/bin/bash"]
 
 # run the container and run these commands:
 # git diff --no-index poetry185.lock poetry.lock
 # git diff --no-index poetry185-tree.txt poetry-tree.txt
+
+# to run unit testing
+# poetry@2.0.0 run pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=. --cov-report=xml --cov-report=html --cov-fail-under=80 --suppress-no-test-exit-code
