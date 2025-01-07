@@ -48,8 +48,6 @@ jobs:
                   python-version: 3.9
                   cache: pip
                   cache-dependency-path: '**/requirements*.txt'
-            - name: install setuptools
-              run: pip install --upgrade setuptools
             - name: Cache pip dependencies
               uses: actions/cache@v2
               continue-on-error: true
