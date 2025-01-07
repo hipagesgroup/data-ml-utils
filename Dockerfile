@@ -33,5 +33,5 @@ CMD ["/bin/bash"]
 # git diff --no-index poetry185.lock poetry.lock
 # git diff --no-index poetry185-tree.txt poetry-tree.txt
 
-# to run unit testing
+# run container and this command to run unit testing:
 # poetry@2.0.0 run pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=. --cov-report=xml --cov-report=html --cov-fail-under=80 --suppress-no-test-exit-code
