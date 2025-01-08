@@ -67,7 +67,7 @@ jobs:
                   poetry run coverage xml -i
                   cp -f coverage.xml coverage/
             - name: Upload test coverage files
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                   name: coverage
                   if-no-files-found: error
