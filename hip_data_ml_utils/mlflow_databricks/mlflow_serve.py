@@ -11,10 +11,10 @@ log = logging.getLogger(__name__)
 def enable_endpoint(
     databricks_api_url: str,
     model_name: str,
-    workload_type: str,
     databricks_cluster_hostname: str,
     databricks_workspace_token: str,
     model_version: int,
+    workload_type: str = "CPU",
     request_time_out: int = 60,
 ) -> bool:
     """
@@ -171,13 +171,13 @@ def get_endpoint_status(
 def update_compute_config(
     databricks_api_url: str,
     model_name: str,
-    workload_type: str,
     databricks_cluster_hostname: str,
     databricks_workspace_token: str,
     workload_size_id: str,
     scale_to_zero_enabled: str,
     model_version: int,
     catalog_name: str,
+    workload_type: str = "CPU",
     request_time_out: int = 60,
 ) -> int:
     """
