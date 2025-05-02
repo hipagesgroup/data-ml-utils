@@ -9,6 +9,11 @@ on:
         branches:
             - master
         types: [opened, synchronize]
+
+concurrency:
+    group: environment-${{ github.ref }}
+    cancel-in-progress: true
+
 jobs:
     lint:
         runs-on: ubuntu-latest
