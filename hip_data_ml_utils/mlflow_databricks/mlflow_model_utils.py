@@ -5,11 +5,13 @@ from typing import Tuple
 from typing import Union
 
 import mlflow
+import pandas as pd
 import torch
-from joblib import load
 
 from hip_data_ml_utils.core.databricks_utils import get_target_stage_for_env
 from hip_data_ml_utils.core.databricks_utils import load_yaml
+
+# from joblib import load
 
 
 def mlflow_load_model(
@@ -75,7 +77,7 @@ def mlflow_load_artifact(
         raise ValueError("Artifact type not supported")
 
     if type_of_artifact in ("joblib", "pkl", "dict"):
-        return load(
+        return pd.read_pickle(  # noqa: S301
             mlflow.artifacts.download_artifacts(
                 artifact_uri=f"{artifact_uri}/{artifact_name}"
             )
