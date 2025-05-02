@@ -1,4 +1,6 @@
-from pydantic import BaseSettings
+from typing import Dict
+
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
@@ -9,6 +11,7 @@ class Settings(BaseSettings):
     MODEL_SERVING_WORKLOAD_SIZE = "Medium"
     MODEL_SERVING_SCALE_TO_ZERO: str
     MODEL_SERVING_SCALE_TO_ZERO = "True"
+    model_func_dict: Dict
     model_func_dict = {
         "sk_model": ["sklearn", "code_paths"],
         "xgb_model": ["xgboost", "code_paths"],

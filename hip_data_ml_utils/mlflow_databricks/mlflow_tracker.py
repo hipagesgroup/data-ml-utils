@@ -13,6 +13,7 @@ def mlflow_log_artifact(
     artifact_name: str,
     local_path: Optional[str] = None,
     artifact_path: Optional[str] = None,
+    run_id: Optional[str] = None,
 ) -> str:
     """
     function to log artifact to mlflow
@@ -27,6 +28,8 @@ def mlflow_log_artifact(
         If provided, the local path to the artifact
     artifact_path: Optional[str]
         If provided, the directory in ``artifact_uri`` to write to
+    run_id: Optional[str]
+        mlflow run_id if provided
     """
 
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -36,6 +39,12 @@ def mlflow_log_artifact(
 
         if mlflow.active_run():
             mlflow.log_artifact(local_path=local_path, artifact_path=artifact_path)
+            return f"artifact {artifact_name} logged"
+
+        if run_id is not None:
+            mlflow.log_artifact(
+                run_id=run_id, local_path=local_path, artifact_path=artifact_path
+            )
             return f"artifact {artifact_name} logged"
 
         raise MlflowException("No active run to log artifact")
@@ -132,7 +141,12 @@ def mlflow_log_params(params: dict) -> str:
     raise MlflowException("No active run to log params")
 
 
-def mlflow_log_metric(key: str, value: float, step: Optional[int] = None) -> str:
+def mlflow_log_metric(
+    key: str,
+    value: float,
+    step: Optional[int] = None,
+    run_id: Optional[str] = None,
+) -> str:
     """
     function to log metric to mlflow
 
@@ -144,10 +158,16 @@ def mlflow_log_metric(key: str, value: float, step: Optional[int] = None) -> str
         metric value
     step: Optional[int]
         step of the epoch
+    run_id: Optional[str]
+        mlflow run_id
     """
 
     if mlflow.active_run():
         mlflow.log_metric(key=key, value=value, step=step)
+        return f"model evaluation metric {key}, {value} logged"
+
+    if run_id is not None:
+        mlflow.log_metric(run_id=run_id, key=key, value=value, step=step)
         return f"model evaluation metric {key}, {value} logged"
 
     raise MlflowException("No active run to log metric")
