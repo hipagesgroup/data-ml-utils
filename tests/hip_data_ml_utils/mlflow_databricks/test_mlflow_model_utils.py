@@ -101,10 +101,13 @@ class TestMlflowModelUtils:
 
         mock_active_run.return_value = MagicMock()
         mock_download_artifacts.return_value = "tests/unit_test.pkl"
-        expected_return = mlflow_load_artifact(
-            artifact_uri="test_uri",
-            artifact_name="test",
-            type_of_artifact="pkl",
+        expected_return = pd.DataFrame(
+            mlflow_load_artifact(
+                artifact_uri="test_uri",
+                artifact_name="test",
+                type_of_artifact="pkl",
+            ),
+            columns=["season"],
         )
         pd.testing.assert_frame_equal(expected_return, dummy_load_artifact)
 
