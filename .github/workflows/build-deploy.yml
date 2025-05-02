@@ -34,7 +34,9 @@ jobs:
               with:
                   version: 1.8.3
             - name: Install dependencies
-              run: poetry install
+              run: |
+                  poetry lock --no-update
+                  poetry install
             - name: Lint with flake8
               run: |
                   # exit-zero treats all errors as warnings. The GitHub editor is 88 chars wide
@@ -64,7 +66,9 @@ jobs:
               with:
                   version: 1.8.3
             - name: Install dependencies
-              run: poetry install
+              run: |
+                  poetry lock
+                  poetry install
             - name: Test with pytest
               run: |
                   poetry run pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=. --cov-report=xml --cov-report=html --cov-fail-under=80 --suppress-no-test-exit-code
