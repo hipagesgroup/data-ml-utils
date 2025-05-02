@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hip_data_ml_utils"
-version = "1.4.4"
+version = "1.4.5"
 description = "Common Python tools and utilities for Hipages ML work"
 authors = ["Hipages Tradie Marketplace Experience <shumingpeh@hipagesgroup.com.au>"]
 license = "MIT"
