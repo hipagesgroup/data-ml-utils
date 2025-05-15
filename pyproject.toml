@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hip_data_ml_utils"
-version = "1.4.5"
+version = "1.4.6"
 description = "Common Python tools and utilities for Hipages ML work"
 authors = ["Hipages Tradie Marketplace Experience <shumingpeh@hipagesgroup.com.au>"]
 license = "MIT"
@@ -47,7 +47,7 @@ pytest = "^8.3.3"
 pytest-cov = "^3.0.0"
 pytest-custom-exit-code = "0.3.0"
 PyYAML = "6.0"
-regex = "2022.7.9"
+regex = "^2024.9.11"
 requests = "^2.32.0"
 responses = "0.23.1"
 s3fs = "^2023.10.0"
