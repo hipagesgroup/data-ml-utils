@@ -19,4 +19,4 @@ metadata:
 spec:
     type: service
     lifecycle: experimental
-    owner: data-platform
+    owner: machine-learning-engineering
